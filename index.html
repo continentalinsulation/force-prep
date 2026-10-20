@@ -136,6 +136,18 @@ svg.chart{width:100%;height:auto;display:block}
 .ring .fgc{stroke:var(--accent);stroke-linecap:round;transform:rotate(-90deg);transform-origin:50% 50%}
 .kv{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:.95rem}
 .kv b{font-family:var(--display);font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-size:.85rem}
+
+.line{font-family:var(--display);font-weight:600;font-size:1.25rem;line-height:1.15;letter-spacing:.01em;text-wrap:balance}
+.pr{display:grid;grid-template-columns:1fr auto;gap:8px;padding:8px 0;border-top:1px solid var(--line);align-items:center}
+.pr:first-child{border-top:0}
+.pr .v{font-family:var(--display);font-weight:800;font-size:1.3rem;font-variant-numeric:tabular-nums;color:var(--accent)}
+.rate{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.rate button{padding:14px 6px}
+.rate button.sel{outline:3px solid var(--fg)}
+.cd{font-family:var(--display);font-weight:800;font-size:2.6rem;font-variant-numeric:tabular-nums;line-height:1}
+.adj{display:inline-block;font-family:var(--display);font-weight:700;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:999px;background:var(--raise);color:var(--muted);border:1px solid var(--line)}
+.adj.up{color:var(--accent);border-color:var(--accent)}
+.adj.dn{color:var(--warn);border-color:var(--warn)}
 @media (prefers-reduced-motion: no-preference){ ul.ex li,#wo .prog i{transition:all .2s} }
 </style>
 </head>
@@ -180,7 +192,6 @@ function load(){
   try{ d=JSON.parse(localStorage.getItem(KEY)||"null"); }catch(e){ d=null; }
   if(!d){
     d={start:"2026-10-19",done:{},routine:{},workouts:{},sims:[],notes:{},sound:true};
-    // migrate v1
     try{
       var sims=JSON.parse(localStorage.getItem("force-sims")||"[]"); if(sims.length) d.sims=sims.map(function(s){return {date:s.date,rush:s.rush,lift:s.lift,shut:s.shut,drag:true};});
       for(var i=0;i<localStorage.length;i++){ var k=localStorage.key(i); var m=/^force-(\d{4})-(\d{1,2})-(\d{1,2})$/.exec(k);
@@ -188,7 +199,9 @@ function load(){
     }catch(e){}
   }
   d.done=d.done||{}; d.routine=d.routine||{}; d.workouts=d.workouts||{}; d.sims=d.sims||[]; d.notes=d.notes||{};
+  d.evening=d.evening||{}; d.pr=d.pr||{pushups:[]}; d.adj=d.adj||{lift:0,bike:0}; d.feel=d.feel||{};
   if(d.sound===undefined) d.sound=true;
+  d.testDate=d.testDate||"2027-01-12"; d.bedtime=d.bedtime||"21:45";
   return d;
 }
 function save(){ try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(e){} }
@@ -196,48 +209,78 @@ function iso(d){ return d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"
 function fromIso(s){ var p=s.split("-"); return new Date(+p[0],+p[1]-1,+p[2]); }
 function today(){ var n=new Date(); return new Date(n.getFullYear(),n.getMonth(),n.getDate()); }
 function weekOf(date){ var st=fromIso(S.start); return Math.max(1,Math.floor((date-st)/86400000/7)+1); }
+function daysOut(){ return Math.round((fromIso(S.testDate)-today())/86400000); }
 function secs(t){ if(t===undefined||t===null||t==="") return null; if(typeof t==="number") return t; var p=String(t).trim().split(":"); if(p.length===1){var f=parseFloat(p[0]);return isNaN(f)?null:f;} var v=parseInt(p[0],10)*60+parseFloat(p[1]); return isNaN(v)?null:v; }
 function mmss(s){ if(s===null||s===undefined) return "—"; var m=Math.floor(s/60), r=Math.round(s-m*60); return m+":"+(r<10?"0":"")+r; }
 function mmss1(ms){ var s=ms/1000; var m=Math.floor(s/60); var r=(s-m*60).toFixed(1); return m+":"+(r<10?"0":"")+r; }
+function clamp(v,a,b){ return Math.max(a,Math.min(b,v)); }
+function hhmm(){ var n=new Date(); return ("0"+n.getHours()).slice(-2)+":"+("0"+n.getMinutes()).slice(-2); }
+
+// ---------- lines ----------
+var LINES=[
+"Nobody is coming to do this for you. Good.",
+"The alarm is on the dresser for a reason. Go get it.",
+"You don't need to feel like it. You need to be downstairs.",
+"Tired is the condition. It isn't the decision.",
+"Ten minutes from now this is already done.",
+"The streak doesn't care how you feel about it.",
+"Standards don't negotiate. Neither do you.",
+"You said you weren't going to be that guy. Prove it before 05:30.",
+"Every rep is a vote for the guy who passes.",
+"Motivation showed up late again. Start without it.",
+"Hard now, or hard later in front of a PSP instructor.",
+"The bag weighs the same as yesterday. You don't.",
+"This is the part nobody sees. It's the only part that counts.",
+"Be the guy who did it on the bad days.",
+"Twenty minutes. You've lost longer arguing with yourself.",
+"Comfort is a habit too. You're replacing it.",
+"The test is one morning. This is every morning.",
+"Quiet house, cold floor, no excuses. Perfect conditions.",
+"You've done harder things half asleep in worse places.",
+"Clock's running. Feet on the floor."];
+function lineOf(date){ var n=Math.floor(date/86400000); return LINES[((n%LINES.length)+LINES.length)%LINES.length]; }
 
 // ---------- program ----------
 var ROUTINE=[["05:10 — alarm off, on the dresser","Feet on the floor before you touch it"],["Clothes from the bathroom","Laid out last night"],["Downstairs, workout done","Whatever today's session is"],["Coffee","After, not before"],["Twenty minutes of something that fires you up","Then phone down"],["Dressed and out the door",""]];
+var EVENING=[["Clothes laid out in the bathroom","Everything, socks included"],["Alarm set 05:10, phone on the dresser","Not the nightstand. The dresser."],["Water bottle on the bike",""],["Lights out on time","Six hours is not enough. Seven and a half is the floor."]];
 function phase(w){ return w<=2?1:w<=4?2:w<=6?3:4; }
 var PHASES=[
   {n:"Foundation",w:"Weeks 1–2",d:"Learn the patterns at 20 kg, low reps, 2–3 in the tank. Bike 8 × 30/60."},
   {n:"Test movements",w:"Weeks 3–4",d:"Sandbag floor-to-shoulder replaces the basics. Bike 10 × 30/60. First timed sim."},
-  {n:"Build",w:"Weeks 5–6",d:"Reps climb to 12, carries get longer, bike moves to 40/80. Sim every second Saturday."},
+  {n:"Build",w:"Weeks 5–6",d:"Reps climb, carries get longer, bike moves to 40/80. Sim every second Saturday."},
   {n:"Peak and hold",w:"Week 7+",d:"Volume holds, sims every Saturday. You should be under every standard with room. Then we talk about running."}
 ];
 function liftPlan(w){
-  var ph=phase(w);
+  var ph=phase(w); var a=S.adj.lift; // -2..+3
   if(ph===1) return {kind:"lift",title:"Lift · foundation",sub:"Leave 2–3 reps in the tank every set. 90 s rest.",mins:25,
     blocks:[
-      {k:"set",name:"Goblet squat",det:"Dumbbell or sandbag at the chest. Sit between the heels.",sets:3,reps:"10",rest:90},
-      {k:"set",name:"Sandbag deadlift",det:"Hips back, chest up, bag tight to the shins. Drive the floor away.",sets:3,reps:w===1?"6":"8",rest:90},
+      {k:"set",name:"Goblet squat",det:"Dumbbell or sandbag at the chest. Sit between the heels.",sets:3,reps:String(clamp(10+a*2,6,14)),rest:90},
+      {k:"set",name:"Sandbag deadlift",det:"Hips back, chest up, bag tight to the shins. Drive the floor away.",sets:3,reps:String(clamp((w===1?6:8)+a,5,12)),rest:90},
       {k:"set",name:"Push-ups",det:"Max minus 2. Elbows at 45°, not flared.",sets:3,reps:"max − 2",rest:90},
       {k:"set",name:"Dumbbell row",det:"Per side. Pull to the hip, pause at the top.",sets:3,reps:"10 / side",rest:60},
-      {k:"dur",name:"Plank",det:"Squeeze glutes, push the floor away.",sec:30,sets:3,rest:30}
+      {k:"dur",name:"Plank",det:"Squeeze glutes, push the floor away.",sec:clamp(30+a*10,20,60),sets:3,rest:30}
     ],
     note:"<b>Weeks 1–2:</b> 20 kg bag, low reps. If the low back is lit up after this (not sore, lit up), pull an inner bag and go lighter for two weeks."};
-  var reps= ph===2?"10":ph===3?"12":"15";
-  var dl= ph===2?"8":ph===3?"10":"10";
-  var carry= ph===2?40:ph===3?60:80;
+  var base= ph===2?10:ph===3?12:15;
+  var reps=clamp(base+a*2,8,20);
+  var dl=clamp((ph===2?8:10)+a,6,14);
+  var carry=clamp((ph===2?40:ph===3?60:80)+a*20,40,120);
   return {kind:"lift",title:"Lift · test movements",sub:"Add 2–3 reps or a little weight each week. 90 s rest.",mins:28,
     blocks:[
-      {k:"set",name:"Sandbag floor-to-shoulder",det:"Alternate sides each rep. This is the lift station. Chest up, hips drive.",sets:3,reps:reps,rest:90},
-      {k:"set",name:"Sandbag deadlift",det:"Add a plate on top when 3 sets feel easy.",sets:3,reps:dl,rest:90},
+      {k:"set",name:"Sandbag floor-to-shoulder",det:"Alternate sides each rep. This is the lift station. Chest up, hips drive.",sets:3,reps:String(reps),rest:90},
+      {k:"set",name:"Sandbag deadlift",det:"Add a plate on top when 3 sets feel easy.",sets:3,reps:String(dl),rest:90},
       {k:"set",name:"Push-ups",det:"Max minus 2.",sets:3,reps:"max − 2",rest:75},
       {k:"set",name:"Dumbbell row",det:"Per side.",sets:3,reps:"10 / side",rest:60},
       {k:"set",name:"Sandbag carry",det:"Bear-hug, walk tall. Don't let it drift to one hip.",sets:3,reps:carry+" m",rest:60},
-      {k:"dur",name:"Plank",det:"",sec:ph===2?45:60,sets:3,rest:30}
+      {k:"dur",name:"Plank",det:"",sec:clamp((ph===2?45:60)+a*10,30,90),sets:3,rest:30}
     ],
     note: ph===2?"<b>Weeks 3–4:</b> a rounded back on the lift is the thing to fix before adding reps.":"<b>Phase "+ph+":</b> the 30-rep station is about not gassing over 3:30. Keep adding reps, not weight."};
 }
 function bikePlan(w){
-  var ph=phase(w);
-  var rounds= ph===1?8:ph===2?10:ph===3?10:12;
+  var ph=phase(w); var a=S.adj.bike;
+  var rounds=clamp((ph===1?8:ph===2?10:ph===3?10:12)+a,6,16);
   var on= ph<=2?30:40, off= ph<=2?60:80;
+  if(a>=2&&ph<=2){ on=40; off=80; }
   return {kind:"bike",title:"Bike · intervals",sub:"Hard means you couldn't talk. Easy means you could.",mins:Math.round((300+rounds*(on+off)+180)/60),
     blocks:[
       {k:"dur",name:"Warm-up",det:"Easy spin. Let the legs wake up.",sec:300},
@@ -258,6 +301,22 @@ function satPlan(w){
 var SUN={kind:"rest",title:"Sunday · off",sub:"The habit is the wake-up, not the workout.",mins:0,blocks:[{k:"dur",name:"Easy spin (optional)",det:"Only if you're worried about the streak. Then leave it.",sec:600}],note:null};
 function planFor(date){ var d=date.getDay(), w=weekOf(date); if(d===1||d===3||d===5) return liftPlan(w); if(d===2||d===4) return bikePlan(w); if(d===6) return satPlan(w); return SUN; }
 
+// ---------- adaptation ----------
+function rate(kind,k,r){ // r: 1 easy, 2 right, 3 hard
+  S.feel[k]=r; var key= kind==="lift"?"lift":kind==="bike"?"bike":null; if(!key){ save(); return null; }
+  var hist=Object.keys(S.feel).filter(function(d){ var p=planFor(fromIso(d)); return p.kind===kind; }).sort(); var last2=hist.slice(-2).map(function(d){return S.feel[d];});
+  var msg=null;
+  if(r===3){ S.adj[key]=clamp(S.adj[key]-1,-2,3); msg="Holding the "+kind+" volume. Next one's a notch lighter."; }
+  else if(r===1&&last2.length===2&&last2[0]===1&&last2[1]===1){ S.adj[key]=clamp(S.adj[key]+1,-2,3); msg="Two easy in a row. Next "+kind+" session steps up."; }
+  save(); return msg;
+}
+function simVerdict(sim){
+  var ok=0, margin=true; [["rush",STD.rush],["lift",STD.lift],["shut",STD.shut]].forEach(function(x){ var s=secs(sim[x[0]]); if(s!==null&&s<=x[1]) ok++; if(s===null||s>x[1]*0.9) margin=false; });
+  if(ok===3&&sim.drag&&margin){ S.adj.lift=clamp(S.adj.lift+1,-2,3); S.adj.bike=clamp(S.adj.bike+1,-2,3); save(); return "All four under standard with 10% in hand. Program steps up."; }
+  if(ok===3&&sim.drag) return "All four under standard. Hold the line and widen the margin."; 
+  return (ok+(sim.drag?1:0))+" of 4. The misses are the program for the next two weeks.";
+}
+
 // ---------- streaks ----------
 function dayComplete(date){
   var k=iso(date); var d=date.getDay();
@@ -269,12 +328,7 @@ function dayComplete(date){
   return n>0 && c===n;
 }
 function routineComplete(date){ var r=S.routine[iso(date)]; if(!r) return false; for(var i=0;i<ROUTINE.length;i++) if(!r["r"+i]) return false; return true; }
-function streak(fn){
-  var t=today(); var n=0; var d=new Date(t);
-  if(!fn(d)) d.setDate(d.getDate()-1); // today not done yet doesn't break it
-  for(var i=0;i<400;i++){ if(fn(d)){ n++; d.setDate(d.getDate()-1);} else break; }
-  return n;
-}
+function streak(fn){ var t=today(); var n=0; var d=new Date(t); if(!fn(d)) d.setDate(d.getDate()-1); for(var i=0;i<400;i++){ if(fn(d)){ n++; d.setDate(d.getDate()-1);} else break; } return n; }
 function trainStreak(){ return streak(dayComplete); }
 function routineStreak(){ return streak(routineComplete); }
 
@@ -293,7 +347,7 @@ function wake(on){ try{ if(on&&navigator.wakeLock) navigator.wakeLock.request("s
 
 // ---------- nav ----------
 var cur="today";
-function show(v,skipHash){
+function show(v){
   cur=v;
   ["today","progress","test","program","more"].forEach(function(x){ document.getElementById("v-"+x).hidden=(x!==v); });
   document.querySelectorAll("nav.tabs button").forEach(function(b){ b.classList.toggle("on",b.dataset.v===v); });
@@ -302,25 +356,42 @@ function show(v,skipHash){
 }
 document.getElementById("tabs").addEventListener("click",function(e){ var b=e.target.closest("button"); if(b) show(b.dataset.v); });
 function render(v){ ({today:renderToday,progress:renderProgress,test:renderTest,program:renderProgram,more:renderMore})[v](); }
-function toast(t){ var el=document.createElement("div"); el.className="toast"; el.textContent=t; document.body.appendChild(el); setTimeout(function(){ el.remove(); },1800); }
+function toast(t){ var el=document.createElement("div"); el.className="toast"; el.textContent=t; document.body.appendChild(el); setTimeout(function(){ el.remove(); },2200); }
 function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;"); }
 
 // ---------- header ----------
 function renderHeader(){
   var t=today(); document.getElementById("dateline").textContent=DAYS[t.getDay()]+" "+MON[t.getMonth()]+" "+t.getDate();
-  var w=weekOf(t); document.getElementById("weekpill").textContent="Week "+w+" · "+PHASES[phase(w)-1].n;
+  var w=weekOf(t); var dout=daysOut(); document.getElementById("weekpill").textContent="Wk "+w+" · "+(dout>0?dout+" days out":dout===0?"Test day":"Post-test");
 }
 
 // ---------- TODAY ----------
+function isEvening(){ return new Date().getHours()>=18; }
 function renderToday(){
   var t=today(), k=iso(t), p=planFor(t), w=weekOf(t);
   var dn=S.done[k]||{}; var rt=S.routine[k]||{};
   var h='';
+  // daily line
+  h+='<div class="line">'+esc(lineOf(t))+'</div>';
+  // evening card
+  if(isEvening()){
+    var tom=new Date(t); tom.setDate(t.getDate()+1); var tk=iso(tom); var ev=S.evening[tk]||{}; var pt=planFor(tom);
+    var bt=S.bedtime.split(":"); var bed=new Date(); bed.setHours(+bt[0],+bt[1],0,0); var mins=Math.round((bed-new Date())/60000);
+    h+='<div class="card hi stack"><div class="row"><div><div class="eyebrow">Tonight</div><h2>Set up tomorrow</h2></div><div style="text-align:right"><div class="cd">'+(mins>0?Math.floor(mins/60)+":"+("0"+mins%60).slice(-2):"now")+'</div><div class="sub">to lights out '+esc(S.bedtime)+'</div></div></div><div class="sub">Tomorrow: <b>'+esc(pt.title)+'</b>'+(pt.mins?' · ~'+pt.mins+' min':'')+'</div><ul class="ex">';
+    EVENING.forEach(function(r,i){ var id="e"+i; var c=!!ev[id]; h+='<li class="'+(c?"done":"")+'"><input type="checkbox" data-ev="'+id+'" id="'+id+'"'+(c?" checked":"")+'><label for="'+id+'"><span class="n">'+esc(r[0])+'</span>'+(r[1]?'<span class="d">'+esc(r[1])+'</span>':'')+'</label></li>'; });
+    h+='</ul></div>';
+  }
+  // sunday review
+  if(t.getDay()===0){ h+=weekReview(t); }
   // session card
-  h+='<div class="card hi stack"><div class="row"><div><div class="eyebrow">Today\'s session</div><h2>'+esc(p.title)+'</h2></div>'+(p.mins?'<span class="pill">~'+p.mins+' min</span>':'')+'</div><div class="sub">'+esc(p.sub)+'</div>';
-  if(S.workouts[k]) h+='<div class="note" style="border-color:var(--accent);background:var(--accent-soft)"><b style="color:var(--accent)">Done.</b> '+Math.round(S.workouts[k].sec/60)+' min, finished '+esc(S.workouts[k].at||"")+'. Streak: '+trainStreak()+'.</div>';
+  var adjKey= p.kind==="lift"?"lift":p.kind==="bike"?"bike":null; var adjV=adjKey?S.adj[adjKey]:0;
+  h+='<div class="card '+(isEvening()?"":"hi")+' stack"><div class="row"><div><div class="eyebrow">Today\'s session</div><h2>'+esc(p.title)+'</h2></div><div style="display:grid;gap:4px;justify-items:end">'+(p.mins?'<span class="pill">~'+p.mins+' min</span>':'')+(adjKey&&adjV!==0?'<span class="adj '+(adjV>0?"up":"dn")+'">'+(adjV>0?"+":"")+adjV+' adaptive</span>':'')+'</div></div><div class="sub">'+esc(p.sub)+'</div>';
+  if(S.workouts[k]){ var wk=S.workouts[k]; h+='<div class="note" style="border-color:var(--accent);background:var(--accent-soft)"><b style="color:var(--accent)">Done.</b> '+(wk.sec?Math.round(wk.sec/60)+' min, finished '+esc(wk.at||"")+'. ':'')+'Streak: '+trainStreak()+'.</div>';
+    if(adjKey&&!S.feel[k]) h+='<div class="stack"><div class="eyebrow">How was it?</div><div class="rate"><button class="btn quiet" data-rate="1">Easy</button><button class="btn quiet" data-rate="2">Right</button><button class="btn quiet" data-rate="3">Too hard</button></div></div>';
+    if(p.kind==="lift"&&!(S.pr.pushups||[]).some(function(x){return x.date===k;})) h+='<div class="row"><div class="field" style="flex:1"><label for="pu">Push-up max today</label><input type="number" id="pu" inputmode="numeric" placeholder="e.g. 22"></div><button class="btn quiet" id="pu-save" style="align-self:end">Log</button></div>';
+  }
   else if(p.kind==="sim") h+='<button class="btn big" id="go-test">Run the test sim</button>';
-  else if(p.kind!=="rest"||true) h+='<button class="btn big" id="go-wo">'+(p.kind==="rest"?"Easy spin (optional)":"Start guided session")+'</button>';
+  else h+='<button class="btn big" id="go-wo">'+(p.kind==="rest"?"Easy spin (optional)":"Start guided session")+'</button>';
   if(p.blocks.length){
     h+='<ul class="ex">';
     p.blocks.forEach(function(b,i){ var id="b"+i; var c=!!dn[id];
@@ -333,8 +404,7 @@ function renderToday(){
   h+='</div>';
   // routine
   var rc=0; for(var i=0;i<ROUTINE.length;i++) if(rt["r"+i]) rc++;
-  var pct=rc/ROUTINE.length;
-  h+='<div class="card stack"><div class="rl"><div><div class="eyebrow">Morning routine</div><h2 style="font-size:1.4rem">'+(rc===ROUTINE.length?"Locked in.":rc+" of "+ROUTINE.length)+'</h2><div class="sub">Routine streak: <b>'+routineStreak()+'</b> days</div></div>'+ring(pct)+'</div><ul class="ex">';
+  h+='<div class="card stack"><div class="rl"><div><div class="eyebrow">Morning routine</div><h2 style="font-size:1.4rem">'+(rc===ROUTINE.length?"Locked in.":rc+" of "+ROUTINE.length)+'</h2><div class="sub">Routine streak: <b>'+routineStreak()+'</b> days</div></div>'+ring(rc/ROUTINE.length)+'</div><ul class="ex">';
   ROUTINE.forEach(function(r,i){ var id="r"+i; var c=!!rt[id]; h+='<li class="'+(c?"done":"")+'"><input type="checkbox" data-rt="'+id+'" id="'+id+'"'+(c?" checked":"")+'><label for="'+id+'"><span class="n">'+esc(r[0])+'</span>'+(r[1]?'<span class="d">'+esc(r[1])+'</span>':'')+'</label></li>'; });
   h+='</ul></div>';
   // this week
@@ -346,15 +416,28 @@ function renderToday(){
     h+='</div></details>';
   }
   h+='</div>';
-  // note
   h+='<div class="card stack"><div class="eyebrow">Note for today</div><textarea id="note" placeholder="How it felt. Anything that hurt. What to change.">'+esc(S.notes[k]||"")+'</textarea></div>';
   var el=document.getElementById("v-today"); el.innerHTML=h;
-  el.querySelectorAll("input[data-done]").forEach(function(c){ c.addEventListener("change",function(){ S.done[k]=S.done[k]||{}; S.done[k][c.dataset.done]=c.checked; save(); c.closest("li").classList.toggle("done",c.checked); if(dayComplete(t)&&!S.workouts[k]){ toast("Session complete. Streak "+trainStreak()); } }); });
+  el.querySelectorAll("input[data-done]").forEach(function(c){ c.addEventListener("change",function(){ S.done[k]=S.done[k]||{}; S.done[k][c.dataset.done]=c.checked; save(); c.closest("li").classList.toggle("done",c.checked); if(dayComplete(t)&&!S.workouts[k]){ S.workouts[k]={sec:0,kind:p.kind,at:hhmm()}; save(); toast("Session complete. Streak "+trainStreak()); renderToday(); } }); });
   el.querySelectorAll("input[data-rt]").forEach(function(c){ c.addEventListener("change",function(){ S.routine[k]=S.routine[k]||{}; S.routine[k][c.dataset.rt]=c.checked; save(); renderToday(); }); });
+  el.querySelectorAll("input[data-ev]").forEach(function(c){ c.addEventListener("change",function(){ var tom=new Date(t); tom.setDate(t.getDate()+1); var tk=iso(tom); S.evening[tk]=S.evening[tk]||{}; S.evening[tk][c.dataset.ev]=c.checked; save(); c.closest("li").classList.toggle("done",c.checked); }); });
+  el.querySelectorAll("[data-rate]").forEach(function(b){ b.addEventListener("click",function(){ var m=rate(p.kind,k,+b.dataset.rate); toast(m||"Noted."); renderToday(); }); });
+  var pu=el.querySelector("#pu-save"); if(pu) pu.addEventListener("click",function(){ var v=parseInt(el.querySelector("#pu").value,10); if(!v) return; S.pr.pushups.push({date:k,n:v}); save(); var best=Math.max.apply(null,S.pr.pushups.map(function(x){return x.n;})); toast(v>=best?"Push-up PR: "+v:"Logged "+v); renderToday(); });
   var nt=el.querySelector("#note"); nt.addEventListener("input",function(){ S.notes[k]=nt.value; save(); });
   var g=el.querySelector("#go-wo"); if(g) g.addEventListener("click",function(){ startWorkout(p,k); });
   var gt=el.querySelector("#go-test"); if(gt) gt.addEventListener("click",function(){ show("test"); startTestMode(); });
 }
+function weekReview(t){
+  var mon=new Date(t); mon.setDate(t.getDate()-6); var done=0, rd=0; var sims=[];
+  for(var i=0;i<6;i++){ var d=new Date(mon); d.setDate(mon.getDate()+i); if(dayComplete(d)) done++; if(routineComplete(d)) rd++; }
+  if(routineComplete(t)) rd++;
+  S.sims.forEach(function(s){ var sd=fromIso(s.date); if(sd>=mon&&sd<=t) sims.push(s); });
+  var w=weekOf(t); var nx=w+1; var ph=phase(nx), cph=phase(w);
+  var change= ph!==cph? "Next week starts "+PHASES[ph-1].n+": "+PHASES[ph-1].d : (S.adj.lift||S.adj.bike)? "Adaptive: lifts "+(S.adj.lift>=0?"+":"")+S.adj.lift+", bike "+(S.adj.bike>=0?"+":"")+S.adj.bike+" on top of the phase." : "Same phase, same numbers. Keep stacking days.";
+  var grade= done>=6?"Clean week.":done>=5?"Solid. One slipped.":done>=4?"Four of six. Fix the misses before they become the pattern.":"Under four. The routine's the problem, not the program.";
+  return '<div class="card stack" style="border-color:var(--warn)"><div class="eyebrow">Week '+w+' review</div><h2>'+esc(grade)+'</h2><div class="stats"><div class="stat"><div class="v">'+done+'/6</div><div class="l">Sessions</div></div><div class="stat"><div class="v">'+rd+'/7</div><div class="l">Routine</div></div><div class="stat"><div class="v">'+(sims.length?simVerdictShort(sims[sims.length-1]):"—")+'</div><div class="l">Sim</div></div></div><div class="sub">'+esc(change)+'</div></div>';
+}
+function simVerdictShort(sim){ var ok=0; [["rush",STD.rush],["lift",STD.lift],["shut",STD.shut]].forEach(function(x){ var s=secs(sim[x[0]]); if(s!==null&&s<=x[1]) ok++; }); return (ok+(sim.drag?1:0))+"/4"; }
 function ring(p){ var r=22, c=2*Math.PI*r; return '<svg class="ring" viewBox="0 0 54 54"><circle class="bgc" cx="27" cy="27" r="'+r+'"/><circle class="fgc" cx="27" cy="27" r="'+r+'" stroke-dasharray="'+c+'" stroke-dashoffset="'+(c*(1-p))+'"/></svg>'; }
 
 // ---------- WORKOUT ENGINE ----------
@@ -372,11 +455,9 @@ function expand(plan){
 function startWorkout(plan,k){
   var steps=expand(plan); if(!steps.length) return;
   W={plan:plan,k:k,steps:steps,i:0,t0:Date.now(),stepStart:Date.now(),paused:false,pausedAt:0,tick:null,lastBeep:-1};
-  beep(880,80,0.001); // unlock audio
-  wake(true);
+  beep(880,80,0.001); wake(true);
   document.getElementById("wo").hidden=false; document.body.style.overflow="hidden";
-  W.tick=setInterval(woTick,100);
-  woRender();
+  W.tick=setInterval(woTick,100); woRender();
 }
 function stepElapsed(){ return (W.paused?W.pausedAt:Date.now())-W.stepStart; }
 function woTick(){
@@ -398,15 +479,14 @@ function woRender(){
   h+='<div class="mid"><div class="phase '+(st.t==="rest"?"rest":"work")+'">'+(st.t==="rest"?"Rest":st.easy?"Go":"Work")+'</div><div class="name">'+esc(st.name)+'</div>'+(st.sub?'<div class="det" style="color:var(--fg);font-weight:600">'+esc(st.sub)+'</div>':'')+(st.det?'<div class="det">'+esc(st.det)+'</div>':'');
   h+='<div class="big '+(st.t==="rest"?"rest":"")+'" id="wo-big">'+(st.sec?mmss(st.sec):"0:00")+'</div>';
   if(!st.sec) h+='<div class="cnt">Tap done when the set is finished</div>';
-  h+='</div>';
-  h+='<div class="acts">';
+  h+='</div><div class="acts">';
   if(st.manual) h+='<button class="btn big" id="wo-done">Set done</button>';
   else h+='<button class="btn big '+(st.t==="rest"?"quiet":"")+'" id="wo-skip">'+(st.t==="rest"?"Skip rest":"Skip")+'</button>';
   h+='<div class="row" style="justify-content:space-between"><button class="btn quiet" id="wo-prev" style="flex:1">Back</button><button class="btn quiet" id="wo-pause" style="flex:1">'+(W.paused?"Resume":"Pause")+'</button></div>';
   h+='<div class="next">'+(nx?"Next: "+esc(nx.name)+(nx.sub?" · "+esc(nx.sub):"")+(nx.sec?" · "+mmss(nx.sec):""):"Last step")+'</div></div>';
   el.innerHTML=h;
   var q=function(id){return el.querySelector("#"+id);};
-  q("wo-x").addEventListener("click",function(){ var ok=el.querySelector("#wo-confirm"); if(ok) return; var c=document.createElement("div"); c.id="wo-confirm"; c.className="note"; c.style.marginTop="8px"; c.innerHTML='<b>Exit without finishing?</b> Progress on this session is lost. <div class="row" style="margin-top:8px"><button class="btn danger" id="wo-yes" style="flex:1">Exit</button><button class="btn quiet" id="wo-no" style="flex:1">Keep going</button></div>'; el.querySelector(".acts").appendChild(c); c.querySelector("#wo-yes").addEventListener("click",closeWo); c.querySelector("#wo-no").addEventListener("click",function(){ c.remove(); }); });
+  q("wo-x").addEventListener("click",function(){ if(el.querySelector("#wo-confirm")) return; var c=document.createElement("div"); c.id="wo-confirm"; c.className="note"; c.style.marginTop="8px"; c.innerHTML='<b>Exit without finishing?</b> Progress on this session is lost. <div class="row" style="margin-top:8px"><button class="btn danger" id="wo-yes" style="flex:1">Exit</button><button class="btn quiet" id="wo-no" style="flex:1">Keep going</button></div>'; el.querySelector(".acts").appendChild(c); c.querySelector("#wo-yes").addEventListener("click",closeWo); c.querySelector("#wo-no").addEventListener("click",function(){ c.remove(); }); });
   if(q("wo-done")) q("wo-done").addEventListener("click",function(){ beep(523,120); next(); });
   if(q("wo-skip")) q("wo-skip").addEventListener("click",next);
   q("wo-prev").addEventListener("click",prev);
@@ -414,12 +494,13 @@ function woRender(){
 }
 function closeWo(){ if(W&&W.tick) clearInterval(W.tick); W=null; wake(false); document.getElementById("wo").hidden=true; document.body.style.overflow=""; renderHeader(); renderToday(); }
 function finish(){
-  var sec=Math.round((Date.now()-W.t0)/1000); var k=W.k; var n=new Date();
-  S.workouts[k]={sec:sec,kind:W.plan.kind,at:("0"+n.getHours()).slice(-2)+":"+("0"+n.getMinutes()).slice(-2)};
+  var sec=Math.round((Date.now()-W.t0)/1000); var k=W.k; var kind=W.plan.kind;
+  S.workouts[k]={sec:sec,kind:kind,at:hhmm()};
   S.done[k]=S.done[k]||{}; W.plan.blocks.forEach(function(b,i){ S.done[k]["b"+i]=true; }); save();
   beep(784,150,0.3); setTimeout(function(){beep(1046,300,0.3);},160); buzz([80,50,80,50,160]);
-  var el=document.getElementById("wo"); var s=trainStreak();
-  el.innerHTML='<div class="top"><div class="eyebrow">'+esc(W.plan.title)+'</div></div><div class="mid"><div class="done-wrap"><div class="phase work">Session complete</div><div class="huge">'+mmss(sec)+'</div><div class="sub">on the clock</div><div class="stats" style="width:100%;max-width:360px"><div class="stat"><div class="v">'+s+'</div><div class="l">Day streak</div></div><div class="stat"><div class="v">'+Object.keys(S.workouts).length+'</div><div class="l">Sessions</div></div><div class="stat"><div class="v">'+weekOf(today())+'</div><div class="l">Week</div></div></div><div class="sub" style="max-width:32ch">'+esc(doneLine(s))+'</div></div></div><div class="acts"><button class="btn big" id="wo-close">Coffee</button></div>';
+  var el=document.getElementById("wo"); var s=trainStreak(); var adaptive=(kind==="lift"||kind==="bike");
+  el.innerHTML='<div class="top"><div class="eyebrow">'+esc(W.plan.title)+'</div></div><div class="mid"><div class="done-wrap"><div class="phase work">Session complete</div><div class="huge">'+mmss(sec)+'</div><div class="sub">on the clock</div><div class="stats" style="width:100%;max-width:360px"><div class="stat"><div class="v">'+s+'</div><div class="l">Day streak</div></div><div class="stat"><div class="v">'+Object.keys(S.workouts).length+'</div><div class="l">Sessions</div></div><div class="stat"><div class="v">'+daysOut()+'</div><div class="l">Days out</div></div></div>'+(adaptive?'<div class="stack" style="width:100%;max-width:360px"><div class="eyebrow">How was it?</div><div class="rate"><button class="btn quiet" data-rate="1">Easy</button><button class="btn quiet" data-rate="2">Right</button><button class="btn quiet" data-rate="3">Too hard</button></div><div class="sub" id="rate-msg" style="min-height:1.4em"></div></div>':'<div class="sub" style="max-width:32ch">'+esc(doneLine(s))+'</div>')+'</div></div><div class="acts"><button class="btn big" id="wo-close">Coffee</button></div>';
+  el.querySelectorAll("[data-rate]").forEach(function(b){ b.addEventListener("click",function(){ el.querySelectorAll("[data-rate]").forEach(function(x){x.classList.remove("sel");}); b.classList.add("sel"); var m=rate(kind,k,+b.dataset.rate); el.querySelector("#rate-msg").textContent=m||doneLine(s); }); });
   el.querySelector("#wo-close").addEventListener("click",closeWo);
   if(W.tick) clearInterval(W.tick); W.tick=null;
 }
@@ -429,7 +510,6 @@ function doneLine(s){ if(s>=30) return "A month of not negotiating with yourself
 function renderProgress(){
   var t=today(); var w=weekOf(t);
   var h='<div class="stats"><div class="stat"><div class="v">'+trainStreak()+'</div><div class="l">Train streak</div></div><div class="stat"><div class="v">'+routineStreak()+'</div><div class="l">Routine streak</div></div><div class="stat"><div class="v">'+Object.keys(S.workouts).length+'</div><div class="l">Sessions</div></div></div>';
-  // heat 8 weeks
   h+='<div class="card stack"><div class="eyebrow">Last 8 weeks</div><div class="dow">'+DSHORT.slice(1).concat(DSHORT[0]).map(function(x){return "<div>"+x+"</div>";}).join("")+'</div><div class="heat">';
   var mon=new Date(t); mon.setDate(t.getDate()-((t.getDay()+6)%7)-49);
   for(var i=0;i<56;i++){ var d=new Date(mon); d.setDate(mon.getDate()+i); var cls=""; var fut=d>t; var st=fromIso(S.start);
@@ -437,7 +517,6 @@ function renderProgress(){
     if(iso(d)===iso(t)) cls+=" t"; if(fut||d<st) cls+=" f";
     h+='<div class="'+cls+'" title="'+iso(d)+'"></div>'; }
   h+='</div><div class="sub">Green = session done. Faint green = Sunday. Outlined = today.</div></div>';
-  // sims chart
   var sims=S.sims.slice().sort(function(a,b){return a.date<b.date?-1:1;});
   h+='<div class="card stack"><div class="eyebrow">Sim times vs. the standard</div>';
   if(sims.length<1) h+='<div class="sub">No sims yet. First one is Saturday of week 2. Lines below 100% mean you\'re under the standard.</div>';
@@ -446,13 +525,16 @@ function renderProgress(){
   if(last){ var pass=0, tot=0; [["rush","Rushes"],["lift","Lift"],["shut","Shuttles"]].forEach(function(x){ var s=secs(last[x[0]]); if(s!==null){tot++; if(s<=STD[x[0]]) pass++;} }); if(last.drag){tot++;pass++;}
     h+='<div class="kv" style="margin-top:6px"><b>Latest</b><span>'+esc(last.date)+' · '+pass+' of '+tot+' stations under standard</span>'+[["rush","Rushes"],["lift","Lift"],["shut","Shuttles"]].map(function(x){ var s=secs(last[x[0]]); return '<b>'+x[1]+'</b><span class="'+(s===null?"":s<=STD[x[0]]?"ok":"bad")+'">'+(s===null?"—":mmss(s)+" / "+mmss(STD[x[0]]))+'</span>'; }).join("")+'</div>'; }
   h+='</div>';
-  // sim table
+  // PRs
+  var best=function(key){ var vals=sims.map(function(s){return secs(s[key]);}).filter(function(x){return x!==null;}); return vals.length?Math.min.apply(null,vals):null; };
+  var pu=S.pr.pushups||[]; var puBest=pu.length?Math.max.apply(null,pu.map(function(x){return x.n;})):null;
+  h+='<div class="card"><div class="eyebrow" style="margin-bottom:6px">Personal bests</div><div class="pr"><div>Push-ups (one set)</div><div class="v">'+(puBest!==null?puBest:"—")+'</div></div><div class="pr"><div>Rushes<small style="display:block;color:var(--muted)">standard 0:51</small></div><div class="v">'+mmss(best("rush"))+'</div></div><div class="pr"><div>Sandbag lift<small style="display:block;color:var(--muted)">standard 3:30</small></div><div class="v">'+mmss(best("lift"))+'</div></div><div class="pr"><div>Loaded shuttles<small style="display:block;color:var(--muted)">standard 5:21</small></div><div class="v">'+mmss(best("shut"))+'</div></div><div class="pr"><div>Longest train streak</div><div class="v">'+longestStreak()+'</div></div></div>';
   h+='<div class="card stack"><div class="eyebrow">Sim log</div>'+simTable(sims)+'</div>';
-  // phase
-  h+='<div class="card stack"><div class="eyebrow">Where you are</div><div><b style="font-family:var(--display);font-size:1.3rem">Week '+w+' · '+PHASES[phase(w)-1].n+'</b><div class="sub">'+esc(PHASES[phase(w)-1].d)+'</div></div></div>';
+  h+='<div class="card stack"><div class="eyebrow">Where you are</div><div><b style="font-family:var(--display);font-size:1.3rem">Week '+w+' · '+PHASES[phase(w)-1].n+'</b><div class="sub">'+esc(PHASES[phase(w)-1].d)+'</div><div class="sub" style="margin-top:6px">Adaptive offsets: lifts <b>'+(S.adj.lift>=0?"+":"")+S.adj.lift+'</b>, bike <b>'+(S.adj.bike>=0?"+":"")+S.adj.bike+'</b>. '+daysOut()+' days to test.</div></div></div>';
   var el=document.getElementById("v-progress"); el.innerHTML=h;
-  el.querySelectorAll("[data-del]").forEach(function(b){ b.addEventListener("click",function(){ var i=+b.dataset.del; var ok=b.dataset.ok; if(!ok){ b.dataset.ok="1"; b.textContent="Sure?"; return; } S.sims.splice(i,1); save(); renderProgress(); }); });
+  el.querySelectorAll("[data-del]").forEach(function(b){ b.addEventListener("click",function(){ var i=+b.dataset.del; if(!b.dataset.ok){ b.dataset.ok="1"; b.textContent="Sure?"; return; } S.sims.splice(i,1); save(); renderProgress(); }); });
 }
+function longestStreak(){ var st=fromIso(S.start); var t=today(); var best=0,cur=0; for(var d=new Date(st); d<=t; d.setDate(d.getDate()+1)){ if(dayComplete(d)){ cur++; if(cur>best) best=cur; } else cur=0; } return best; }
 function simTable(sims){
   if(!sims.length) return '<div class="sub">Nothing logged.</div>';
   var h='<div class="tscroll"><table><tr><th>Date</th><th>Rushes</th><th>Lift</th><th>Shuttles</th><th>Drag</th><th></th></tr>';
@@ -465,7 +547,8 @@ function simChart(sims){
   var Wd=600,Hh=240,pl=40,pr=12,pt=14,pb=28; var n=sims.length;
   var series=[["rush","Rushes","var(--accent)"],["lift","Lift","var(--warn)"],["shut","Shuttles","var(--fg)"]];
   var pts=series.map(function(sr){ return sims.map(function(s){ var v=secs(s[sr[0]]); return v===null?null:v/STD[sr[0]]*100; }); });
-  var all=[].concat.apply([],pts).filter(function(x){return x!==null;}); var mx=Math.max(120,Math.ceil(Math.max.apply(null,all.concat([100]))/10)*10+5); var mn=Math.min(60,Math.floor(Math.min.apply(null,all)/10)*10-5);
+  var all=[].concat.apply([],pts).filter(function(x){return x!==null;}); if(!all.length) all=[100];
+  var mx=Math.max(120,Math.ceil(Math.max.apply(null,all.concat([100]))/10)*10+5); var mn=Math.min(60,Math.floor(Math.min.apply(null,all)/10)*10-5);
   var x=function(i){ return n===1? (pl+(Wd-pl-pr)/2) : pl+i*(Wd-pl-pr)/(n-1); }, y=function(v){ return pt+(mx-v)/(mx-mn)*(Hh-pt-pb); };
   var h='<svg class="chart" viewBox="0 0 '+Wd+' '+Hh+'" role="img" aria-label="Sim times as a percentage of the standard">';
   for(var g=Math.ceil(mn/20)*20; g<=mx; g+=20){ h+='<line x1="'+pl+'" x2="'+(Wd-pr)+'" y1="'+y(g)+'" y2="'+y(g)+'" stroke="var(--line)" stroke-width="1"/><text x="'+(pl-6)+'" y="'+(y(g)+4)+'" font-size="11" text-anchor="end" fill="var(--muted)" font-family="var(--body)">'+g+'%</text>'; }
@@ -490,19 +573,19 @@ function renderTest(){
   var h='';
   if(T){ h+=renderTestMode(); }
   else {
-    h+='<div class="card hi stack"><div><div class="eyebrow">FORCE evaluation</div><h2>Four stations. Short breaks. All four count.</h2></div><div class="sub">Confirm current standards with the recruiter before test day. These are the numbers you\'re training to.</div><button class="btn big" id="t-start">Run a timed sim</button></div>';
+    h+='<div class="card hi stack"><div><div class="eyebrow">FORCE evaluation · '+daysOut()+' days out</div><h2>Four stations. Short breaks. All four count.</h2></div><div class="sub">Confirm current standards with the recruiter before test day. These are the numbers you\'re training to.</div><button class="btn big" id="t-start">Run a timed sim</button></div>';
     h+='<div class="std">'+STATIONS.map(function(s){ return '<div class="r"><div><b>'+esc(s.n)+'</b><small>'+esc(s.d)+'</small><small style="color:var(--fg);margin-top:4px">'+esc(s.tip)+'</small></div><div class="t">'+(s.std?mmss(s.std):"finish")+'</div></div>'; }).join("")+'</div>';
     h+='<div class="card stack"><div class="eyebrow">Log a sim by hand</div><div class="grid2"><div class="field"><label for="s-date">Date</label><input id="s-date" type="date" value="'+iso(today())+'"></div><div class="field"><label for="s-rush">Rushes m:ss</label><input id="s-rush" type="text" inputmode="numeric" placeholder="0:48"></div><div class="field"><label for="s-lift">Lift m:ss</label><input id="s-lift" type="text" inputmode="numeric" placeholder="2:55"></div><div class="field"><label for="s-shut">Shuttles m:ss</label><input id="s-shut" type="text" inputmode="numeric" placeholder="4:40"></div></div><label class="row" style="justify-content:flex-start"><input type="checkbox" id="s-drag" checked style="width:20px;height:20px;accent-color:var(--accent)"> Drag completed without stopping</label><button class="btn" id="s-save">Save sim</button></div>';
   }
   var el=document.getElementById("v-test"); el.innerHTML=h;
   var b=el.querySelector("#t-start"); if(b) b.addEventListener("click",startTestMode);
-  var sv=el.querySelector("#s-save"); if(sv) sv.addEventListener("click",function(){ var s={date:el.querySelector("#s-date").value,rush:el.querySelector("#s-rush").value.trim(),lift:el.querySelector("#s-lift").value.trim(),shut:el.querySelector("#s-shut").value.trim(),drag:el.querySelector("#s-drag").checked}; if(!s.rush&&!s.lift&&!s.shut) return; S.sims.push(s); save(); toast("Sim saved"); show("progress"); });
+  var sv=el.querySelector("#s-save"); if(sv) sv.addEventListener("click",function(){ var s={date:el.querySelector("#s-date").value,rush:el.querySelector("#s-rush").value.trim(),lift:el.querySelector("#s-lift").value.trim(),shut:el.querySelector("#s-shut").value.trim(),drag:el.querySelector("#s-drag").checked}; if(!s.rush&&!s.lift&&!s.shut) return; S.sims.push(s); save(); toast(simVerdict(s)); show("progress"); });
   if(T) bindTestMode(el);
 }
 function startTestMode(){ T={i:0,res:{},run:false,t0:0,acc:0,tick:null}; beep(880,60,0.001); wake(true); show("test"); }
 function renderTestMode(){
   var s=STATIONS[T.i]; var h='<div class="card hi stack"><div class="row"><div class="eyebrow">Station '+(T.i+1)+' of 4</div><button class="btn quiet" id="t-x" style="padding:6px 10px">Cancel</button></div><h2>'+esc(s.n)+'</h2><div class="sub">'+esc(s.d)+'</div>';
-  if(s.std){ h+='<div style="text-align:center"><div class="big" id="t-clock" style="font-family:var(--display);font-weight:800;font-size:4.5rem;font-variant-numeric:tabular-nums;line-height:1">'+mmss1(T.acc)+'</div><div class="sub">standard '+mmss(s.std)+'</div></div><div class="row"><button class="btn" id="t-go" style="flex:1">'+(T.run?"Stop":"Start")+'</button><button class="btn quiet" id="t-reset" style="flex:1">Reset</button></div><button class="btn big" id="t-next" '+(T.run||T.acc===0?"disabled":"")+'>Save &amp; next station</button>'; }
+  if(s.std){ h+='<div style="text-align:center"><div id="t-clock" style="font-family:var(--display);font-weight:800;font-size:4.5rem;font-variant-numeric:tabular-nums;line-height:1">'+mmss1(T.acc)+'</div><div class="sub">standard '+mmss(s.std)+'</div></div><div class="row"><button class="btn" id="t-go" style="flex:1">'+(T.run?"Stop":"Start")+'</button><button class="btn quiet" id="t-reset" style="flex:1">Reset</button></div><button class="btn big" id="t-next" '+(T.run||T.acc===0?"disabled":"")+'>Save &amp; next station</button>'; }
   else { h+='<div class="sub">'+esc(s.tip)+'</div><div class="row"><button class="btn" id="t-drag-y" style="flex:1">Completed</button><button class="btn danger" id="t-drag-n" style="flex:1">Had to stop</button></div>'; }
   h+='</div>';
   h+='<div class="std">'+STATIONS.map(function(st,i){ var r=T.res[st.id]; var done=r!==undefined; return '<div class="r" style="'+(i===T.i?"background:var(--accent-soft)":"")+'"><div><b>'+esc(st.n)+'</b></div><div class="t" style="color:'+(done?(st.std?(r<=st.std?"var(--accent)":"var(--bad)"):(r?"var(--accent)":"var(--bad)")):"var(--muted)")+'">'+(done?(st.std?mmss(r):(r?"✓":"✗")):"—")+'</div></div>'; }).join("")+'</div>';
@@ -516,7 +599,7 @@ function bindTestMode(el){
     el.querySelector("#t-reset").addEventListener("click",function(){ T.acc=0; T.run=false; if(T.tick) clearInterval(T.tick); renderTest(); });
     el.querySelector("#t-next").addEventListener("click",function(){ T.res[s.id]=Math.round(T.acc/100)/10; T.acc=0; T.i++; renderTest(); });
   } else {
-    var fin=function(ok){ T.res.drag=ok; var sim={date:iso(today()),rush:T.res.rush,lift:T.res.lift,shut:T.res.shut,drag:ok}; S.sims.push(sim); var k=iso(today()); if(planFor(today()).kind==="sim"){ S.workouts[k]={sec:0,kind:"sim",at:""}; } save(); T=null; wake(false); beep(784,150,0.3); setTimeout(function(){beep(1046,300,0.3);},160); toast("Sim saved"); show("progress"); };
+    var fin=function(ok){ T.res.drag=ok; var sim={date:iso(today()),rush:T.res.rush,lift:T.res.lift,shut:T.res.shut,drag:ok}; S.sims.push(sim); var k=iso(today()); if(planFor(today()).kind==="sim"){ S.workouts[k]={sec:0,kind:"sim",at:hhmm()}; } save(); T=null; wake(false); beep(784,150,0.3); setTimeout(function(){beep(1046,300,0.3);},160); toast(simVerdict(sim)); show("progress"); };
     el.querySelector("#t-drag-y").addEventListener("click",function(){fin(true);});
     el.querySelector("#t-drag-n").addEventListener("click",function(){fin(false);});
   }
@@ -525,8 +608,9 @@ function bindTestMode(el){
 // ---------- PROGRAM ----------
 function renderProgram(){
   var w=weekOf(today()); var ph=phase(w);
-  var h='<div class="card stack"><div class="eyebrow">The plan</div><h2>Pass FORCE with room to spare. Then build the engine.</h2><div class="sub">Six days a week, under 35 minutes, same wake-up every day. Lifts Mon/Wed/Fri, bike intervals Tue/Thu, Saturday outdoors, Sunday off. Reps and rounds climb automatically as the weeks tick over.</div></div>';
+  var h='<div class="card stack"><div class="eyebrow">The plan</div><h2>Pass FORCE with room to spare. Then build the engine.</h2><div class="sub">Six days a week, under 35 minutes, same wake-up every day. Lifts Mon/Wed/Fri, bike intervals Tue/Thu, Saturday outdoors, Sunday off. Reps and rounds climb with the weeks, and shift up or down from how you rate each session.</div></div>';
   h+='<div class="std">'+PHASES.map(function(p,i){ return '<div class="phase-card'+(i+1===ph?" now":"")+'"><div class="row"><b>'+esc(p.n)+'</b><span class="eyebrow">'+esc(p.w)+(i+1===ph?" · now":"")+'</span></div><span>'+esc(p.d)+'</span></div>'; }).join("")+'</div>';
+  h+='<div class="card stack"><div class="eyebrow">How adaptive works</div><div class="sub">After a lift or bike session you rate it. Two <b>Easy</b> in a row and that session type steps up a notch (more reps, more rounds, longer carries). <b>Too hard</b> drops it a notch. A sim with every station under standard by 10% steps the whole program up. Range is −2 to +3 on top of the phase.</div></div>';
   h+='<div class="card stack"><div class="eyebrow">Rules</div><ul style="margin:0;padding-left:20px;display:grid;gap:6px"><li><b>The routine is non-negotiable. The intensity is adjustable.</b> A bad session beats a skipped one.</li><li>First two weeks of lifting, leave 2–3 reps in the tank. You\'ll feel like you\'re sandbagging. Correct.</li><li>Soreness is fine. Sharp pain means stop that movement for the day.</li><li>Walk three minutes before you sprint. Every time.</li><li>Sleep: 05:10 up means lights out by 21:30–22:00. No programme fixes six hours.</li><li>No caffeine after noon for the first month. See what happens.</li></ul></div>';
   h+='<div class="card stack"><div class="eyebrow">Kit</div><div class="kv"><b>Sandbag</b><span>20 kg, fillable. The one thing that matters.</span><b>Dumbbells</b><span>Whatever\'s in the home gym for rows and goblets.</span><b>Space</b><span>20 m of driveway, field, or parking lot for Saturdays.</span><b>Drag</b><span>A tire, sled, or stacked weight on a tarp. Won\'t be 80 kg; that\'s fine.</span></div></div>';
   document.getElementById("v-program").innerHTML=h;
@@ -534,16 +618,19 @@ function renderProgram(){
 
 // ---------- MORE ----------
 function renderMore(){
-  var h='<div class="card stack"><div class="eyebrow">Settings</div><div class="field"><label for="m-start">Week 1 started (Monday)</label><input type="date" id="m-start" value="'+esc(S.start)+'"></div><label class="row" style="justify-content:flex-start"><input type="checkbox" id="m-sound" '+(S.sound?"checked":"")+' style="width:20px;height:20px;accent-color:var(--accent)"> Beeps during workouts</label></div>';
+  var h='<div class="card stack"><div class="eyebrow">Settings</div><div class="grid2"><div class="field"><label for="m-start">Week 1 started (Mon)</label><input type="date" id="m-start" value="'+esc(S.start)+'"></div><div class="field"><label for="m-test">Test date</label><input type="date" id="m-test" value="'+esc(S.testDate)+'"></div><div class="field"><label for="m-bed">Lights out</label><input type="time" id="m-bed" value="'+esc(S.bedtime)+'"></div></div><label class="row" style="justify-content:flex-start"><input type="checkbox" id="m-sound" '+(S.sound?"checked":"")+' style="width:20px;height:20px;accent-color:var(--accent)"> Beeps during workouts</label><div class="row"><div class="sub">Adaptive offsets: lifts '+S.adj.lift+', bike '+S.adj.bike+'</div><button class="btn quiet" id="m-adj0" style="padding:6px 10px;font-size:.85rem">Reset to 0</button></div></div>';
   h+='<div class="card stack"><div class="eyebrow">Backup</div><div class="sub">Everything lives on this phone. Copy a backup now and then, or to move to a new phone.</div><div class="row"><button class="btn quiet" id="m-copy" style="flex:1">Copy backup</button><button class="btn quiet" id="m-paste" style="flex:1">Restore</button></div><textarea id="m-box" placeholder="Paste a backup here, then tap Restore" style="font-size:.8rem;min-height:60px"></textarea></div>';
   h+='<div class="card stack"><div class="eyebrow">Danger</div><button class="btn danger" id="m-reset">Wipe all data</button></div>';
-  h+='<div class="sub" style="text-align:center">FORCE Prep · built for one guy in Lively who gets up at 05:10</div>';
+  h+='<div class="sub" style="text-align:center">FORCE Prep v3</div>';
   var el=document.getElementById("v-more"); el.innerHTML=h;
   el.querySelector("#m-start").addEventListener("change",function(e){ if(e.target.value){ S.start=e.target.value; save(); renderHeader(); toast("Start date updated"); } });
+  el.querySelector("#m-test").addEventListener("change",function(e){ if(e.target.value){ S.testDate=e.target.value; save(); renderHeader(); toast(daysOut()+" days out"); } });
+  el.querySelector("#m-bed").addEventListener("change",function(e){ if(e.target.value){ S.bedtime=e.target.value; save(); toast("Lights out "+S.bedtime); } });
   el.querySelector("#m-sound").addEventListener("change",function(e){ S.sound=e.target.checked; save(); });
+  el.querySelector("#m-adj0").addEventListener("click",function(){ S.adj={lift:0,bike:0}; save(); toast("Adaptive reset"); renderMore(); });
   el.querySelector("#m-copy").addEventListener("click",function(){ var txt=JSON.stringify(S); var box=el.querySelector("#m-box"); box.value=txt; try{ navigator.clipboard.writeText(txt).then(function(){toast("Copied");}).catch(function(){ box.select(); toast("Select and copy the text"); }); }catch(e){ box.select(); } });
-  el.querySelector("#m-paste").addEventListener("click",function(){ try{ var d=JSON.parse(el.querySelector("#m-box").value); if(!d||!d.done) throw 0; S=d; S.done=S.done||{}; S.routine=S.routine||{}; S.workouts=S.workouts||{}; S.sims=S.sims||[]; S.notes=S.notes||{}; save(); toast("Restored"); renderHeader(); renderMore(); }catch(e){ toast("That's not a valid backup"); } });
-  el.querySelector("#m-reset").addEventListener("click",function(){ var b=this; if(!b.dataset.ok){ b.dataset.ok="1"; b.textContent="Tap again to wipe everything"; return; } try{ localStorage.removeItem(KEY); }catch(e){} S=load(); S.done={}; S.routine={}; S.workouts={}; S.sims=[]; S.notes={}; save(); toast("Wiped"); renderHeader(); renderMore(); });
+  el.querySelector("#m-paste").addEventListener("click",function(){ try{ var d=JSON.parse(el.querySelector("#m-box").value); if(!d||!d.done) throw 0; try{ localStorage.setItem(KEY,JSON.stringify(d)); }catch(e){} S=load(); toast("Restored"); renderHeader(); renderMore(); }catch(e){ toast("That's not a valid backup"); } });
+  el.querySelector("#m-reset").addEventListener("click",function(){ var b=this; if(!b.dataset.ok){ b.dataset.ok="1"; b.textContent="Tap again to wipe everything"; return; } try{ localStorage.removeItem(KEY); localStorage.removeItem("force-sims"); }catch(e){} S=load(); S.done={}; S.sims=[]; save(); toast("Wiped"); renderHeader(); renderMore(); });
 }
 
 // ---------- boot ----------
