@@ -104,7 +104,7 @@ th{font-family:var(--display);text-transform:uppercase;letter-spacing:.06em;colo
 .dow{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center;font-size:.7rem;color:var(--muted);font-family:var(--display);letter-spacing:.06em}
 svg.chart{width:100%;height:auto;display:block}
 /* workout mode */
-#wo{position:fixed;inset:0;z-index:20;background:var(--bg);display:flex;flex-direction:column;padding-top:max(14px,env(safe-area-inset-top,0px));padding-bottom:max(16px,env(safe-area-inset-bottom,0px));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+#wo{position:fixed;inset:0;z-index:20;background:var(--bg);display:flex;overflow-y:auto;flex-direction:column;padding-top:max(14px,env(safe-area-inset-top,0px));padding-bottom:max(16px,env(safe-area-inset-bottom,0px));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 #wo .top{display:flex;justify-content:space-between;align-items:center;gap:10px}
 #wo .prog{height:6px;background:var(--raise);border-radius:3px;overflow:hidden;margin-top:10px}
 #wo .prog i{display:block;height:100%;background:var(--accent);width:0}
@@ -121,6 +121,8 @@ svg.chart{width:100%;height:auto;display:block}
 #wo .next{color:var(--muted);font-size:.9rem;text-align:center}
 .done-wrap{display:grid;gap:14px;text-align:center;justify-items:center;padding:20px 0}
 .done-wrap .huge{font-family:var(--display);font-weight:800;font-size:3.2rem;line-height:1}
+#wo[hidden]{display:none}
+[hidden]{display:none!important}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(90px + env(safe-area-inset-bottom,0px));background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:999px;font-weight:600;z-index:30;font-size:.95rem;pointer-events:none}
 .phase-card{display:grid;gap:4px;padding:12px 14px;border-top:1px solid var(--line)}
 .phase-card:first-child{border-top:0}
