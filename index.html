@@ -550,7 +550,7 @@ function renderMore(){
 renderHeader();
 var hv=(location.hash||"").replace("#",""); show(["today","progress","test","program","more"].indexOf(hv)>=0?hv:"today");
 document.addEventListener("visibilitychange",function(){ if(!document.hidden){ renderHeader(); if(!W&&!T) render(cur); } });
-if("serviceWorker" in navigator){ navigator.serviceWorker.register("sw.js").catch(function(){}); }
+if("serviceWorker" in navigator){ navigator.serviceWorker.register("sw.js",{updateViaCache:"none"}).then(function(r){ try{ r.update(); }catch(e){} }).catch(function(){}); }
 })();
 </script>
 </body>
