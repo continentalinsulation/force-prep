@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FORCE Prep</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="FORCE Prep">
+<meta name="theme-color" content="#4f6b2e">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600&display=swap">
+<style>
+/* Layout: one column, today's session on top, the rest of the week below as collapsed cards. Built to be read at 5:15 a.m. on a phone. */
+:root{
+  --bg:#f3f2ec; --surface:#ffffff; --fg:#1c1d18; --muted:#6b6d60; --line:#d9d8cd;
+  --accent:#4f6b2e; --accent-fg:#ffffff; --accent-soft:#e6ecd9;
+  --warn:#9a5b16; --warn-soft:#f5e8d4;
+  --display:"Barlow Condensed","Arial Narrow",Impact,sans-serif;
+  --body:"Source Sans 3","Segoe UI",Helvetica,Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#17181a; --surface:#1f2124; --fg:#e8e6dc; --muted:#9a9b8e; --line:#33363a;
+  --accent:#8fb05a; --accent-fg:#131510; --accent-soft:#2a3320;
+  --warn:#d9a052; --warn-soft:#3a2e1c; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#17181a; --surface:#1f2124; --fg:#e8e6dc; --muted:#9a9b8e; --line:#33363a;
+  --accent:#8fb05a; --accent-fg:#131510; --accent-soft:#2a3320;
+  --warn:#d9a052; --warn-soft:#3a2e1c; color-scheme:dark }
+*{box-sizing:border-box}
+html,body{margin:0}
+body{padding-top:max(20px,env(safe-area-inset-top,0px));background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.45;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-bottom:max(48px,env(safe-area-inset-bottom,0px))}
+.wrap{max-width:640px;margin:0 auto;display:grid;gap:20px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.05}
+h1{font-size:2.6rem;font-weight:700;letter-spacing:.01em}
+.eyebrow{font-family:var(--display);font-weight:600;text-transform:uppercase;letter-spacing:.12em;font-size:.8rem;color:var(--muted)}
+header{display:grid;gap:4px}
+.top{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap}
+.pill{display:inline-block;font-family:var(--display);font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:.85rem;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+.today{background:var(--surface);border:2px solid var(--accent);border-radius:10px;padding:18px 16px;display:grid;gap:14px}
+.today h2{font-size:2rem}
+.today .sub{color:var(--muted);font-size:.95rem}
+.block{display:grid;gap:8px}
+.block h3{font-size:1.15rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600}
+ul.ex{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+ul.ex li{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;padding:10px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
+ul.ex li.done{opacity:.5;text-decoration:line-through}
+ul.ex input{width:22px;height:22px;margin:2px 0 0;accent-color:var(--accent)}
+ul.ex label{cursor:pointer}
+ul.ex .n{font-weight:600}
+ul.ex .d{display:block;color:var(--muted);font-size:.92rem}
+.note{background:var(--warn-soft);color:var(--fg);border-left:4px solid var(--warn);padding:10px 12px;border-radius:6px;font-size:.95rem}
+.note b{color:var(--warn)}
+.week{display:grid;gap:8px}
+details{background:var(--surface);border:1px solid var(--line);border-radius:8px}
+summary{cursor:pointer;padding:12px 14px;display:flex;justify-content:space-between;gap:10px;font-family:var(--display);font-weight:600;font-size:1.1rem;text-transform:uppercase;letter-spacing:.05em;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary span.k{color:var(--muted);font-weight:600;font-size:.95rem;letter-spacing:.08em}
+details .body{padding:0 14px 14px;display:grid;gap:10px;border-top:1px solid var(--line);padding-top:12px}
+details ul{margin:0;padding-left:20px;display:grid;gap:4px}
+.std{display:grid;gap:0;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--surface)}
+.std .row{display:grid;grid-template-columns:1fr auto;gap:12px;padding:10px 14px;border-top:1px solid var(--line);align-items:center}
+.std .row:first-child{border-top:0}
+.std .row .t{font-family:var(--display);font-weight:700;font-size:1.3rem;font-variant-numeric:tabular-nums;color:var(--accent);white-space:nowrap}
+.std .row small{display:block;color:var(--muted);font-size:.9rem}
+.sim{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px;display:grid;gap:10px}
+.sim .grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sim .grid > div{display:grid;gap:3px}
+.sim label{font-size:.85rem;color:var(--muted)}
+.sim input{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg);width:100%;min-width:0;font-variant-numeric:tabular-nums}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+button{font-family:var(--display);font-weight:600;text-transform:uppercase;letter-spacing:.06em;font-size:1rem;padding:10px 16px;border-radius:6px;border:1px solid var(--accent);background:var(--accent);color:var(--accent-fg);cursor:pointer}
+button.ghost{background:transparent;color:var(--accent)}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+table{width:100%;border-collapse:collapse;font-size:.95rem;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:6px 6px;border-top:1px solid var(--line)}
+th{font-family:var(--display);text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600;font-size:.85rem;border-top:0}
+.tscroll{overflow-x:auto}
+.ok{color:var(--accent);font-weight:600}
+.bad{color:var(--warn);font-weight:600}
+.stop{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.stop .clock{font-family:var(--display);font-weight:700;font-size:2.4rem;font-variant-numeric:tabular-nums;min-width:120px}
+footer{color:var(--muted);font-size:.9rem}
+@media (prefers-reduced-motion: no-preference){ ul.ex li{transition:opacity .15s} }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="top">
+      <div>
+        <div class="eyebrow" id="dateline">—</div>
+        <h1>FORCE Prep</h1>
+      </div>
+      <span class="pill" id="weekpill">Week —</span>
+    </div>
+    <div class="sub" style="color:var(--muted)">Wake 5:10 · alarm on the dresser · clothes in the bathroom · bike/weights under 35 min · coffee after, not before.</div>
+  </header>
+
+  <section class="today" id="today"></section>
+
+  <section class="week">
+    <div class="eyebrow">Rest of the week</div>
+    <div id="weeklist"></div>
+  </section>
+
+  <section>
+    <div class="eyebrow" style="margin-bottom:8px">The test you're training for</div>
+    <div class="std">
+      <div class="row"><div>20 m rushes<small>2 rounds of 20 m shuttles, drop to prone at each end (4 drops)</small></div><div class="t">0:51</div></div>
+      <div class="row"><div>Sandbag lift<small>30 lifts, 20 kg bag floor to 1.0 m, alternating two bags 1.25 m apart</small></div><div class="t">3:30</div></div>
+      <div class="row"><div>Loaded shuttles<small>10 × 40 m, alternating 20 kg bag and unloaded</small></div><div class="t">5:21</div></div>
+      <div class="row"><div>Sandbag drag<small>80 kg, 20 m backwards, continuous</small></div><div class="t">complete</div></div>
+    </div>
+    <p style="margin:8px 0 0;color:var(--muted);font-size:.9rem">Confirm the current standards with the recruiter before test day.</p>
+  </section>
+
+  <section class="sim">
+    <div class="eyebrow">Test sim log</div>
+    <div class="stop">
+      <div class="clock" id="clock">0:00.0</div>
+      <div class="btns">
+        <button id="startstop">Start</button>
+        <button class="ghost" id="reset">Reset</button>
+      </div>
+    </div>
+    <div class="grid">
+      <div><label for="s-date">Date</label><input id="s-date" type="date"></div>
+      <div><label for="s-rush">Rushes (m:ss)</label><input id="s-rush" placeholder="0:48" inputmode="numeric"></div>
+      <div><label for="s-lift">Sandbag lift (m:ss)</label><input id="s-lift" placeholder="2:55" inputmode="numeric"></div>
+      <div><label for="s-shut">Shuttles (m:ss)</label><input id="s-shut" placeholder="4:40" inputmode="numeric"></div>
+    </div>
+    <div class="btns"><button id="save">Save sim</button></div>
+    <div class="tscroll" id="simtable"></div>
+  </section>
+
+  <footer>Checkmarks and sim times are saved on this phone only. Week 1 started Mon Oct 20, 2026.</footer>
+</div>
+
+<script>
+(function(){
+  var START = new Date(2026,9,19); // Monday Oct 19 2026 = start of week 1 (Oct 20 is Tue of week 1)
+  var now = new Date();
+  var dow = now.getDay(); // 0 Sun
+  var msDay = 86400000;
+  var week = Math.max(1, Math.floor((now - START)/msDay/7)+1);
+  var even = week % 2 === 0;
+
+  var DAYS = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  var MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  document.getElementById("dateline").textContent = DAYS[dow]+" "+MON[now.getMonth()]+" "+now.getDate();
+  document.getElementById("weekpill").textContent = "Week "+week;
+
+  function liftPlan(w){
+    if (w <= 2) return {
+      title:"Lift · foundation", sub:"Leave 2–3 reps in the tank every set. Rest 90 s between sets.",
+      ex:[
+        ["Goblet squat","3 × 10 · dumbbell or sandbag held at chest"],
+        ["Sandbag deadlift","3 × "+(w===1?"6":"8")+" · hips back, chest up, bag tight to the body"],
+        ["Push-ups","3 × (max − 2)"],
+        ["Dumbbell row","3 × 10 per side"],
+        ["Plank","3 × 30 s"]
+      ],
+      note:"<b>Weeks 1–2:</b> 20 kg bag, low reps. If your low back is lit up (not sore, lit up) after this, pull an inner bag and go lighter for two weeks."
+    };
+    var reps = w <= 4 ? 10 : 12;
+    var dl = w <= 4 ? 8 : 10;
+    return {
+      title:"Lift · test movements", sub:"Add 2–3 reps or a bit of weight each week. Rest 90 s.",
+      ex:[
+        ["Sandbag floor-to-shoulder lifts","3 × "+reps+" · alternate sides each rep · this is the lift station"],
+        ["Sandbag deadlift","3 × "+dl+" · add weight when it's easy"],
+        ["Push-ups","3 × (max − 2)"],
+        ["Dumbbell row","3 × 10 per side"],
+        ["Sandbag carry","3 × 40 m · bear-hug hold"],
+        ["Plank","3 × 45 s"]
+      ],
+      note: w <= 4 ? "<b>Weeks 3–4:</b> rounded back on the lift is the thing to fix before adding reps." : "<b>Week "+w+"+:</b> the 30-rep test is about not gassing out over 3:30. Keep adding reps, not weight."
+    };
+  }
+  function bikePlan(w){
+    var rounds = w <= 2 ? 8 : 10;
+    var on = w <= 4 ? 30 : 40, off = w <= 4 ? 60 : 80;
+    return {
+      title:"Bike · intervals", sub:"20 minutes total. Hard means you couldn't talk.",
+      ex:[
+        ["Warm-up","5 min easy"],
+        ["Intervals",rounds+" × ("+on+" s hard / "+off+" s easy)"],
+        ["Cool-down","3 min easy"]
+      ],
+      note: null
+    };
+  }
+  function satPlan(w){
+    if (w % 2 === 1) return {
+      title:"Saturday · outdoor circuit", sub:"30–45 min. Driveway or a field. Walk 3 min before you sprint.",
+      ex:[
+        ["Burpee-sprint circuit","20 m sprint → drop to prone → up → sprint back. 4 reps, rest 90 s. 4 rounds."],
+        ["Loaded walk","20–30 min with the sandbag or a loaded pack"]
+      ],
+      note:"<b>Sprint volume stays at 16.</b> Cold calves and hamstrings at 5:20 a.m. are where this goes wrong."
+    };
+    return {
+      title:"Saturday · test simulation", sub:"All four stations in order, timed. Write the times in the log below.",
+      ex:[
+        ["20 m rushes","2 rounds, drop to prone at each end · target 0:51"],
+        ["Sandbag lift","30 lifts, alternating sides · target 3:30"],
+        ["Loaded shuttles","10 × 40 m, alternating loaded/unloaded · target 5:21"],
+        ["Drag","20 m backwards with whatever weight you can stack on a tarp or tire"]
+      ],
+      note:"<b>This is the scoreboard.</b> It tells you if the program's working. Short breaks between stations, like the real thing."
+    };
+  }
+  var sunPlan = {
+    title:"Sunday · off", sub:"The habit is the wake-up, not the workout.",
+    ex:[["Optional","10 min easy on the bike if you're worried about the streak. Then leave it."]],
+    note:null
+  };
+
+  function planFor(d, w){
+    if (d===1||d===3||d===5) return liftPlan(w);
+    if (d===2||d===4) return bikePlan(w);
+    if (d===6) return satPlan(w);
+    return sunPlan;
+  }
+
+  // ---- today ----
+  var key = "force-"+now.getFullYear()+"-"+(now.getMonth()+1)+"-"+now.getDate();
+  var done = {};
+  try { done = JSON.parse(localStorage.getItem(key)||"{}"); } catch(e){ done = {}; }
+
+  function renderToday(){
+    var p = planFor(dow, week);
+    var el = document.getElementById("today");
+    var h = '<div><div class="eyebrow">Today</div><h2>'+p.title+'</h2><div class="sub">'+p.sub+'</div></div>';
+    h += '<div class="block"><ul class="ex">';
+    p.ex.forEach(function(x,i){
+      var id = "ex"+i;
+      var chk = done[id] ? " checked" : "";
+      h += '<li class="'+(done[id]?"done":"")+'"><input type="checkbox" id="'+id+'"'+chk+'><label for="'+id+'"><span class="n">'+x[0]+'</span><span class="d">'+x[1]+'</span></label></li>';
+    });
+    h += '</ul></div>';
+    if (p.note) h += '<div class="note">'+p.note+'</div>';
+    el.innerHTML = h;
+    el.querySelectorAll("input[type=checkbox]").forEach(function(c){
+      c.addEventListener("change", function(){
+        done[c.id] = c.checked;
+        c.parentElement.classList.toggle("done", c.checked);
+        try { localStorage.setItem(key, JSON.stringify(done)); } catch(e){}
+      });
+    });
+  }
+  renderToday();
+
+  // ---- rest of week ----
+  var order = [1,2,3,4,5,6,0];
+  var wl = document.getElementById("weeklist");
+  var wh = '';
+  order.forEach(function(d){
+    if (d===dow) return;
+    var p = planFor(d, week);
+    wh += '<details><summary><span>'+DAYS[d]+'</span><span class="k">'+p.title.split(" · ")[0]+'</span></summary><div class="body"><div style="color:var(--muted);font-size:.95rem">'+p.sub+'</div><ul>';
+    p.ex.forEach(function(x){ wh += '<li><b>'+x[0]+'</b> — '+x[1]+'</li>'; });
+    wh += '</ul></div></details>';
+  });
+  wl.innerHTML = wh;
+
+  // ---- stopwatch ----
+  var t0=null, acc=0, tick=null, running=false;
+  var clock=document.getElementById("clock");
+  function fmt(ms){ var s=ms/1000; var m=Math.floor(s/60); var r=(s-m*60).toFixed(1); if(r<10) r="0"+r; return m+":"+r; }
+  function draw(){ clock.textContent = fmt(acc + (running? Date.now()-t0 : 0)); }
+  document.getElementById("startstop").addEventListener("click", function(){
+    if (!running){ t0=Date.now(); running=true; this.textContent="Stop"; tick=setInterval(draw,100); }
+    else { acc += Date.now()-t0; running=false; this.textContent="Start"; clearInterval(tick); draw(); }
+  });
+  document.getElementById("reset").addEventListener("click", function(){
+    running=false; acc=0; clearInterval(tick); document.getElementById("startstop").textContent="Start"; draw();
+  });
+
+  // ---- sim log ----
+  var SK="force-sims";
+  var sims=[];
+  try { sims = JSON.parse(localStorage.getItem(SK)||"[]"); } catch(e){ sims=[]; }
+  var dateIn=document.getElementById("s-date");
+  var y=now.getFullYear(), mo=("0"+(now.getMonth()+1)).slice(-2), da=("0"+now.getDate()).slice(-2);
+  dateIn.value = y+"-"+mo+"-"+da;
+
+  function secs(t){ if(!t) return null; var p=String(t).trim().split(":"); if(p.length===1) return parseFloat(p[0])||null; var v=parseInt(p[0],10)*60+parseFloat(p[1]); return isNaN(v)?null:v; }
+  function cell(t,limit){ var s=secs(t); if(s===null) return '<td>—</td>'; return '<td class="'+(s<=limit?"ok":"bad")+'">'+t+'</td>'; }
+  function renderSims(){
+    var el=document.getElementById("simtable");
+    if(!sims.length){ el.innerHTML='<p style="margin:0;color:var(--muted);font-size:.95rem">No sims yet. First one is Saturday of week 2. Green means under the standard.</p>'; return; }
+    var h='<table><tr><th>Date</th><th>Rushes</th><th>Lift</th><th>Shuttles</th></tr>';
+    sims.slice().reverse().forEach(function(s){
+      h+='<tr><td>'+s.date+'</td>'+cell(s.rush,51)+cell(s.lift,210)+cell(s.shut,321)+'</tr>';
+    });
+    el.innerHTML=h+'</table>';
+  }
+  renderSims();
+  document.getElementById("save").addEventListener("click", function(){
+    var s={date:dateIn.value, rush:document.getElementById("s-rush").value.trim(), lift:document.getElementById("s-lift").value.trim(), shut:document.getElementById("s-shut").value.trim()};
+    if(!s.rush && !s.lift && !s.shut) return;
+    sims.push(s);
+    try { localStorage.setItem(SK, JSON.stringify(sims)); } catch(e){}
+    ["s-rush","s-lift","s-shut"].forEach(function(i){ document.getElementById(i).value=""; });
+    renderSims();
+  });
+})();
+</script>
+<script>if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(function(){});}</script>
+
+</body>
+</html>
