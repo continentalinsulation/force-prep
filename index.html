@@ -11,7 +11,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="FORCE Prep">
 <meta name="theme-color" content="#121410">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap"></noscript>
 <style>
 /* Layout: phone-first app shell. Sticky header, scrolling view, fixed bottom tab bar. Dark-first — this is read at 05:15. */
 :root{
@@ -160,6 +161,9 @@ svg.chart{width:100%;height:auto;display:block}
 <div id="wo" hidden></div>
 
 <script>
+window.addEventListener("error",function(e){ try{ var d=document.createElement("pre"); d.style.cssText="position:fixed;left:8px;right:8px;bottom:8px;z-index:99;background:#3d1f19;color:#fff;padding:10px;border-radius:8px;font-size:12px;white-space:pre-wrap;word-break:break-word"; d.textContent="App error: "+(e.message||e)+(e.filename?"\n"+e.filename+":"+e.lineno:""); document.body.appendChild(d);}catch(x){} });
+</script>
+<script>
 (function(){
 "use strict";
 // ---------- data ----------
@@ -291,7 +295,7 @@ function show(v,skipHash){
   cur=v;
   ["today","progress","test","program","more"].forEach(function(x){ document.getElementById("v-"+x).hidden=(x!==v); });
   document.querySelectorAll("nav.tabs button").forEach(function(b){ b.classList.toggle("on",b.dataset.v===v); });
-  window.scrollTo(0,0);
+  try{window.scrollTo(0,0);}catch(e){}
   render(v);
 }
 document.getElementById("tabs").addEventListener("click",function(e){ var b=e.target.closest("button"); if(b) show(b.dataset.v); });
