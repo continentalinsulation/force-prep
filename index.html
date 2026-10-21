@@ -10,50 +10,54 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="FORCE Prep">
-<meta name="theme-color" content="#121410">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap" media="print" onload="this.media='all'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap"></noscript>
+<meta name="theme-color" content="#15170f">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Stardos+Stencil:wght@400;700&family=Share+Tech+Mono&family=Barlow+Semi+Condensed:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Stardos+Stencil:wght@400;700&family=Share+Tech+Mono&family=Barlow+Semi+Condensed:wght@400;500;600;700&display=swap"></noscript>
 <style>
-/* Layout: phone-first app shell. Sticky header, scrolling view, fixed bottom tab bar. Dark-first — this is read at 05:15. */
+/* Layout: phone-first app shell. Sticky header, scrolling view, fixed bottom tab bar. Dark-first, read at 05:15. Palette: dark olive ground, FDE/coyote accent, olive drab for "good". */
 :root{
-  --bg:#121410; --bg2:#1a1d17; --surface:#20241d; --raise:#2a2f26; --fg:#ece9dd; --muted:#9a9f8c; --line:#343a30;
-  --accent:#9ccc4f; --accent-fg:#0f120a; --accent-soft:#2a3a1c;
-  --warn:#e2a24a; --warn-soft:#3b2d16; --bad:#e0624a; --bad-soft:#3d1f19;
-  --display:"Barlow Condensed","Arial Narrow",Impact,sans-serif;
-  --body:"Source Sans 3","Segoe UI",Helvetica,Arial,sans-serif;
+  --bg:#15170f; --bg2:#1b1e13; --surface:#22261a; --raise:#2d3222; --fg:#e8dfc6; --muted:#a19d82; --line:#3b4030;
+  --accent:#c9a66b; --accent-fg:#1a1508; --accent-soft:#3a3120;
+  --ok:#8da05a; --ok-soft:#2f361f;
+  --warn:#d49a4a; --warn-soft:#3d2f17; --bad:#c6563b; --bad-soft:#3e2018;
+  --display:"Stardos Stencil","Stencil","Impact","Arial Narrow",sans-serif;
+  --mono:"Share Tech Mono","Menlo","Consolas",monospace;
+  --body:"Barlow Semi Condensed","Segoe UI",Helvetica,Arial,sans-serif;
   color-scheme:dark;
 }
 @media (prefers-color-scheme: light){ :root:not([data-theme="dark"]){
-  --bg:#f1f0e8; --bg2:#e9e8df; --surface:#ffffff; --raise:#f6f5ee; --fg:#1b1d16; --muted:#6a6e5e; --line:#d7d6ca;
-  --accent:#4f6b2e; --accent-fg:#ffffff; --accent-soft:#e4ebd5;
-  --warn:#9a5b16; --warn-soft:#f5e8d4; --bad:#b4442e; --bad-soft:#f6ddd8; color-scheme:light }}
+  --bg:#e7e0cc; --bg2:#ded6bf; --surface:#f4efe1; --raise:#ece5d2; --fg:#1f2114; --muted:#6b6a55; --line:#cfc6ad;
+  --accent:#8a6d3b; --accent-fg:#fff8e8; --accent-soft:#e4d6b6;
+  --ok:#4b5320; --ok-soft:#dbe0c4;
+  --warn:#9a5b16; --warn-soft:#f1e2c6; --bad:#a9442c; --bad-soft:#f0d6cd; color-scheme:light }}
 :root[data-theme="light"]{
-  --bg:#f1f0e8; --bg2:#e9e8df; --surface:#ffffff; --raise:#f6f5ee; --fg:#1b1d16; --muted:#6a6e5e; --line:#d7d6ca;
-  --accent:#4f6b2e; --accent-fg:#ffffff; --accent-soft:#e4ebd5;
-  --warn:#9a5b16; --warn-soft:#f5e8d4; --bad:#b4442e; --bad-soft:#f6ddd8; color-scheme:light }
+  --bg:#e7e0cc; --bg2:#ded6bf; --surface:#f4efe1; --raise:#ece5d2; --fg:#1f2114; --muted:#6b6a55; --line:#cfc6ad;
+  --accent:#8a6d3b; --accent-fg:#fff8e8; --accent-soft:#e4d6b6;
+  --ok:#4b5320; --ok-soft:#dbe0c4;
+  --warn:#9a5b16; --warn-soft:#f1e2c6; --bad:#a9442c; --bad-soft:#f0d6cd; color-scheme:light }
 *{box-sizing:border-box}
 html,body{margin:0;height:100%}
 body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.4;-webkit-text-size-adjust:100%;overscroll-behavior-y:none}
 button,input,select{font:inherit;color:inherit}
-h1,h2,h3{font-family:var(--display);margin:0;line-height:1;text-wrap:balance}
-.eyebrow{font-family:var(--display);font-weight:600;text-transform:uppercase;letter-spacing:.12em;font-size:.78rem;color:var(--muted)}
+h1,h2,h3{font-family:var(--display);font-weight:700;margin:0;line-height:1.05;text-wrap:balance;text-transform:uppercase;letter-spacing:.02em}
+.eyebrow{font-family:var(--mono);text-transform:uppercase;letter-spacing:.12em;font-size:.74rem;color:var(--muted)}
 #app{min-height:100%;display:flex;flex-direction:column}
 .hdr{position:sticky;top:0;z-index:5;background:var(--bg);padding-top:max(14px,env(safe-area-inset-top,0px));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-bottom:10px;display:flex;justify-content:space-between;align-items:flex-end;gap:10px;border-bottom:1px solid var(--line)}
-.hdr h1{font-size:1.9rem;font-weight:800;letter-spacing:.02em}
-.hdr .pill{font-family:var(--display);font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:.85rem;padding:4px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);white-space:nowrap}
+.hdr h1{font-size:1.75rem;letter-spacing:.04em}
+.hdr .pill{font-family:var(--mono);font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:.85rem;padding:4px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);white-space:nowrap}
 main{flex:1;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-top:16px;padding-bottom:calc(84px + env(safe-area-inset-bottom,0px));max-width:620px;width:100%;margin:0 auto}
 .view{display:grid;gap:18px}
 nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--bg2);border-top:1px solid var(--line);display:flex;padding-bottom:env(safe-area-inset-bottom,0px);padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
-nav.tabs button{flex:1;background:none;border:0;padding:10px 4px 8px;display:grid;gap:3px;justify-items:center;color:var(--muted);font-family:var(--display);font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:.72rem;cursor:pointer}
+nav.tabs button{flex:1;background:none;border:0;padding:10px 4px 8px;display:grid;gap:3px;justify-items:center;color:var(--muted);font-family:var(--body);font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:.72rem;cursor:pointer}
 nav.tabs button svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 nav.tabs button.on{color:var(--accent)}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px}
 .card.hi{border-color:var(--accent)}
-.card h2{font-size:1.7rem;font-weight:700}
+.card h2{font-size:1.45rem}
 .sub{color:var(--muted);font-size:.95rem}
 .row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
 .stack{display:grid;gap:10px}
-.btn{font-family:var(--display);font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:1.05rem;padding:13px 18px;border-radius:10px;border:1px solid var(--accent);background:var(--accent);color:var(--accent-fg);cursor:pointer;text-align:center}
+.btn{font-family:var(--display);font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:1rem;padding:13px 18px;border-radius:10px;border:1px solid var(--accent);background:var(--accent);color:var(--accent-fg);cursor:pointer;text-align:center}
 .btn.ghost{background:transparent;color:var(--accent)}
 .btn.quiet{background:var(--raise);border-color:var(--line);color:var(--fg)}
 .btn.big{font-size:1.3rem;padding:16px 20px;width:100%}
@@ -72,10 +76,10 @@ ul.ex .d{display:block;color:var(--muted);font-size:.92rem}
 .note b{color:var(--warn)}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .stat{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 10px;display:grid;gap:2px}
-.stat .v{font-family:var(--display);font-weight:800;font-size:2rem;font-variant-numeric:tabular-nums;line-height:1}
+.stat .v{font-family:var(--mono);font-size:1.9rem;font-variant-numeric:tabular-nums;line-height:1}
 .stat .l{font-size:.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-family:var(--display);font-weight:600}
 details{background:var(--surface);border:1px solid var(--line);border-radius:10px}
-summary{cursor:pointer;padding:12px 14px;display:flex;justify-content:space-between;gap:10px;font-family:var(--display);font-weight:600;font-size:1.1rem;text-transform:uppercase;letter-spacing:.05em;list-style:none}
+summary{cursor:pointer;padding:12px 14px;display:flex;justify-content:space-between;gap:10px;font-family:var(--body);font-weight:700;font-size:1.05rem;text-transform:uppercase;letter-spacing:.05em;list-style:none}
 summary::-webkit-details-marker{display:none}
 summary .k{color:var(--muted);font-size:.9rem;letter-spacing:.08em}
 details .body{padding:12px 14px 14px;border-top:1px solid var(--line);display:grid;gap:8px}
@@ -83,7 +87,7 @@ details ul{margin:0;padding-left:20px;display:grid;gap:4px}
 .std{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface)}
 .std .r{display:grid;grid-template-columns:1fr auto;gap:12px;padding:12px 14px;border-top:1px solid var(--line);align-items:center}
 .std .r:first-child{border-top:0}
-.std .t{font-family:var(--display);font-weight:800;font-size:1.4rem;font-variant-numeric:tabular-nums;color:var(--accent);white-space:nowrap}
+.std .t{font-family:var(--mono);font-size:1.25rem;font-variant-numeric:tabular-nums;color:var(--accent);white-space:nowrap}
 .std small{display:block;color:var(--muted);font-size:.9rem}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .field{display:grid;gap:3px}
@@ -94,11 +98,11 @@ table{width:100%;border-collapse:collapse;font-size:.95rem;font-variant-numeric:
 th,td{text-align:left;padding:7px 6px;border-top:1px solid var(--line)}
 th{font-family:var(--display);text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600;font-size:.82rem;border-top:0}
 .tscroll{overflow-x:auto}
-.ok{color:var(--accent);font-weight:700}.bad{color:var(--bad);font-weight:700}
+.ok{color:var(--ok);font-weight:700}.bad{color:var(--bad);font-weight:700}
 .heat{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
 .heat div{aspect-ratio:1;border-radius:4px;background:var(--raise);border:1px solid var(--line)}
-.heat div.y{background:var(--accent);border-color:var(--accent)}
-.heat div.r{background:var(--accent-soft);border-color:var(--accent-soft)}
+.heat div.y{background:var(--ok);border-color:var(--ok)}
+.heat div.r{background:var(--ok-soft);border-color:var(--ok-soft)}
 .heat div.t{outline:2px solid var(--fg);outline-offset:-2px}
 .heat div.f{opacity:.35}
 .dow{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center;font-size:.7rem;color:var(--muted);font-family:var(--display);letter-spacing:.06em}
@@ -112,15 +116,15 @@ svg.chart{width:100%;height:auto;display:block}
 #wo .phase{font-family:var(--display);font-weight:600;text-transform:uppercase;letter-spacing:.14em;font-size:.95rem;color:var(--muted)}
 #wo .phase.rest{color:var(--warn)}
 #wo .phase.work{color:var(--accent)}
-#wo .name{font-family:var(--display);font-weight:800;font-size:2.6rem;line-height:1}
+#wo .name{font-family:var(--display);font-weight:700;font-size:2.2rem;line-height:1.05;text-transform:uppercase}
 #wo .det{color:var(--muted);font-size:1.05rem;max-width:34ch}
-#wo .big{font-family:var(--display);font-weight:800;font-size:clamp(5rem,28vw,9rem);line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+#wo .big{font-family:var(--mono);font-size:clamp(4.5rem,26vw,8.5rem);line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
 #wo .big.rest{color:var(--warn)}
 #wo .cnt{font-family:var(--display);font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
 #wo .acts{display:grid;gap:8px}
 #wo .next{color:var(--muted);font-size:.9rem;text-align:center}
 .done-wrap{display:grid;gap:14px;text-align:center;justify-items:center;padding:20px 0}
-.done-wrap .huge{font-family:var(--display);font-weight:800;font-size:3.2rem;line-height:1}
+.done-wrap .huge{font-family:var(--mono);font-size:3rem;line-height:1}
 #wo[hidden]{display:none}
 [hidden]{display:none!important}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(90px + env(safe-area-inset-bottom,0px));background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:999px;font-weight:600;z-index:30;font-size:.95rem;pointer-events:none}
@@ -133,21 +137,45 @@ svg.chart{width:100%;height:auto;display:block}
 .ring{width:54px;height:54px}
 .ring circle{fill:none;stroke-width:6}
 .ring .bgc{stroke:var(--raise)}
-.ring .fgc{stroke:var(--accent);stroke-linecap:round;transform:rotate(-90deg);transform-origin:50% 50%}
+.ring .fgc{stroke:var(--ok);stroke-linecap:round;transform:rotate(-90deg);transform-origin:50% 50%}
 .kv{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:.95rem}
 .kv b{font-family:var(--display);font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-size:.85rem}
 
-.line{font-family:var(--display);font-weight:600;font-size:1.25rem;line-height:1.15;letter-spacing:.01em;text-wrap:balance}
+.line{font-family:var(--body);font-weight:600;font-size:1.15rem;line-height:1.2;text-wrap:balance;border-left:3px solid var(--accent);padding-left:12px;color:var(--fg)}
 .pr{display:grid;grid-template-columns:1fr auto;gap:8px;padding:8px 0;border-top:1px solid var(--line);align-items:center}
 .pr:first-child{border-top:0}
-.pr .v{font-family:var(--display);font-weight:800;font-size:1.3rem;font-variant-numeric:tabular-nums;color:var(--accent)}
+.pr .v{font-family:var(--mono);font-size:1.2rem;font-variant-numeric:tabular-nums;color:var(--accent)}
 .rate{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .rate button{padding:14px 6px}
 .rate button.sel{outline:3px solid var(--fg)}
-.cd{font-family:var(--display);font-weight:800;font-size:2.6rem;font-variant-numeric:tabular-nums;line-height:1}
+.cd{font-family:var(--mono);font-size:2.3rem;font-variant-numeric:tabular-nums;line-height:1}
 .adj{display:inline-block;font-family:var(--display);font-weight:700;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:999px;background:var(--raise);color:var(--muted);border:1px solid var(--line)}
 .adj.up{color:var(--accent);border-color:var(--accent)}
 .adj.dn{color:var(--warn);border-color:var(--warn)}
+
+ul.ex li{grid-template-columns:26px 1fr auto}
+ul.ex .play{width:38px;height:38px;border-radius:50%;border:1px solid var(--accent);background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;cursor:pointer;padding:0;align-self:center}
+ul.ex .play svg{width:16px;height:16px;fill:currentColor}
+ul.ex .rest{font-family:var(--mono);font-size:.8rem;color:var(--accent)}
+ul.ex .how{grid-column:1 / -1;display:none;gap:6px;padding:8px 0 2px;border-top:1px dashed var(--line);margin-top:4px;font-size:.93rem}
+ul.ex li.open .how{display:grid}
+ul.ex .how b{color:var(--accent)}
+ul.ex .how .mis{color:var(--warn)}
+ul.ex .how a{color:var(--fg);font-weight:600}
+ul.ex .howbtn{background:none;border:0;padding:0;color:var(--muted);font-size:.85rem;text-decoration:underline;cursor:pointer;margin-top:2px;text-align:left;font-family:var(--body)}
+#wo .cues{display:grid;gap:4px;text-align:left;max-width:36ch;font-size:.95rem;color:var(--muted);margin-top:6px}
+#wo .cues li{list-style:none}
+#wo .cues li::before{content:"▸ ";color:var(--accent)}
+#wo .cues ul{margin:0;padding:0}
+.fab{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(76px + env(safe-area-inset-bottom,0px));z-index:7;width:56px;height:56px;border-radius:50%;border:1px solid var(--accent);background:var(--accent);color:var(--accent-fg);display:grid;place-items:center;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.35);padding:0}
+.fab svg{width:26px;height:26px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round}
+#qt{position:fixed;inset:0;z-index:25;background:var(--bg);display:flex;flex-direction:column;padding-top:max(14px,env(safe-area-inset-top,0px));padding-bottom:max(16px,env(safe-area-inset-bottom,0px));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+#qt[hidden]{display:none}
+#qt .mid{flex:1;display:grid;align-content:center;justify-items:center;gap:14px;text-align:center}
+#qt .big{font-family:var(--mono);font-size:clamp(4.5rem,26vw,8.5rem);line-height:1;font-variant-numeric:tabular-nums}
+#qt .big.rest{color:var(--warn)}
+#qt .presets{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%;max-width:420px}
+.sim-prep{background:var(--ok-soft);border-left:4px solid var(--ok);padding:10px 12px;border-radius:8px;font-size:.95rem}
 @media (prefers-reduced-motion: no-preference){ ul.ex li,#wo .prog i{transition:all .2s} }
 </style>
 </head>
@@ -172,6 +200,8 @@ svg.chart{width:100%;height:auto;display:block}
     <button data-v="more"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>More</button>
   </nav>
 </div>
+<button class="fab" id="fab" aria-label="Timer"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6"/></svg></button>
+<div id="qt" hidden></div>
 <div id="wo" hidden></div>
 
 <script>
@@ -240,6 +270,28 @@ var LINES=[
 "Clock's running. Feet on the floor."];
 function lineOf(date){ var n=Math.floor(date/86400000); return LINES[((n%LINES.length)+LINES.length)%LINES.length]; }
 
+
+// ---------- exercise guide ----------
+var EX={
+"Goblet squat":{c:["Hold the weight against the chest, elbows in","Feet shoulder-width, toes out a touch","Sit straight down between the heels, chest up","Knees track over the toes, heels stay down"],m:"Letting the chest fall forward and the heels lift. Slow the descent down.",q:"goblet squat form"},
+"Sandbag deadlift":{c:["Bag between the feet, tight to the shins","Hinge: hips back, knees soft, flat back","Grip, brace, then push the floor away","Stand tall; lower it the same way you lifted it"],m:"Rounding the lower back to reach the bag. Hips higher, chest up, reach with the hands not the spine.",q:"sandbag deadlift form"},
+"Push-ups":{c:["Hands just outside shoulder width","Body straight from head to heels, glutes squeezed","Elbows 45° from the body, not flared out","Chest to within a fist of the floor every rep"],m:"Hips sagging. If they do, go to knees and keep the line.",q:"push up proper form"},
+"Dumbbell row":{c:["One hand and knee on a bench or chair, back flat","Pull the elbow to the hip, not out to the side","Pause a second at the top","Lower under control; don't let the shoulder drop"],m:"Yanking with the torso. Keep the back still; the arm does the work.",q:"single arm dumbbell row form"},
+"Plank":{c:["Forearms down, elbows under shoulders","Squeeze glutes and quads, push the floor away","Straight line head to heels","Breathe. Don't hold it."],m:"Hips too high or sagging. Someone should be able to lay a broomstick on your back.",q:"plank form"},
+"Sandbag floor-to-shoulder":{c:["Bag between the feet, hinge down, grab it under","Deadlift it to the lap as you half-squat","Drive the hips and roll it up onto one shoulder","Lower it to the floor under control, swap shoulders next rep"],m:"Trying to curl it up with the arms. The hips throw it; the arms just guide.",q:"sandbag shoulder to floor"},
+"Sandbag carry":{c:["Bear-hug the bag high on the chest","Stand tall, shoulders back, breathe","Short quick steps, bag doesn't drift to one side","Set it down with a hinge, not a drop"],m:"Leaning back to counter the weight. Stay stacked.",q:"sandbag bear hug carry"},
+"Burpee-sprint":{c:["Sprint 20 m, drop to prone (chest touches)","Hands under the shoulders, pop up in one move","Sprint back; that's one rep","Four reps, then rest the full 90 s"],m:"Standing all the way up before you run. Come up already leaning into the sprint.",q:"FORCE evaluation 20 metre rushes"},
+"Leg swings":{c:["Hand on the wall or bike","10 forward-back each leg, then 10 side-to-side","Loose and easy; range builds as you go"],m:"Forcing the range. Let it open up.",q:"leg swings warm up"},
+"Bodyweight squats":{c:["Slow down, fast up","Full depth you can control","Arms out front for balance"],m:"Rushing. This is a warm-up; feel the hips open.",q:"bodyweight squat warm up"},
+"Inchworms":{c:["Fold down, walk the hands out to a plank","Hold one second, walk the feet back in","Stand up tall between reps"],m:"Bending the knees a lot. Soft is fine; let the hamstrings stretch.",q:"inchworm exercise"},
+"Hip hinges":{c:["Dowel or hands on the lower back","Push hips back until hamstrings load, back flat","Stand back up by squeezing the glutes"],m:"Bending the knees instead of the hips. This is the deadlift pattern without weight.",q:"hip hinge drill"},
+"Arm circles":{c:["Small to big, forward then back","Shoulders stay down, not shrugged"],m:"",q:"arm circles warm up"},
+"Hamstring stretch":{c:["One heel out on a step, leg straight","Hinge forward from the hips until you feel it","Hold, breathe, swap sides"],m:"Rounding the back to reach. Hips do the folding.",q:"standing hamstring stretch"},
+"Hip flexor stretch":{c:["Half-kneel, back knee on a pad","Squeeze the back glute, push hips forward","Stay tall; don't lean forward"],m:"Arching the lower back. Tuck the pelvis and the stretch shows up.",q:"half kneeling hip flexor stretch"},
+"Chest stretch":{c:["Forearm on a door frame, elbow shoulder height","Step through until you feel the chest open","Hold, breathe, swap sides"],m:"",q:"doorway chest stretch"}
+};
+function howHtml(name){ var g=EX[name]; if(!g) return ""; return '<div class="how"><div><b>How:</b> '+g.c.map(esc).join(" · ")+'</div>'+(g.m?'<div class="mis"><b style="color:var(--warn)">Watch for:</b> '+esc(g.m)+'</div>':'')+'<div><a href="https://www.youtube.com/results?search_query='+encodeURIComponent(g.q)+'" target="_blank" rel="noopener">Watch a demo ↗</a></div></div>'; }
+
 // ---------- program ----------
 var ROUTINE=[["05:10 — alarm off, on the dresser","Feet on the floor before you touch it"],["Clothes from the bathroom","Laid out last night"],["Downstairs, workout done","Whatever today's session is"],["Coffee","After, not before"],["Twenty minutes of something that fires you up","Then phone down"],["Dressed and out the door",""]];
 var EVENING=[["Clothes laid out in the bathroom","Everything, socks included"],["Alarm set 05:10, phone on the dresser","Not the nightstand. The dresser."],["Water bottle on the bike",""],["Lights out on time","Six hours is not enough. Seven and a half is the floor."]];
@@ -252,27 +304,43 @@ var PHASES=[
 ];
 function liftPlan(w){
   var ph=phase(w); var a=S.adj.lift; // -2..+3
-  if(ph===1) return {kind:"lift",title:"Lift · foundation",sub:"Leave 2–3 reps in the tank every set. 90 s rest.",mins:25,
+  if(ph===1) return {kind:"lift",title:"Lift · foundation",sub:"Leave 2–3 reps in the tank every set. 90 s rest.",mins:32,
     blocks:[
+      {k:"dur",name:"Leg swings",det:"Hand on the wall. 10 each way, each leg.",sec:60,warm:true},
+      {k:"dur",name:"Bodyweight squats",det:"15 slow reps. Open the hips up.",sec:60,warm:true},
+      {k:"dur",name:"Inchworms",det:"6 reps. Hamstrings and shoulders awake.",sec:60,warm:true},
+      {k:"dur",name:"Hip hinges",det:"15 reps, no weight. Groove the deadlift.",sec:60,warm:true},
+      {k:"dur",name:"Arm circles",det:"20 forward, 20 back.",sec:45,warm:true},
       {k:"set",name:"Goblet squat",det:"Dumbbell or sandbag at the chest. Sit between the heels.",sets:3,reps:String(clamp(10+a*2,6,14)),rest:90},
       {k:"set",name:"Sandbag deadlift",det:"Hips back, chest up, bag tight to the shins. Drive the floor away.",sets:3,reps:String(clamp((w===1?6:8)+a,5,12)),rest:90},
       {k:"set",name:"Push-ups",det:"Max minus 2. Elbows at 45°, not flared.",sets:3,reps:"max − 2",rest:90},
       {k:"set",name:"Dumbbell row",det:"Per side. Pull to the hip, pause at the top.",sets:3,reps:"10 / side",rest:60},
       {k:"dur",name:"Plank",det:"Squeeze glutes, push the floor away.",sec:clamp(30+a*10,20,60),sets:3,rest:30}
+      ,{k:"dur",name:"Hamstring stretch",det:"Each side.",sec:30,sets:2,rest:0,cool:true},
+      {k:"dur",name:"Hip flexor stretch",det:"Each side.",sec:30,sets:2,rest:0,cool:true},
+      {k:"dur",name:"Chest stretch",det:"Door frame. Each side.",sec:30,sets:2,rest:0,cool:true}
     ],
     note:"<b>Weeks 1–2:</b> 20 kg bag, low reps. If the low back is lit up after this (not sore, lit up), pull an inner bag and go lighter for two weeks."};
   var base= ph===2?10:ph===3?12:15;
   var reps=clamp(base+a*2,8,20);
   var dl=clamp((ph===2?8:10)+a,6,14);
   var carry=clamp((ph===2?40:ph===3?60:80)+a*20,40,120);
-  return {kind:"lift",title:"Lift · test movements",sub:"Add 2–3 reps or a little weight each week. 90 s rest.",mins:28,
+  return {kind:"lift",title:"Lift · test movements",sub:"Add 2–3 reps or a little weight each week. 90 s rest.",mins:35,
     blocks:[
+      {k:"dur",name:"Leg swings",det:"Hand on the wall. 10 each way, each leg.",sec:60,warm:true},
+      {k:"dur",name:"Bodyweight squats",det:"15 slow reps. Open the hips up.",sec:60,warm:true},
+      {k:"dur",name:"Inchworms",det:"6 reps. Hamstrings and shoulders awake.",sec:60,warm:true},
+      {k:"dur",name:"Hip hinges",det:"15 reps, no weight. Groove the deadlift.",sec:60,warm:true},
+      {k:"dur",name:"Arm circles",det:"20 forward, 20 back.",sec:45,warm:true},
       {k:"set",name:"Sandbag floor-to-shoulder",det:"Alternate sides each rep. This is the lift station. Chest up, hips drive.",sets:3,reps:String(reps),rest:90},
       {k:"set",name:"Sandbag deadlift",det:"Add a plate on top when 3 sets feel easy.",sets:3,reps:String(dl),rest:90},
       {k:"set",name:"Push-ups",det:"Max minus 2.",sets:3,reps:"max − 2",rest:75},
       {k:"set",name:"Dumbbell row",det:"Per side.",sets:3,reps:"10 / side",rest:60},
       {k:"set",name:"Sandbag carry",det:"Bear-hug, walk tall. Don't let it drift to one hip.",sets:3,reps:carry+" m",rest:60},
       {k:"dur",name:"Plank",det:"",sec:clamp((ph===2?45:60)+a*10,30,90),sets:3,rest:30}
+      ,{k:"dur",name:"Hamstring stretch",det:"Each side.",sec:30,sets:2,rest:0,cool:true},
+      {k:"dur",name:"Hip flexor stretch",det:"Each side.",sec:30,sets:2,rest:0,cool:true},
+      {k:"dur",name:"Chest stretch",det:"Door frame. Each side.",sec:30,sets:2,rest:0,cool:true}
     ],
     note: ph===2?"<b>Weeks 3–4:</b> a rounded back on the lift is the thing to fix before adding reps.":"<b>Phase "+ph+":</b> the 30-rep station is about not gassing over 3:30. Keep adding reps, not weight."};
 }
@@ -283,7 +351,8 @@ function bikePlan(w){
   if(a>=2&&ph<=2){ on=40; off=80; }
   return {kind:"bike",title:"Bike · intervals",sub:"Hard means you couldn't talk. Easy means you could.",mins:Math.round((300+rounds*(on+off)+180)/60),
     blocks:[
-      {k:"dur",name:"Warm-up",det:"Easy spin. Let the legs wake up.",sec:300},
+      {k:"dur",name:"Leg swings",det:"Off the bike. 10 each way, each leg.",sec:60,warm:true},
+      {k:"dur",name:"Warm-up",det:"Easy spin. Let the legs wake up.",sec:240,warm:true},
       {k:"int",name:"Intervals",det:rounds+" rounds · "+on+" s hard / "+off+" s easy",rounds:rounds,work:on,rest:off},
       {k:"dur",name:"Cool-down",det:"Easy spin.",sec:180}
     ],note:null};
@@ -291,12 +360,19 @@ function bikePlan(w){
 function satPlan(w){
   if(w%2===1) return {kind:"circuit",title:"Saturday · outdoor circuit",sub:"Driveway or a field. Walk before you sprint.",mins:40,
     blocks:[
-      {k:"dur",name:"Walk warm-up",det:"Brisk. Cold calves at 05:20 are where this goes wrong.",sec:180},
+      {k:"dur",name:"Walk warm-up",det:"Brisk. Cold calves at 05:20 are where this goes wrong.",sec:180,warm:true},
+      {k:"dur",name:"Leg swings",det:"10 each way, each leg.",sec:60,warm:true},
+      {k:"dur",name:"Bodyweight squats",det:"15 slow reps, then 5 easy drops to prone and up.",sec:90,warm:true},
       {k:"set",name:"Burpee-sprint",det:"20 m sprint → drop to prone → up → sprint back. That's one rep. 4 reps a round.",sets:4,reps:"4 reps",rest:90},
       {k:"dur",name:"Loaded walk",det:"Sandbag or a loaded pack. Just walk.",sec:1500}
     ],
     note:"<b>Sprint volume stays at 16.</b> You're building the drop-and-go pattern, not a track programme."};
-  return {kind:"sim",title:"Saturday · test simulation",sub:"All four stations, timed. This is the scoreboard.",mins:25,blocks:[],note:"<b>Run it from the Test tab.</b> Short breaks between stations, like the real thing. Times save automatically."};
+  return {kind:"sim",title:"Saturday · test simulation",sub:"All four stations, timed. This is the scoreboard.",mins:30,blocks:[
+      {k:"dur",name:"Walk warm-up",det:"Brisk, 3 min.",sec:180,warm:true},
+      {k:"dur",name:"Leg swings",det:"10 each way, each leg.",sec:60,warm:true},
+      {k:"dur",name:"Bodyweight squats",det:"15 reps, then 5 easy drops to prone and up.",sec:90,warm:true},
+      {k:"dur",name:"Hip hinges",det:"15 reps. Then 5 lifts with the bag at an easy pace.",sec:90,warm:true}
+    ],note:"<b>Run it from the Test tab.</b> Short breaks between stations, like the real thing. Times save automatically."};
 }
 var SUN={kind:"rest",title:"Sunday · off",sub:"The habit is the wake-up, not the workout.",mins:0,blocks:[{k:"dur",name:"Easy spin (optional)",det:"Only if you're worried about the streak. Then leave it.",sec:600}],note:null};
 function planFor(date){ var d=date.getDay(), w=weekOf(date); if(d===1||d===3||d===5) return liftPlan(w); if(d===2||d===4) return bikePlan(w); if(d===6) return satPlan(w); return SUN; }
@@ -390,13 +466,16 @@ function renderToday(){
     if(adjKey&&!S.feel[k]) h+='<div class="stack"><div class="eyebrow">How was it?</div><div class="rate"><button class="btn quiet" data-rate="1">Easy</button><button class="btn quiet" data-rate="2">Right</button><button class="btn quiet" data-rate="3">Too hard</button></div></div>';
     if(p.kind==="lift"&&!(S.pr.pushups||[]).some(function(x){return x.date===k;})) h+='<div class="row"><div class="field" style="flex:1"><label for="pu">Push-up max today</label><input type="number" id="pu" inputmode="numeric" placeholder="e.g. 22"></div><button class="btn quiet" id="pu-save" style="align-self:end">Log</button></div>';
   }
-  else if(p.kind==="sim") h+='<button class="btn big" id="go-test">Run the test sim</button>';
+  else if(p.kind==="sim") h+='<div class="sim-prep"><b>Sim day.</b> Eat something small an hour out. Set the two bags 1.25 m apart and mark 20 m and 40 m before you start. Run the warm-up below, then the sim from the Test tab. Two minutes between stations, no more.</div><button class="btn big" id="go-test">Run the test sim</button>';
   else h+='<button class="btn big" id="go-wo">'+(p.kind==="rest"?"Easy spin (optional)":"Start guided session")+'</button>';
   if(p.blocks.length){
-    h+='<ul class="ex">';
+    h+='<ul class="ex" style="display:none">';
+    var sect=null;
     p.blocks.forEach(function(b,i){ var id="b"+i; var c=!!dn[id];
-      var det= b.k==="set"? b.sets+" × "+b.reps : b.k==="int"? b.det : (b.sets?b.sets+" × ":"")+Math.round(b.sec/60*10)/10+" min";
-      h+='<li class="'+(c?"done":"")+'"><input type="checkbox" data-done="'+id+'" id="'+id+'"'+(c?" checked":"")+'><label for="'+id+'"><span class="n">'+esc(b.name)+'</span><span class="d">'+esc(det)+(b.det&&b.k!=="int"?" · "+esc(b.det):"")+'</span></label></li>';
+      var sc= b.warm?"warm":b.cool?"cool":"main"; if(sc!==sect){ sect=sc; h+='</ul><div class="eyebrow" style="margin:6px 0 -2px">'+(sc==="warm"?"Warm-up":sc==="cool"?"Cool-down":"Work")+'</div><ul class="ex">'; }
+      var det= b.k==="set"? b.sets+" × "+b.reps : b.k==="int"? b.det : (b.sets?b.sets+" × ":"")+(b.sec>=60?Math.round(b.sec/60*10)/10+" min":b.sec+" s");
+      var rest= b.k==="int"? "" : (b.rest? ' <span class="rest">· rest '+b.rest+' s</span>' : (b.sets&&b.rest===0?' <span class="rest">· no rest</span>':''));
+      h+='<li class="'+(c?"done":"")+'" data-li="'+i+'"><input type="checkbox" data-done="'+id+'" id="'+id+'"'+(c?" checked":"")+'><label for="'+id+'"><span class="n">'+esc(b.name)+'</span><span class="d">'+esc(det)+rest+(b.det&&b.k!=="int"?" · "+esc(b.det):"")+'</span>'+(EX[b.name]?'<button class="howbtn" data-how="'+i+'">How do I do this?</button>':'')+'</label><button class="play" data-play="'+i+'" aria-label="Run this exercise"><svg viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></svg></button>'+howHtml(b.name)+'</li>';
     });
     h+='</ul>';
   }
@@ -423,6 +502,8 @@ function renderToday(){
   el.querySelectorAll("input[data-ev]").forEach(function(c){ c.addEventListener("change",function(){ var tom=new Date(t); tom.setDate(t.getDate()+1); var tk=iso(tom); S.evening[tk]=S.evening[tk]||{}; S.evening[tk][c.dataset.ev]=c.checked; save(); c.closest("li").classList.toggle("done",c.checked); }); });
   el.querySelectorAll("[data-rate]").forEach(function(b){ b.addEventListener("click",function(){ var m=rate(p.kind,k,+b.dataset.rate); toast(m||"Noted."); renderToday(); }); });
   var pu=el.querySelector("#pu-save"); if(pu) pu.addEventListener("click",function(){ var v=parseInt(el.querySelector("#pu").value,10); if(!v) return; S.pr.pushups.push({date:k,n:v}); save(); var best=Math.max.apply(null,S.pr.pushups.map(function(x){return x.n;})); toast(v>=best?"Push-up PR: "+v:"Logged "+v); renderToday(); });
+  el.querySelectorAll("[data-play]").forEach(function(b){ b.addEventListener("click",function(e){ e.preventDefault(); var i=+b.dataset.play; startWorkout({kind:p.kind,title:p.blocks[i].name,blocks:[p.blocks[i]],single:true,idx:i},k); }); });
+  el.querySelectorAll("[data-how]").forEach(function(b){ b.addEventListener("click",function(e){ e.preventDefault(); e.stopPropagation(); b.closest("li").classList.toggle("open"); }); });
   var nt=el.querySelector("#note"); nt.addEventListener("input",function(){ S.notes[k]=nt.value; save(); });
   var g=el.querySelector("#go-wo"); if(g) g.addEventListener("click",function(){ startWorkout(p,k); });
   var gt=el.querySelector("#go-test"); if(gt) gt.addEventListener("click",function(){ show("test"); startTestMode(); });
@@ -456,7 +537,7 @@ function startWorkout(plan,k){
   var steps=expand(plan); if(!steps.length) return;
   W={plan:plan,k:k,steps:steps,i:0,t0:Date.now(),stepStart:Date.now(),paused:false,pausedAt:0,tick:null,lastBeep:-1};
   beep(880,80,0.001); wake(true);
-  document.getElementById("wo").hidden=false; document.body.style.overflow="hidden";
+  document.getElementById("wo").hidden=false; document.body.style.overflow="hidden"; document.getElementById("fab").hidden=true;
   W.tick=setInterval(woTick,100); woRender();
 }
 function stepElapsed(){ return (W.paused?W.pausedAt:Date.now())-W.stepStart; }
@@ -477,6 +558,7 @@ function woRender(){
   var h='<div class="top"><div><div class="eyebrow">'+esc(W.plan.title)+'</div><div class="cnt">Step '+(W.i+1)+' / '+W.steps.length+' · <span id="wo-tot">0:00</span></div></div><button class="btn quiet" id="wo-x" style="padding:8px 12px">Exit</button></div>';
   h+='<div class="prog"><i style="width:'+Math.round(W.i/W.steps.length*100)+'%"></i></div>';
   h+='<div class="mid"><div class="phase '+(st.t==="rest"?"rest":"work")+'">'+(st.t==="rest"?"Rest":st.easy?"Go":"Work")+'</div><div class="name">'+esc(st.name)+'</div>'+(st.sub?'<div class="det" style="color:var(--fg);font-weight:600">'+esc(st.sub)+'</div>':'')+(st.det?'<div class="det">'+esc(st.det)+'</div>':'');
+  var g=EX[st.name]; if(st.t==="work"&&g) h+='<div class="cues"><ul>'+g.c.slice(0,3).map(function(c){return '<li>'+esc(c)+'</li>';}).join("")+'</ul></div>';
   h+='<div class="big '+(st.t==="rest"?"rest":"")+'" id="wo-big">'+(st.sec?mmss(st.sec):"0:00")+'</div>';
   if(!st.sec) h+='<div class="cnt">Tap done when the set is finished</div>';
   h+='</div><div class="acts">';
@@ -492,9 +574,11 @@ function woRender(){
   q("wo-prev").addEventListener("click",prev);
   q("wo-pause").addEventListener("click",function(){ if(W.paused){ var pd=Date.now()-W.pausedAt; W.stepStart+=pd; W.t0+=pd; W.paused=false; } else { W.paused=true; W.pausedAt=Date.now(); } woRender(); });
 }
-function closeWo(){ if(W&&W.tick) clearInterval(W.tick); W=null; wake(false); document.getElementById("wo").hidden=true; document.body.style.overflow=""; renderHeader(); renderToday(); }
+var W_last="";
+function closeWo(){ if(W){ W_last=W.plan.title; if(W.tick) clearInterval(W.tick);} W=null; wake(false); document.getElementById("wo").hidden=true; document.body.style.overflow=""; document.getElementById("fab").hidden=false; renderHeader(); renderToday(); }
 function finish(){
   var sec=Math.round((Date.now()-W.t0)/1000); var k=W.k; var kind=W.plan.kind;
+  if(W.plan.single){ S.done[k]=S.done[k]||{}; S.done[k]["b"+W.plan.idx]=true; save(); beep(784,150,0.3); buzz([80,50,80]); if(dayComplete(today())&&!S.workouts[k]){ S.workouts[k]={sec:0,kind:kind,at:hhmm()}; save(); } closeWo(); toast(W===null?"Done: "+W_last:"Done"); return; }
   S.workouts[k]={sec:sec,kind:kind,at:hhmm()};
   S.done[k]=S.done[k]||{}; W.plan.blocks.forEach(function(b,i){ S.done[k]["b"+i]=true; }); save();
   beep(784,150,0.3); setTimeout(function(){beep(1046,300,0.3);},160); buzz([80,50,80,50,160]);
@@ -631,6 +715,27 @@ function renderMore(){
   el.querySelector("#m-copy").addEventListener("click",function(){ var txt=JSON.stringify(S); var box=el.querySelector("#m-box"); box.value=txt; try{ navigator.clipboard.writeText(txt).then(function(){toast("Copied");}).catch(function(){ box.select(); toast("Select and copy the text"); }); }catch(e){ box.select(); } });
   el.querySelector("#m-paste").addEventListener("click",function(){ try{ var d=JSON.parse(el.querySelector("#m-box").value); if(!d||!d.done) throw 0; try{ localStorage.setItem(KEY,JSON.stringify(d)); }catch(e){} S=load(); toast("Restored"); renderHeader(); renderMore(); }catch(e){ toast("That's not a valid backup"); } });
   el.querySelector("#m-reset").addEventListener("click",function(){ var b=this; if(!b.dataset.ok){ b.dataset.ok="1"; b.textContent="Tap again to wipe everything"; return; } try{ localStorage.removeItem(KEY); localStorage.removeItem("force-sims"); }catch(e){} S=load(); S.done={}; S.sims=[]; save(); toast("Wiped"); renderHeader(); renderMore(); });
+}
+
+
+// ---------- quick timer ----------
+var Q=null;
+document.getElementById("fab").addEventListener("click",function(){ beep(880,60,0.001); openQt(); });
+function openQt(){ Q=Q||{mode:"idle",t0:0,acc:0,len:0,tick:null,lastBeep:-1}; document.getElementById("qt").hidden=false; document.body.style.overflow="hidden"; wake(true); qtRender(); }
+function closeQt(){ if(Q&&Q.tick) clearInterval(Q.tick); Q=null; document.getElementById("qt").hidden=true; document.body.style.overflow=""; wake(false); }
+function qtStart(len){ if(Q.tick) clearInterval(Q.tick); Q.len=len; Q.acc=0; Q.t0=Date.now(); Q.mode="run"; Q.lastBeep=-1; Q.tick=setInterval(qtTick,100); qtRender(); }
+function qtTick(){ if(!Q||Q.mode!=="run") return; var el=document.getElementById("qt-big"); var e=Q.acc+Date.now()-Q.t0;
+  if(Q.len){ var left=Q.len*1000-e; var s=Math.ceil(left/1000); if(s<=3&&s>=1&&s!==Q.lastBeep){ Q.lastBeep=s; beep(660,90); buzz(40);} if(left<=0){ beep(1046,400,0.35); buzz([80,50,80,50,160]); Q.mode="done"; clearInterval(Q.tick); qtRender(); return; } if(el) el.textContent=mmss(Math.max(0,s)); }
+  else if(el) el.textContent=mmss1(e); }
+function qtRender(){ var el=document.getElementById("qt"); var running=Q.mode==="run";
+  var h='<div class="row"><div class="eyebrow">Timer</div><button class="btn quiet" id="qt-x" style="padding:8px 12px">Close</button></div>';
+  h+='<div class="mid"><div class="phase '+(Q.mode==="done"?"work":"")+'" style="font-family:var(--mono);text-transform:uppercase;letter-spacing:.12em;color:var(--muted)">'+(Q.mode==="done"?"Time":Q.len?"Countdown":Q.mode==="run"?"Stopwatch":"Pick one")+'</div><div class="big" id="qt-big">'+(Q.len?mmss(Q.len):"0:00.0")+'</div>';
+  h+='<div class="presets">'+[30,45,60,90].map(function(n){return '<button class="btn '+(Q.len===n&&running?"":"quiet")+'" data-qt="'+n+'">'+n+' s</button>';}).join("")+'<button class="btn quiet" data-qt="120">2 min</button><button class="btn quiet" data-qt="180">3 min</button><button class="btn quiet" data-qt="300">5 min</button><button class="btn quiet" data-qt="0">Stopwatch</button></div>';
+  h+='<div class="row" style="width:100%;max-width:420px"><button class="btn big" id="qt-stop" style="flex:1" '+(running?"":"disabled")+'>Stop</button></div></div>';
+  el.innerHTML=h;
+  el.querySelector("#qt-x").addEventListener("click",closeQt);
+  el.querySelectorAll("[data-qt]").forEach(function(b){ b.addEventListener("click",function(){ qtStart(+b.dataset.qt); }); });
+  el.querySelector("#qt-stop").addEventListener("click",function(){ if(Q.tick) clearInterval(Q.tick); Q.acc+=Date.now()-Q.t0; Q.mode="idle"; qtRender(); var big=el.querySelector("#qt-big"); if(big) big.textContent=Q.len?mmss(Math.max(0,Math.ceil((Q.len*1000-Q.acc)/1000))):mmss1(Q.acc); });
 }
 
 // ---------- boot ----------
