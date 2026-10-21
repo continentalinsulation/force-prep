@@ -146,7 +146,7 @@ nav.tabs{backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);backgroun
 
 /* ---- v10 design system ---- */
 body{background:radial-gradient(120% 60% at 50% -10%,#1a1a16 0%,var(--bg) 60%)}
-.hero.slim{align-items:center;padding-top:2px}
+.hero.slim{align-items:center;padding-top:2px;flex-wrap:nowrap} .hero.slim > *{min-width:0} .hero.slim .row{min-width:0;flex:1} .hero.slim .row > div{min-width:0} .hero.slim .avatar{flex:none} .hero.slim .sub{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .avatar.sm{width:40px;height:40px;font-size:1.2rem}
 .strip{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;padding:14px 0 10px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .strip.two{grid-template-columns:1fr 1fr;border-top:0;padding-top:4px} .strip.two .btn{grid-column:1 / -1}
@@ -178,6 +178,15 @@ body{background:radial-gradient(120% 60% at 50% -10%,#1a1a16 0%,var(--bg) 60%)}
 @media (prefers-reduced-motion: reduce){ .view > .in{animation:none} .bigring .fgc{transition:none} }
 .card{border-color:#2a2926}
 nav.tabs button.on svg{filter:drop-shadow(0 0 6px rgba(196,164,112,.5))}
+
+.ico{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.ico.big{width:30px;height:30px;color:var(--accent)} .ico.inl{width:16px;height:16px;vertical-align:-3px;margin-right:6px;color:var(--accent)}
+.daycard .dl .ico{color:var(--accent);margin-top:2px} .catico{display:grid;place-items:center;color:var(--accent);padding-top:3px}
+.mark{flex:none;display:block} .authwrap .mark{margin:0 auto}
+.routine{display:grid;gap:8px} .rchips{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}
+.rchip{flex:0 0 auto;display:flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:8px 12px 8px 8px;font-weight:600;font-size:.9rem;color:var(--fg);cursor:pointer;scroll-snap-align:start;white-space:nowrap}
+.rchip .ck{width:20px;height:20px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;font-size:.75rem;background:var(--raise)}
+.rchip.on{border-color:var(--accent);background:var(--accent-soft)} .rchip.on .ck{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
 @media (prefers-reduced-motion: no-preference){ ul.ex li,#wo .prog i{transition:all .2s} }
 </style>
 </head>
@@ -210,7 +219,7 @@ nav.tabs button.on svg{filter:drop-shadow(0 0 6px rgba(196,164,112,.5))}
 <div id="wo" hidden></div>
 <script>window.addEventListener("error",function(e){ try{ var d=document.createElement("pre"); d.style.cssText="position:fixed;left:8px;right:8px;bottom:8px;z-index:99;background:#3a1c17;color:#fff;padding:10px;border-radius:8px;font-size:12px;white-space:pre-wrap;word-break:break-word"; d.textContent="App error: "+(e.message||e)+(e.filename?"\n"+e.filename.split("/").pop()+":"+e.lineno:""); document.body.appendChild(d);}catch(x){} });</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
-<script src="exercises.js?v=11"></script>
-<script src="app.js?v=11"></script>
+<script src="exercises.js?v=12"></script>
+<script src="app.js?v=12"></script>
 </body>
 </html>
