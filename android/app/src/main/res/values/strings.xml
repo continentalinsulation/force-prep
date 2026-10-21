@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Evolution</string>
+    <string name="title_activity_main">Evolution</string>
+    <string name="package_name">ca.evolutionapp.evolution</string>
+    <string name="custom_url_scheme">ca.evolutionapp.evolution</string>
+</resources>
