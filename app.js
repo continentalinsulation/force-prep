@@ -115,11 +115,11 @@ function buzz(p){ try{ if(navigator.vibrate) navigator.vibrate(p); }catch(e){} }
 var lock=null; function wake(on){ try{ if(on&&navigator.wakeLock) navigator.wakeLock.request("screen").then(function(l){lock=l;}).catch(function(){}); else if(lock){ lock.release().catch(function(){}); lock=null; } }catch(e){} }
 
 // ================= NAV =================
-var cur="today"; var VIEWS=["auth","setup","today","home","plan","dayedit","crew","crewdetail","me","test","library"];
+var cur="home"; var VIEWS=["auth","setup","today","home","plan","dayedit","crew","crewdetail","me","test","library"];
 function show(v,arg){ cur=v; VIEWS.forEach(function(x){ var el=$("v-"+x); if(el) el.hidden=(x!==v); }); document.querySelectorAll("nav.tabs button").forEach(function(b){ b.classList.toggle("on",b.dataset.v===v||(v==="dayedit"&&b.dataset.v==="plan")||(v==="crewdetail"&&b.dataset.v==="crew")||(v==="test"&&b.dataset.v==="home")||(v==="library"&&b.dataset.v==="plan")); }); $("tabs").hidden=(v==="auth"||v==="setup"||v==="library"); $("fab").hidden=(v==="auth"||v==="setup"||v==="library"); try{window.scrollTo(0,0);}catch(e){} render(v,arg); }
 function render(v,arg){ var f={auth:renderAuth,setup:renderSetup,today:renderToday,home:renderHome,plan:renderPlan,dayedit:renderDayEdit,crew:renderCrew,crewdetail:renderCrewDetail,me:renderMe,test:renderTest,library:renderLibrary}[v]; if(f) f(arg); }
 $("tabs").addEventListener("click",function(e){ var b=e.target.closest("button"); if(b) show(b.dataset.v); });
-function gate(){ if(!CU&&SB&&!OFFLINE_OK) return show("auth"); if(!S.program) return show("setup"); show("today"); }
+function gate(){ if(!CU&&SB&&!OFFLINE_OK) return show("auth"); if(!S.program) return show("setup"); show("home"); }
 
 // ================= AUTH =================
 function renderAuth(){ var el=$("v-auth");
