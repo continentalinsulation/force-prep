@@ -143,6 +143,41 @@ main{transition:transform .08s linear,opacity .08s linear}
 @keyframes pop{0%{transform:scale(.92);opacity:0}60%{transform:scale(1.03);opacity:1}100%{transform:scale(1)}} .done-wrap.pop{animation:pop .5s ease-out}
 .daycard{box-shadow:0 4px 14px rgba(0,0,0,.2)}
 nav.tabs{backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);background:color-mix(in srgb,var(--bg2) 88%,transparent)}
+
+/* ---- v10 design system ---- */
+body{background:radial-gradient(120% 60% at 50% -10%,#1a1a16 0%,var(--bg) 60%)}
+.hero.slim{align-items:center;padding-top:2px}
+.avatar.sm{width:40px;height:40px;font-size:1.2rem}
+.strip{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;padding:14px 0 10px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.strip.two{grid-template-columns:1fr 1fr auto;border-top:0;padding-top:4px}
+.strip .num{font-family:var(--mono);font-size:5.2rem;line-height:.9;letter-spacing:-.04em;color:var(--fg);font-variant-numeric:tabular-nums}
+.strip .num.sm{font-size:2.6rem;line-height:1}
+.strip .lbl{font-family:var(--mono);text-transform:uppercase;letter-spacing:.14em;font-size:.74rem;color:var(--accent);margin-top:6px}
+.strip .big .sub{margin-top:4px}
+.bigring{position:relative;display:grid;place-items:center} .bigring svg{position:absolute;inset:0;width:100%;height:100%} .bigring circle{fill:none;stroke-width:7} .bigring .bgc{stroke:var(--raise)} .bigring .fgc{stroke:var(--accent);stroke-linecap:round;transform:rotate(-90deg);transform-origin:50% 50%;transition:stroke-dashoffset 1s cubic-bezier(.2,.8,.2,1)}
+.bigring .in{text-align:center;position:relative} .bigring .in b{font-family:var(--mono);font-size:1.6rem;display:block;line-height:1} .bigring .in b em{font-style:normal;color:var(--muted);font-size:1rem} .bigring .in span{font-family:var(--mono);font-size:.6rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted)}
+.wk.strip-row{margin-top:-6px} .wd{padding:6px 2px} .wd b{font-size:.72rem} .wd span{font-size:.9rem;min-height:1.1em}
+.mission{position:relative;overflow:hidden;border-radius:16px;background:linear-gradient(135deg,#1c1a15 0%,#111110 70%);border:1px solid #3a3326;color:var(--fg);text-align:left;width:100%;padding:0;cursor:default;box-shadow:0 10px 30px rgba(0,0,0,.45)}
+.mission.tap{cursor:pointer} .mission.tap:active{transform:scale(.995)}
+.mission .topo{position:absolute;inset:0;background-image:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320' viewBox='0 0 320 320'%3E%3Cg fill='none' stroke='%23c4a470' stroke-opacity='.14' stroke-width='1.2'%3E%3Cpath d='M-20 60c60-40 120 10 180-20s100-60 180-30'/%3E%3Cpath d='M-20 100c70-30 110 30 180 0s110-50 180-20'/%3E%3Cpath d='M-20 150c60-20 130 40 190 10s90-60 170-40'/%3E%3Cpath d='M-20 200c80-30 120 20 190 0s100-40 170-10'/%3E%3Cpath d='M-20 250c60-30 130 30 190 10s100-60 170-30'/%3E%3Cpath d='M-20 300c70-20 110 30 180 0s110-50 180-20'/%3E%3Cpath d='M40 -20c-30 60 20 120-10 180s-60 100-30 180'/%3E%3Cpath d='M120 -20c-30 70 30 110 0 180s-50 110-20 180'/%3E%3Cpath d='M200 -20c-20 60 40 130 10 190s-60 90-40 170'/%3E%3Cpath d='M280 -20c-30 80 20 120 0 190s-40 100-10 170'/%3E%3C/g%3E%3C/svg%3E");background-size:320px 320px;opacity:.9;mask-image:linear-gradient(180deg,rgba(0,0,0,.9),rgba(0,0,0,.25));-webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,.9),rgba(0,0,0,.25))}
+.mission::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--accent)}
+.mission.secured::before{background:var(--fg)}
+.mission .mhead{position:relative;padding:18px 18px 18px 22px;display:grid;gap:8px}
+.mission .mtitle{font-size:2.4rem;line-height:.95;letter-spacing:.01em} .mission .mtitle small{display:block;font-size:1.1rem;color:var(--accent);letter-spacing:.08em;margin-top:4px}
+.mission .meta{display:flex;flex-wrap:wrap;gap:6px 14px;font-family:var(--mono);font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)} .mission .meta .hl{color:var(--accent)}
+.mission .msub{margin:0;color:var(--muted)} .mission .go{font-family:var(--display);font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);font-size:1.05rem;margin-top:4px}
+.mission .secline{font-size:.95rem;color:var(--muted)} .mission .secline b{color:var(--fg)}
+.mission .pbar{background:rgba(255,255,255,.08)}
+.block{display:grid;gap:8px}
+.cta{position:sticky;bottom:calc(74px + env(safe-area-inset-bottom,0px));z-index:5;padding-top:6px;background:linear-gradient(180deg,transparent,var(--bg) 40%)}
+.prs{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scroll-snap-type:x mandatory} .prc{flex:0 0 auto;min-width:112px;border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--surface);scroll-snap-align:start} .prc b{font-family:var(--mono);font-size:1.5rem;display:block;line-height:1;color:var(--fg)} .prc span{font-family:var(--mono);font-size:.66rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+.skel{height:14px;border-radius:6px;background:linear-gradient(90deg,var(--raise) 25%,var(--line) 50%,var(--raise) 75%);background-size:200% 100%;animation:sk 1.2s linear infinite} .skel.short{width:55%}
+@keyframes sk{0%{background-position:200% 0}100%{background-position:-200% 0}}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.view > .in{animation:rise .45s cubic-bezier(.2,.8,.2,1) both}
+@media (prefers-reduced-motion: reduce){ .view > .in{animation:none} .bigring .fgc{transition:none} }
+.card{border-color:#2a2926}
+nav.tabs button.on svg{filter:drop-shadow(0 0 6px rgba(196,164,112,.5))}
 @media (prefers-reduced-motion: no-preference){ ul.ex li,#wo .prog i{transition:all .2s} }
 </style>
 </head>
@@ -175,7 +210,7 @@ nav.tabs{backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);backgroun
 <div id="wo" hidden></div>
 <script>window.addEventListener("error",function(e){ try{ var d=document.createElement("pre"); d.style.cssText="position:fixed;left:8px;right:8px;bottom:8px;z-index:99;background:#3a1c17;color:#fff;padding:10px;border-radius:8px;font-size:12px;white-space:pre-wrap;word-break:break-word"; d.textContent="App error: "+(e.message||e)+(e.filename?"\n"+e.filename.split("/").pop()+":"+e.lineno:""); document.body.appendChild(d);}catch(x){} });</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
-<script src="exercises.js?v=10"></script>
-<script src="app.js?v=10"></script>
+<script src="exercises.js?v=11"></script>
+<script src="app.js?v=11"></script>
 </body>
 </html>
