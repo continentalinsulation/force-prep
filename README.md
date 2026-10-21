@@ -1,3 +1,3 @@
-# FORCE Prep
+# Evolution
 
-Daily training program for the Canadian Forces FORCE test. Installable web app (PWA).
+Daily discipline app. Installable web app (PWA). First program: Canadian Forces FORCE test prep.

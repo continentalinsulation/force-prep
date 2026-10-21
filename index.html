@@ -3,38 +3,38 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>FORCE Prep</title>
+<title>Evolution</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="FORCE Prep">
-<meta name="theme-color" content="#15170f">
+<meta name="apple-mobile-web-app-title" content="Evolution">
+<meta name="theme-color" content="#0c0c0b">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Stardos+Stencil:wght@400;700&family=Share+Tech+Mono&family=Barlow+Semi+Condensed:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Stardos+Stencil:wght@400;700&family=Share+Tech+Mono&family=Barlow+Semi+Condensed:wght@400;500;600;700&display=swap"></noscript>
 <style>
-/* Layout: phone-first app shell. Sticky header, scrolling view, fixed bottom tab bar. Dark-first, read at 05:15. Palette: dark olive ground, FDE/coyote accent, olive drab for "good". */
+/* Palette: black / white / flat dark earth. FDE is the only accent; red only for a fail. */
 :root{
-  --bg:#15170f; --bg2:#1b1e13; --surface:#22261a; --raise:#2d3222; --fg:#e8dfc6; --muted:#a19d82; --line:#3b4030;
-  --accent:#c9a66b; --accent-fg:#1a1508; --accent-soft:#3a3120;
-  --ok:#8da05a; --ok-soft:#2f361f;
-  --warn:#d49a4a; --warn-soft:#3d2f17; --bad:#c6563b; --bad-soft:#3e2018;
+  --bg:#0c0c0b; --bg2:#121211; --surface:#181817; --raise:#222220; --fg:#f3f1ec; --muted:#9c9890; --line:#2e2d2a;
+  --accent:#c4a470; --accent-fg:#111009; --accent-soft:#2c2619;
+  --ok:#c4a470; --ok-soft:#2c2619;
+  --warn:#c4a470; --warn-soft:#2c2619; --bad:#d0533f; --bad-soft:#3a1c17;
   --display:"Stardos Stencil","Stencil","Impact","Arial Narrow",sans-serif;
   --mono:"Share Tech Mono","Menlo","Consolas",monospace;
   --body:"Barlow Semi Condensed","Segoe UI",Helvetica,Arial,sans-serif;
   color-scheme:dark;
 }
 @media (prefers-color-scheme: light){ :root:not([data-theme="dark"]){
-  --bg:#e7e0cc; --bg2:#ded6bf; --surface:#f4efe1; --raise:#ece5d2; --fg:#1f2114; --muted:#6b6a55; --line:#cfc6ad;
-  --accent:#8a6d3b; --accent-fg:#fff8e8; --accent-soft:#e4d6b6;
-  --ok:#4b5320; --ok-soft:#dbe0c4;
-  --warn:#9a5b16; --warn-soft:#f1e2c6; --bad:#a9442c; --bad-soft:#f0d6cd; color-scheme:light }}
+  --bg:#f5f3ee; --bg2:#ecebe4; --surface:#ffffff; --raise:#f1efe8; --fg:#121211; --muted:#6a675f; --line:#d9d6cd;
+  --accent:#8c6e3f; --accent-fg:#ffffff; --accent-soft:#eadfc8;
+  --ok:#8c6e3f; --ok-soft:#eadfc8;
+  --warn:#8c6e3f; --warn-soft:#eadfc8; --bad:#b33f2e; --bad-soft:#f3d6d0; color-scheme:light }}
 :root[data-theme="light"]{
-  --bg:#e7e0cc; --bg2:#ded6bf; --surface:#f4efe1; --raise:#ece5d2; --fg:#1f2114; --muted:#6b6a55; --line:#cfc6ad;
-  --accent:#8a6d3b; --accent-fg:#fff8e8; --accent-soft:#e4d6b6;
-  --ok:#4b5320; --ok-soft:#dbe0c4;
-  --warn:#9a5b16; --warn-soft:#f1e2c6; --bad:#a9442c; --bad-soft:#f0d6cd; color-scheme:light }
+  --bg:#f5f3ee; --bg2:#ecebe4; --surface:#ffffff; --raise:#f1efe8; --fg:#121211; --muted:#6a675f; --line:#d9d6cd;
+  --accent:#8c6e3f; --accent-fg:#ffffff; --accent-soft:#eadfc8;
+  --ok:#8c6e3f; --ok-soft:#eadfc8;
+  --warn:#8c6e3f; --warn-soft:#eadfc8; --bad:#b33f2e; --bad-soft:#f3d6d0; color-scheme:light }
 *{box-sizing:border-box}
 html,body{margin:0;height:100%}
 body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.4;-webkit-text-size-adjust:100%;overscroll-behavior-y:none}
@@ -182,7 +182,7 @@ ul.ex .howbtn{background:none;border:0;padding:0;color:var(--muted);font-size:.8
 <body>
 <div id="app">
   <header class="hdr">
-    <div><div class="eyebrow" id="dateline">—</div><h1 id="hdrtitle">FORCE Prep</h1></div>
+    <div><div class="eyebrow" id="dateline">—</div><h1 id="hdrtitle">Evolution</h1></div>
     <span class="pill" id="weekpill">Week —</span>
   </header>
   <main>
@@ -461,13 +461,13 @@ function renderToday(){
   if(t.getDay()===0){ h+=weekReview(t); }
   // session card
   var adjKey= p.kind==="lift"?"lift":p.kind==="bike"?"bike":null; var adjV=adjKey?S.adj[adjKey]:0;
-  h+='<div class="card '+(isEvening()?"":"hi")+' stack"><div class="row"><div><div class="eyebrow">Today\'s session</div><h2>'+esc(p.title)+'</h2></div><div style="display:grid;gap:4px;justify-items:end">'+(p.mins?'<span class="pill">~'+p.mins+' min</span>':'')+(adjKey&&adjV!==0?'<span class="adj '+(adjV>0?"up":"dn")+'">'+(adjV>0?"+":"")+adjV+' adaptive</span>':'')+'</div></div><div class="sub">'+esc(p.sub)+'</div>';
+  h+='<div class="card '+(isEvening()?"":"hi")+' stack"><div class="row"><div><div class="eyebrow">Today\'s evolution</div><h2>'+esc(p.title)+'</h2></div><div style="display:grid;gap:4px;justify-items:end">'+(p.mins?'<span class="pill">~'+p.mins+' min</span>':'')+(adjKey&&adjV!==0?'<span class="adj '+(adjV>0?"up":"dn")+'">'+(adjV>0?"+":"")+adjV+' adaptive</span>':'')+'</div></div><div class="sub">'+esc(p.sub)+'</div>';
   if(S.workouts[k]){ var wk=S.workouts[k]; h+='<div class="note" style="border-color:var(--accent);background:var(--accent-soft)"><b style="color:var(--accent)">Done.</b> '+(wk.sec?Math.round(wk.sec/60)+' min, finished '+esc(wk.at||"")+'. ':'')+'Streak: '+trainStreak()+'.</div>';
     if(adjKey&&!S.feel[k]) h+='<div class="stack"><div class="eyebrow">How was it?</div><div class="rate"><button class="btn quiet" data-rate="1">Easy</button><button class="btn quiet" data-rate="2">Right</button><button class="btn quiet" data-rate="3">Too hard</button></div></div>';
     if(p.kind==="lift"&&!(S.pr.pushups||[]).some(function(x){return x.date===k;})) h+='<div class="row"><div class="field" style="flex:1"><label for="pu">Push-up max today</label><input type="number" id="pu" inputmode="numeric" placeholder="e.g. 22"></div><button class="btn quiet" id="pu-save" style="align-self:end">Log</button></div>';
   }
   else if(p.kind==="sim") h+='<div class="sim-prep"><b>Sim day.</b> Eat something small an hour out. Set the two bags 1.25 m apart and mark 20 m and 40 m before you start. Run the warm-up below, then the sim from the Test tab. Two minutes between stations, no more.</div><button class="btn big" id="go-test">Run the test sim</button>';
-  else h+='<button class="btn big" id="go-wo">'+(p.kind==="rest"?"Easy spin (optional)":"Start guided session")+'</button>';
+  else h+='<button class="btn big" id="go-wo">'+(p.kind==="rest"?"Easy spin (optional)":"Start evolution")+'</button>';
   if(p.blocks.length){
     h+='<ul class="ex" style="display:none">';
     var sect=null;
@@ -497,7 +497,7 @@ function renderToday(){
   h+='</div>';
   h+='<div class="card stack"><div class="eyebrow">Note for today</div><textarea id="note" placeholder="How it felt. Anything that hurt. What to change.">'+esc(S.notes[k]||"")+'</textarea></div>';
   var el=document.getElementById("v-today"); el.innerHTML=h;
-  el.querySelectorAll("input[data-done]").forEach(function(c){ c.addEventListener("change",function(){ S.done[k]=S.done[k]||{}; S.done[k][c.dataset.done]=c.checked; save(); c.closest("li").classList.toggle("done",c.checked); if(dayComplete(t)&&!S.workouts[k]){ S.workouts[k]={sec:0,kind:p.kind,at:hhmm()}; save(); toast("Session complete. Streak "+trainStreak()); renderToday(); } }); });
+  el.querySelectorAll("input[data-done]").forEach(function(c){ c.addEventListener("change",function(){ S.done[k]=S.done[k]||{}; S.done[k][c.dataset.done]=c.checked; save(); c.closest("li").classList.toggle("done",c.checked); if(dayComplete(t)&&!S.workouts[k]){ S.workouts[k]={sec:0,kind:p.kind,at:hhmm()}; save(); toast("Evolution secured. Streak "+trainStreak()); renderToday(); } }); });
   el.querySelectorAll("input[data-rt]").forEach(function(c){ c.addEventListener("change",function(){ S.routine[k]=S.routine[k]||{}; S.routine[k][c.dataset.rt]=c.checked; save(); renderToday(); }); });
   el.querySelectorAll("input[data-ev]").forEach(function(c){ c.addEventListener("change",function(){ var tom=new Date(t); tom.setDate(t.getDate()+1); var tk=iso(tom); S.evening[tk]=S.evening[tk]||{}; S.evening[tk][c.dataset.ev]=c.checked; save(); c.closest("li").classList.toggle("done",c.checked); }); });
   el.querySelectorAll("[data-rate]").forEach(function(b){ b.addEventListener("click",function(){ var m=rate(p.kind,k,+b.dataset.rate); toast(m||"Noted."); renderToday(); }); });
@@ -516,7 +516,7 @@ function weekReview(t){
   var w=weekOf(t); var nx=w+1; var ph=phase(nx), cph=phase(w);
   var change= ph!==cph? "Next week starts "+PHASES[ph-1].n+": "+PHASES[ph-1].d : (S.adj.lift||S.adj.bike)? "Adaptive: lifts "+(S.adj.lift>=0?"+":"")+S.adj.lift+", bike "+(S.adj.bike>=0?"+":"")+S.adj.bike+" on top of the phase." : "Same phase, same numbers. Keep stacking days.";
   var grade= done>=6?"Clean week.":done>=5?"Solid. One slipped.":done>=4?"Four of six. Fix the misses before they become the pattern.":"Under four. The routine's the problem, not the program.";
-  return '<div class="card stack" style="border-color:var(--warn)"><div class="eyebrow">Week '+w+' review</div><h2>'+esc(grade)+'</h2><div class="stats"><div class="stat"><div class="v">'+done+'/6</div><div class="l">Sessions</div></div><div class="stat"><div class="v">'+rd+'/7</div><div class="l">Routine</div></div><div class="stat"><div class="v">'+(sims.length?simVerdictShort(sims[sims.length-1]):"—")+'</div><div class="l">Sim</div></div></div><div class="sub">'+esc(change)+'</div></div>';
+  return '<div class="card stack" style="border-color:var(--warn)"><div class="eyebrow">Week '+w+' review</div><h2>'+esc(grade)+'</h2><div class="stats"><div class="stat"><div class="v">'+done+'/6</div><div class="l">Evolutions</div></div><div class="stat"><div class="v">'+rd+'/7</div><div class="l">Routine</div></div><div class="stat"><div class="v">'+(sims.length?simVerdictShort(sims[sims.length-1]):"—")+'</div><div class="l">Sim</div></div></div><div class="sub">'+esc(change)+'</div></div>';
 }
 function simVerdictShort(sim){ var ok=0; [["rush",STD.rush],["lift",STD.lift],["shut",STD.shut]].forEach(function(x){ var s=secs(sim[x[0]]); if(s!==null&&s<=x[1]) ok++; }); return (ok+(sim.drag?1:0))+"/4"; }
 function ring(p){ var r=22, c=2*Math.PI*r; return '<svg class="ring" viewBox="0 0 54 54"><circle class="bgc" cx="27" cy="27" r="'+r+'"/><circle class="fgc" cx="27" cy="27" r="'+r+'" stroke-dasharray="'+c+'" stroke-dashoffset="'+(c*(1-p))+'"/></svg>'; }
@@ -583,7 +583,7 @@ function finish(){
   S.done[k]=S.done[k]||{}; W.plan.blocks.forEach(function(b,i){ S.done[k]["b"+i]=true; }); save();
   beep(784,150,0.3); setTimeout(function(){beep(1046,300,0.3);},160); buzz([80,50,80,50,160]);
   var el=document.getElementById("wo"); var s=trainStreak(); var adaptive=(kind==="lift"||kind==="bike");
-  el.innerHTML='<div class="top"><div class="eyebrow">'+esc(W.plan.title)+'</div></div><div class="mid"><div class="done-wrap"><div class="phase work">Session complete</div><div class="huge">'+mmss(sec)+'</div><div class="sub">on the clock</div><div class="stats" style="width:100%;max-width:360px"><div class="stat"><div class="v">'+s+'</div><div class="l">Day streak</div></div><div class="stat"><div class="v">'+Object.keys(S.workouts).length+'</div><div class="l">Sessions</div></div><div class="stat"><div class="v">'+daysOut()+'</div><div class="l">Days out</div></div></div>'+(adaptive?'<div class="stack" style="width:100%;max-width:360px"><div class="eyebrow">How was it?</div><div class="rate"><button class="btn quiet" data-rate="1">Easy</button><button class="btn quiet" data-rate="2">Right</button><button class="btn quiet" data-rate="3">Too hard</button></div><div class="sub" id="rate-msg" style="min-height:1.4em"></div></div>':'<div class="sub" style="max-width:32ch">'+esc(doneLine(s))+'</div>')+'</div></div><div class="acts"><button class="btn big" id="wo-close">Coffee</button></div>';
+  el.innerHTML='<div class="top"><div class="eyebrow">'+esc(W.plan.title)+'</div></div><div class="mid"><div class="done-wrap"><div class="phase work">Evolution secured</div><div class="huge">'+mmss(sec)+'</div><div class="sub">on the clock</div><div class="stats" style="width:100%;max-width:360px"><div class="stat"><div class="v">'+s+'</div><div class="l">Day streak</div></div><div class="stat"><div class="v">'+Object.keys(S.workouts).length+'</div><div class="l">Evolutions</div></div><div class="stat"><div class="v">'+daysOut()+'</div><div class="l">Days out</div></div></div>'+(adaptive?'<div class="stack" style="width:100%;max-width:360px"><div class="eyebrow">How was it?</div><div class="rate"><button class="btn quiet" data-rate="1">Easy</button><button class="btn quiet" data-rate="2">Right</button><button class="btn quiet" data-rate="3">Too hard</button></div><div class="sub" id="rate-msg" style="min-height:1.4em"></div></div>':'<div class="sub" style="max-width:32ch">'+esc(doneLine(s))+'</div>')+'</div></div><div class="acts"><button class="btn big" id="wo-close">Secure</button></div>';
   el.querySelectorAll("[data-rate]").forEach(function(b){ b.addEventListener("click",function(){ el.querySelectorAll("[data-rate]").forEach(function(x){x.classList.remove("sel");}); b.classList.add("sel"); var m=rate(kind,k,+b.dataset.rate); el.querySelector("#rate-msg").textContent=m||doneLine(s); }); });
   el.querySelector("#wo-close").addEventListener("click",closeWo);
   if(W.tick) clearInterval(W.tick); W.tick=null;
@@ -593,7 +593,7 @@ function doneLine(s){ if(s>=30) return "A month of not negotiating with yourself
 // ---------- PROGRESS ----------
 function renderProgress(){
   var t=today(); var w=weekOf(t);
-  var h='<div class="stats"><div class="stat"><div class="v">'+trainStreak()+'</div><div class="l">Train streak</div></div><div class="stat"><div class="v">'+routineStreak()+'</div><div class="l">Routine streak</div></div><div class="stat"><div class="v">'+Object.keys(S.workouts).length+'</div><div class="l">Sessions</div></div></div>';
+  var h='<div class="stats"><div class="stat"><div class="v">'+trainStreak()+'</div><div class="l">Train streak</div></div><div class="stat"><div class="v">'+routineStreak()+'</div><div class="l">Routine streak</div></div><div class="stat"><div class="v">'+Object.keys(S.workouts).length+'</div><div class="l">Evolutions</div></div></div>';
   h+='<div class="card stack"><div class="eyebrow">Last 8 weeks</div><div class="dow">'+DSHORT.slice(1).concat(DSHORT[0]).map(function(x){return "<div>"+x+"</div>";}).join("")+'</div><div class="heat">';
   var mon=new Date(t); mon.setDate(t.getDate()-((t.getDay()+6)%7)-49);
   for(var i=0;i<56;i++){ var d=new Date(mon); d.setDate(mon.getDate()+i); var cls=""; var fut=d>t; var st=fromIso(S.start);
@@ -705,7 +705,7 @@ function renderMore(){
   var h='<div class="card stack"><div class="eyebrow">Settings</div><div class="grid2"><div class="field"><label for="m-start">Week 1 started (Mon)</label><input type="date" id="m-start" value="'+esc(S.start)+'"></div><div class="field"><label for="m-test">Test date</label><input type="date" id="m-test" value="'+esc(S.testDate)+'"></div><div class="field"><label for="m-bed">Lights out</label><input type="time" id="m-bed" value="'+esc(S.bedtime)+'"></div></div><label class="row" style="justify-content:flex-start"><input type="checkbox" id="m-sound" '+(S.sound?"checked":"")+' style="width:20px;height:20px;accent-color:var(--accent)"> Beeps during workouts</label><div class="row"><div class="sub">Adaptive offsets: lifts '+S.adj.lift+', bike '+S.adj.bike+'</div><button class="btn quiet" id="m-adj0" style="padding:6px 10px;font-size:.85rem">Reset to 0</button></div></div>';
   h+='<div class="card stack"><div class="eyebrow">Backup</div><div class="sub">Everything lives on this phone. Copy a backup now and then, or to move to a new phone.</div><div class="row"><button class="btn quiet" id="m-copy" style="flex:1">Copy backup</button><button class="btn quiet" id="m-paste" style="flex:1">Restore</button></div><textarea id="m-box" placeholder="Paste a backup here, then tap Restore" style="font-size:.8rem;min-height:60px"></textarea></div>';
   h+='<div class="card stack"><div class="eyebrow">Danger</div><button class="btn danger" id="m-reset">Wipe all data</button></div>';
-  h+='<div class="sub" style="text-align:center">FORCE Prep v3</div>';
+  h+='<div class="sub" style="text-align:center">Evolution v5</div>';
   var el=document.getElementById("v-more"); el.innerHTML=h;
   el.querySelector("#m-start").addEventListener("change",function(e){ if(e.target.value){ S.start=e.target.value; save(); renderHeader(); toast("Start date updated"); } });
   el.querySelector("#m-test").addEventListener("change",function(e){ if(e.target.value){ S.testDate=e.target.value; save(); renderHeader(); toast(daysOut()+" days out"); } });
