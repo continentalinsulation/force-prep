@@ -37,7 +37,7 @@ main{flex:1;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:m
 .view{display:grid;gap:16px}
 .hero{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;padding-top:6px}
 nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--bg2);border-top:1px solid var(--line);display:flex;padding-bottom:env(safe-area-inset-bottom,0px);padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
-nav.tabs button{flex:1;background:none;border:0;padding:10px 4px 8px;display:grid;gap:3px;justify-items:center;color:var(--muted);font-family:var(--body);font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:.72rem;cursor:pointer}
+nav.tabs button{flex:1;background:none;border:0;padding:10px 2px 8px;min-width:0;display:grid;gap:3px;justify-items:center;color:var(--muted);font-family:var(--body);font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:.66rem;cursor:pointer}
 nav.tabs button svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 nav.tabs button.on{color:var(--accent)}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px}
@@ -125,6 +125,11 @@ svg.chart{width:100%;height:auto;display:block}
 .done-wrap{display:grid;gap:14px;text-align:center;justify-items:center;padding:20px 0} .done-wrap .huge{font-family:var(--mono);font-size:3rem;line-height:1}
 #qt .presets{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%;max-width:420px}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(90px + env(safe-area-inset-bottom,0px));background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:999px;font-weight:600;z-index:30;font-size:.95rem;pointer-events:none;max-width:90vw;text-align:center}
+ul.ex .acts2{display:flex;gap:6px;align-items:center;align-self:center}
+.qbtn{width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--muted);font-family:var(--mono);cursor:pointer;padding:0}
+ul.ex .how ul{margin:0;padding-left:18px;display:grid;gap:2px}
+details.fold{background:transparent;border:1px dashed var(--line)} details.fold summary{font-family:var(--mono);text-transform:uppercase;letter-spacing:.1em;font-size:.74rem;color:var(--muted);font-weight:400;display:flex;justify-content:space-between} details.fold .body{border-top:0;padding-top:4px}
+.wk{display:grid;grid-template-columns:repeat(7,1fr);gap:6px} .wd{border:1px solid var(--line);border-radius:8px;padding:8px 2px;display:grid;justify-items:center;gap:2px;background:var(--raise)} .wd b{font-family:var(--mono);font-size:.78rem;color:var(--muted)} .wd span{font-family:var(--mono);font-size:1rem;min-height:1.2em} .wd.y{border-color:var(--accent);background:var(--accent-soft)} .wd.y span{color:var(--accent)} .wd.miss span{color:var(--bad)} .wd.off{opacity:.5} .wd.t{outline:2px solid var(--fg);outline-offset:-2px}
 @media (prefers-reduced-motion: no-preference){ ul.ex li,#wo .prog i{transition:all .2s} }
 </style>
 </head>
@@ -133,6 +138,7 @@ svg.chart{width:100%;height:auto;display:block}
   <main>
     <section class="view" id="v-auth" hidden></section>
     <section class="view" id="v-setup" hidden></section>
+    <section class="view" id="v-today" hidden></section>
     <section class="view" id="v-home" hidden></section>
     <section class="view" id="v-plan" hidden></section>
     <section class="view" id="v-dayedit" hidden></section>
@@ -143,7 +149,8 @@ svg.chart{width:100%;height:auto;display:block}
     <section class="view" id="v-test" hidden></section>
   </main>
   <nav class="tabs" id="tabs" hidden>
-    <button data-v="home"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10a1 1 0 0 1-1 1h-5v-7h-6v7H4a1 1 0 0 1-1-1z"/></svg>Home</button>
+    <button data-v="today"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Today</button>
+    <button data-v="home"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="5" rx="1.5"/><rect x="13" y="10" width="8" height="11" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/></svg>Dashboard</button>
     <button data-v="plan"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>Plan</button>
     <button data-v="crew"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><circle cx="17" cy="9" r="2.5"/><path d="M2.5 20c0-3.5 3-6 6.5-6s6.5 2.5 6.5 6M15 14.5c2.8 0 5 2 5 4.5"/></svg>Crew</button>
     <button data-v="me"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.5-7 8-7s8 3 8 7"/></svg>Me</button>
@@ -154,7 +161,7 @@ svg.chart{width:100%;height:auto;display:block}
 <div id="wo" hidden></div>
 <script>window.addEventListener("error",function(e){ try{ var d=document.createElement("pre"); d.style.cssText="position:fixed;left:8px;right:8px;bottom:8px;z-index:99;background:#3a1c17;color:#fff;padding:10px;border-radius:8px;font-size:12px;white-space:pre-wrap;word-break:break-word"; d.textContent="App error: "+(e.message||e)+(e.filename?"\n"+e.filename.split("/").pop()+":"+e.lineno:""); document.body.appendChild(d);}catch(x){} });</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
-<script src="exercises.js?v=7"></script>
-<script src="app.js?v=7"></script>
+<script src="exercises.js?v=8"></script>
+<script src="app.js?v=8"></script>
 </body>
 </html>
