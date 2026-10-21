@@ -175,6 +175,29 @@ ul.ex .howbtn{background:none;border:0;padding:0;color:var(--muted);font-size:.8
 #qt .big{font-family:var(--mono);font-size:clamp(4.5rem,26vw,8.5rem);line-height:1;font-variant-numeric:tabular-nums}
 #qt .big.rest{color:var(--warn)}
 #qt .presets{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%;max-width:420px}
+.member{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.member:first-child{border-top:0}
+.member .nm{font-weight:700}
+.member .st{font-family:var(--mono);font-size:1.1rem;color:var(--accent);text-align:right}
+.member .tod{width:26px;height:26px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;font-size:.85rem}
+.member .tod.y{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.code{font-family:var(--mono);font-size:1.6rem;letter-spacing:.2em;color:var(--accent)}
+.board{display:grid;gap:0}
+.board .rowb{display:grid;grid-template-columns:28px 1fr auto;gap:10px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}
+.board .rowb:first-child{border-top:0}
+.board .rk{font-family:var(--mono);color:var(--muted)}
+.board .sc{font-family:var(--mono);font-size:1.15rem;color:var(--accent)}
+.board .rowb.me .nm{color:var(--accent)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:var(--raise);border-radius:999px;padding:7px 12px;font-family:var(--body);font-weight:600;cursor:pointer;font-size:.95rem}
+.chip.on{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.dayrow{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.dayrow button{padding:8px 2px;border:1px solid var(--line);background:var(--raise);border-radius:8px;cursor:pointer;display:grid;gap:2px;justify-items:center;font-size:.8rem}
+.dayrow button b{font-family:var(--mono);font-size:.8rem}
+.dayrow button.lift{border-color:var(--accent);color:var(--accent)}
+.dayrow button.cardio{border-color:var(--fg)}
+.dayrow button.outdoor{border-color:var(--accent);background:var(--accent-soft)}
+.dayrow button.rest{opacity:.5}
 .sim-prep{background:var(--ok-soft);border-left:4px solid var(--ok);padding:10px 12px;border-radius:8px;font-size:.95rem}
 @media (prefers-reduced-motion: no-preference){ ul.ex li,#wo .prog i{transition:all .2s} }
 </style>
@@ -190,13 +213,16 @@ ul.ex .howbtn{background:none;border:0;padding:0;color:var(--muted);font-size:.8
     <section class="view" id="v-progress" hidden></section>
     <section class="view" id="v-test" hidden></section>
     <section class="view" id="v-program" hidden></section>
+    <section class="view" id="v-crew" hidden></section>
+    <section class="view" id="v-setup" hidden></section>
     <section class="view" id="v-more" hidden></section>
   </main>
   <nav class="tabs" id="tabs">
     <button data-v="today"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>Today</button>
     <button data-v="progress"><svg viewBox="0 0 24 24"><path d="M4 19V11M10 19V5M16 19v-7M22 19H2"/></svg>Progress</button>
-    <button data-v="test"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6"/></svg>Test</button>
-    <button data-v="program"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Program</button>
+    <button data-v="crew"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><circle cx="17" cy="9" r="2.5"/><path d="M2.5 20c0-3.5 3-6 6.5-6s6.5 2.5 6.5 6M15 14.5c2.8 0 5 2 5 4.5"/></svg>Crew</button>
+    <button data-v="test" id="tab-test"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6"/></svg>Test</button>
+    <button data-v="program" id="tab-program"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Program</button>
     <button data-v="more"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>More</button>
   </nav>
 </div>
@@ -204,6 +230,7 @@ ul.ex .howbtn{background:none;border:0;padding:0;color:var(--muted);font-size:.8
 <div id="qt" hidden></div>
 <div id="wo" hidden></div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script>
 window.addEventListener("error",function(e){ try{ var d=document.createElement("pre"); d.style.cssText="position:fixed;left:8px;right:8px;bottom:8px;z-index:99;background:#3d1f19;color:#fff;padding:10px;border-radius:8px;font-size:12px;white-space:pre-wrap;word-break:break-word"; d.textContent="App error: "+(e.message||e)+(e.filename?"\n"+e.filename+":"+e.lineno:""); document.body.appendChild(d);}catch(x){} });
 </script>
@@ -232,9 +259,15 @@ function load(){
   d.evening=d.evening||{}; d.pr=d.pr||{pushups:[]}; d.adj=d.adj||{lift:0,bike:0}; d.feel=d.feel||{};
   if(d.sound===undefined) d.sound=true;
   d.testDate=d.testDate||"2027-01-12"; d.bedtime=d.bedtime||"21:45";
+  if(!d.program && (Object.keys(d.done).length||Object.keys(d.workouts).length)) d.program=defaultProgram("force"); // existing user = Nick
+  if(d.program){ d.program.days=d.program.days||defaultProgram(d.program.template).days; d.program.cardio=d.program.cardio||"bike"; d.program.wake=d.program.wake||"05:10"; }
+  d.routineItems=d.routineItems||null; d.eveningItems=d.eveningItems||null;
+  d.updatedAt=d.updatedAt||0;
   return d;
 }
-function save(){ try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(e){} }
+function save(){ S.updatedAt=Date.now(); try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(e){} cloudQueue(); }
+function defaultProgram(t){ return {template:t,name:"",days: t==="force"?{1:"lift",2:"cardio",3:"lift",4:"cardio",5:"lift",6:"outdoor",0:"rest"}:{1:"lift",2:"cardio",3:"lift",4:"cardio",5:"lift",6:"outdoor",0:"rest"},cardio:"bike",wake:"05:10",equip:{sandbag:t==="force",dumbbells:true,bike:true}}; }
+function tpl(){ return S.program?S.program.template:"force"; }
 function iso(d){ return d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2); }
 function fromIso(s){ var p=s.split("-"); return new Date(+p[0],+p[1]-1,+p[2]); }
 function today(){ var n=new Date(); return new Date(n.getFullYear(),n.getMonth(),n.getDate()); }
@@ -293,8 +326,13 @@ var EX={
 function howHtml(name){ var g=EX[name]; if(!g) return ""; return '<div class="how"><div><b>How:</b> '+g.c.map(esc).join(" · ")+'</div>'+(g.m?'<div class="mis"><b style="color:var(--warn)">Watch for:</b> '+esc(g.m)+'</div>':'')+'<div><a href="https://www.youtube.com/results?search_query='+encodeURIComponent(g.q)+'" target="_blank" rel="noopener">Watch a demo ↗</a></div></div>'; }
 
 // ---------- program ----------
-var ROUTINE=[["05:10 — alarm off, on the dresser","Feet on the floor before you touch it"],["Clothes from the bathroom","Laid out last night"],["Downstairs, workout done","Whatever today's session is"],["Coffee","After, not before"],["Twenty minutes of something that fires you up","Then phone down"],["Dressed and out the door",""]];
-var EVENING=[["Clothes laid out in the bathroom","Everything, socks included"],["Alarm set 05:10, phone on the dresser","Not the nightstand. The dresser."],["Water bottle on the bike",""],["Lights out on time","Six hours is not enough. Seven and a half is the floor."]];
+var ROUTINE_DEF=[["{wake} — alarm off, on the dresser","Feet on the floor before you touch it"],["Clothes from the bathroom","Laid out last night"],["Downstairs, evolution done","Whatever today's session is"],["Coffee","After, not before"],["Twenty minutes of something that fires you up","Then phone down"],["Dressed and out the door",""]];
+var EVENING_DEF=[["Clothes laid out in the bathroom","Everything, socks included"],["Alarm set {wake}, phone on the dresser","Not the nightstand. The dresser."],["Water bottle ready",""],["Lights out on time","Six hours is not enough. Seven and a half is the floor."]];
+var ROUTINE=[], EVENING=[];
+function buildLists(){ var w=(S.program&&S.program.wake)||"05:10";
+  ROUTINE=(S.routineItems?S.routineItems.map(function(x){return [x,""];}):ROUTINE_DEF).map(function(r){return [r[0].replace("{wake}",w),r[1]];});
+  EVENING=(S.eveningItems?S.eveningItems.map(function(x){return [x,""];}):EVENING_DEF).map(function(r){return [r[0].replace("{wake}",w),r[1]];}); }
+buildLists();
 function phase(w){ return w<=2?1:w<=4?2:w<=6?3:4; }
 var PHASES=[
   {n:"Foundation",w:"Weeks 1–2",d:"Learn the patterns at 20 kg, low reps, 2–3 in the tank. Bike 8 × 30/60."},
@@ -374,8 +412,53 @@ function satPlan(w){
       {k:"dur",name:"Hip hinges",det:"15 reps. Then 5 lifts with the bag at an easy pace.",sec:90,warm:true}
     ],note:"<b>Run it from the Test tab.</b> Short breaks between stations, like the real thing. Times save automatically."};
 }
+function baseLiftPlan(w){
+  var ph=phase(w); var a=S.adj.lift; var db=S.program.equip.dumbbells;
+  var reps=clamp((ph===1?10:ph===2?12:15)+a*2,8,20);
+  return {kind:"lift",title:"Strength · "+(ph===1?"foundation":ph===2?"build":"push"),sub:"Leave 2–3 reps in the tank the first two weeks. 60–90 s rest.",mins:30,
+    blocks:[
+      {k:"dur",name:"Leg swings",det:"Hand on the wall. 10 each way, each leg.",sec:60,warm:true},
+      {k:"dur",name:"Bodyweight squats",det:"15 slow reps. Open the hips up.",sec:60,warm:true},
+      {k:"dur",name:"Inchworms",det:"6 reps.",sec:60,warm:true},
+      {k:"dur",name:"Arm circles",det:"20 forward, 20 back.",sec:45,warm:true},
+      {k:"set",name:"Goblet squat",det:db?"Dumbbell at the chest.":"Bodyweight, arms out front. Slow down, fast up.",sets:3,reps:String(reps),rest:75},
+      {k:"set",name:"Hip hinges",det:db?"Dumbbell Romanian deadlift. Hips back, flat back.":"Single-leg hip bridge, each side.",sets:3,reps:String(clamp(10+a*2,8,16)),rest:75},
+      {k:"set",name:"Push-ups",det:"Max minus 2. Knees are fine; keep the line.",sets:3,reps:"max − 2",rest:75},
+      {k:"set",name:"Dumbbell row",det:db?"Per side.":"Backpack row: loaded pack, per side.",sets:3,reps:"10 / side",rest:60},
+      {k:"set",name:"Reverse lunges",det:"Alternate legs. Back knee kisses the floor.",sets:3,reps:String(clamp(8+a*2,6,14))+" / side",rest:60},
+      {k:"dur",name:"Plank",det:"",sec:clamp(30+a*10+(ph-1)*10,20,90),sets:3,rest:30},
+      {k:"dur",name:"Hamstring stretch",det:"Each side.",sec:30,sets:2,rest:0,cool:true},
+      {k:"dur",name:"Hip flexor stretch",det:"Each side.",sec:30,sets:2,rest:0,cool:true},
+      {k:"dur",name:"Chest stretch",det:"Door frame. Each side.",sec:30,sets:2,rest:0,cool:true}
+    ],note: ph===1?"<b>Weeks 1–2:</b> learn the movements. Soreness is fine, sharp pain is not.":null};
+}
+function cardioPlan(w){
+  var p=bikePlan(w); var mode=S.program.cardio||"bike";
+  if(mode==="bike") return p;
+  var isRun=mode==="run";
+  p.title=(isRun?"Run":"Walk")+" · intervals"; p.sub= isRun?"Hard means a pace you couldn't hold a conversation at. Easy is a walk.":"Hard means fast enough that talking is work. Easy is a stroll.";
+  p.blocks[0]={k:"dur",name:"Leg swings",det:"10 each way, each leg.",sec:60,warm:true};
+  p.blocks[1]={k:"dur",name:"Walk warm-up",det:"Brisk. Let the legs wake up.",sec:240,warm:true};
+  p.blocks[3]={k:"dur",name:"Cool-down",det:"Easy walk.",sec:180};
+  return p;
+}
+function outdoorPlan(w){
+  if(tpl()==="force") return satPlan(w);
+  return {kind:"circuit",title:"Outdoor · circuit",sub:"Driveway, field, or trail. Walk before you sprint.",mins:35,
+    blocks:[
+      {k:"dur",name:"Walk warm-up",det:"Brisk.",sec:180,warm:true},
+      {k:"dur",name:"Leg swings",det:"10 each way, each leg.",sec:60,warm:true},
+      {k:"dur",name:"Bodyweight squats",det:"15 slow reps.",sec:60,warm:true},
+      {k:"set",name:"Hill or stair sprints",det:"20–30 s hard, walk back down. That's one rep.",sets:4,reps:"3 reps",rest:90},
+      {k:"dur",name:"Loaded walk",det:"Pack with a few books, or nothing. Just walk.",sec:1200}
+    ],note:"<b>Keep the sprints short.</b> This is about showing up outside, not a track session."};
+}
 var SUN={kind:"rest",title:"Sunday · off",sub:"The habit is the wake-up, not the workout.",mins:0,blocks:[{k:"dur",name:"Easy spin (optional)",det:"Only if you're worried about the streak. Then leave it.",sec:600}],note:null};
-function planFor(date){ var d=date.getDay(), w=weekOf(date); if(d===1||d===3||d===5) return liftPlan(w); if(d===2||d===4) return bikePlan(w); if(d===6) return satPlan(w); return SUN; }
+function planFor(date){ var d=date.getDay(), w=weekOf(date); var days=(S.program&&S.program.days)||defaultProgram("force").days; var t=days[d]||"rest";
+  if(t==="lift") return tpl()==="force"?liftPlan(w):baseLiftPlan(w);
+  if(t==="cardio") return cardioPlan(w);
+  if(t==="outdoor") return outdoorPlan(w);
+  var r=Object.assign({},SUN); r.title=DAYS[d]+" · off"; return r; }
 
 // ---------- adaptation ----------
 function rate(kind,k,r){ // r: 1 easy, 2 right, 3 hard
@@ -396,7 +479,7 @@ function simVerdict(sim){
 // ---------- streaks ----------
 function dayComplete(date){
   var k=iso(date); var d=date.getDay();
-  if(d===0) return true;
+  if(planFor(date).kind==="rest") return true;
   if(S.workouts[k]) return true;
   var p=planFor(date); if(p.kind==="sim") return S.sims.some(function(s){return s.date===k;});
   var dn=S.done[k]; if(!dn) return false;
@@ -425,25 +508,28 @@ function wake(on){ try{ if(on&&navigator.wakeLock) navigator.wakeLock.request("s
 var cur="today";
 function show(v){
   cur=v;
-  ["today","progress","test","program","more"].forEach(function(x){ document.getElementById("v-"+x).hidden=(x!==v); });
+  ["today","progress","test","program","more","crew","setup"].forEach(function(x){ document.getElementById("v-"+x).hidden=(x!==v); });
   document.querySelectorAll("nav.tabs button").forEach(function(b){ b.classList.toggle("on",b.dataset.v===v); });
   try{window.scrollTo(0,0);}catch(e){}
   render(v);
 }
 document.getElementById("tabs").addEventListener("click",function(e){ var b=e.target.closest("button"); if(b) show(b.dataset.v); });
-function render(v){ ({today:renderToday,progress:renderProgress,test:renderTest,program:renderProgram,more:renderMore})[v](); }
+function render(v){ ({today:renderToday,progress:renderProgress,test:renderTest,program:renderProgram,more:renderMore,crew:renderCrew,setup:renderSetup})[v](); }
 function toast(t){ var el=document.createElement("div"); el.className="toast"; el.textContent=t; document.body.appendChild(el); setTimeout(function(){ el.remove(); },2200); }
 function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;"); }
 
 // ---------- header ----------
 function renderHeader(){
   var t=today(); document.getElementById("dateline").textContent=DAYS[t.getDay()]+" "+MON[t.getMonth()]+" "+t.getDate();
-  var w=weekOf(t); var dout=daysOut(); document.getElementById("weekpill").textContent="Wk "+w+" · "+(dout>0?dout+" days out":dout===0?"Test day":"Post-test");
+  var w=weekOf(t); var dout=daysOut(); document.getElementById("weekpill").textContent= tpl()==="force" ? "Wk "+w+" · "+(dout>0?dout+" days out":dout===0?"Test day":"Post-test") : "Wk "+w+" · streak "+trainStreak();
+  var isF=tpl()==="force"; document.getElementById("tab-test").hidden=!isF; document.getElementById("tab-program").hidden=isF;
 }
 
 // ---------- TODAY ----------
 function isEvening(){ return new Date().getHours()>=18; }
 function renderToday(){
+  if(!S.program){ show("setup"); return; }
+  buildLists();
   var t=today(), k=iso(t), p=planFor(t), w=weekOf(t);
   var dn=S.done[k]||{}; var rt=S.routine[k]||{};
   var h='';
@@ -510,13 +596,12 @@ function renderToday(){
 }
 function weekReview(t){
   var mon=new Date(t); mon.setDate(t.getDate()-6); var done=0, rd=0; var sims=[];
-  for(var i=0;i<6;i++){ var d=new Date(mon); d.setDate(mon.getDate()+i); if(dayComplete(d)) done++; if(routineComplete(d)) rd++; }
-  if(routineComplete(t)) rd++;
+  var sched=0; for(var i=0;i<7;i++){ var d=new Date(mon); d.setDate(mon.getDate()+i); if(planFor(d).kind!=="rest"){ sched++; if(dayComplete(d)) done++; } if(routineComplete(d)) rd++; }
   S.sims.forEach(function(s){ var sd=fromIso(s.date); if(sd>=mon&&sd<=t) sims.push(s); });
   var w=weekOf(t); var nx=w+1; var ph=phase(nx), cph=phase(w);
   var change= ph!==cph? "Next week starts "+PHASES[ph-1].n+": "+PHASES[ph-1].d : (S.adj.lift||S.adj.bike)? "Adaptive: lifts "+(S.adj.lift>=0?"+":"")+S.adj.lift+", bike "+(S.adj.bike>=0?"+":"")+S.adj.bike+" on top of the phase." : "Same phase, same numbers. Keep stacking days.";
-  var grade= done>=6?"Clean week.":done>=5?"Solid. One slipped.":done>=4?"Four of six. Fix the misses before they become the pattern.":"Under four. The routine's the problem, not the program.";
-  return '<div class="card stack" style="border-color:var(--warn)"><div class="eyebrow">Week '+w+' review</div><h2>'+esc(grade)+'</h2><div class="stats"><div class="stat"><div class="v">'+done+'/6</div><div class="l">Evolutions</div></div><div class="stat"><div class="v">'+rd+'/7</div><div class="l">Routine</div></div><div class="stat"><div class="v">'+(sims.length?simVerdictShort(sims[sims.length-1]):"—")+'</div><div class="l">Sim</div></div></div><div class="sub">'+esc(change)+'</div></div>';
+  var grade= done>=sched?"Clean week.":done>=sched-1?"Solid. One slipped.":done>=sched-2?"Two missed. Fix them before they become the pattern.":"The routine's the problem, not the program.";
+  return '<div class="card stack" style="border-color:var(--warn)"><div class="eyebrow">Week '+w+' review</div><h2>'+esc(grade)+'</h2><div class="stats"><div class="stat"><div class="v">'+done+'/'+sched+'</div><div class="l">Evolutions</div></div><div class="stat"><div class="v">'+rd+'/7</div><div class="l">Routine</div></div><div class="stat"><div class="v">'+(sims.length?simVerdictShort(sims[sims.length-1]):"—")+'</div><div class="l">Sim</div></div></div><div class="sub">'+esc(change)+'</div></div>';
 }
 function simVerdictShort(sim){ var ok=0; [["rush",STD.rush],["lift",STD.lift],["shut",STD.shut]].forEach(function(x){ var s=secs(sim[x[0]]); if(s!==null&&s<=x[1]) ok++; }); return (ok+(sim.drag?1:0))+"/4"; }
 function ring(p){ var r=22, c=2*Math.PI*r; return '<svg class="ring" viewBox="0 0 54 54"><circle class="bgc" cx="27" cy="27" r="'+r+'"/><circle class="fgc" cx="27" cy="27" r="'+r+'" stroke-dasharray="'+c+'" stroke-dashoffset="'+(c*(1-p))+'"/></svg>'; }
@@ -692,6 +777,7 @@ function bindTestMode(el){
 // ---------- PROGRAM ----------
 function renderProgram(){
   var w=weekOf(today()); var ph=phase(w);
+  if(tpl()!=="force"){ renderSetup(true); return; }
   var h='<div class="card stack"><div class="eyebrow">The plan</div><h2>Pass FORCE with room to spare. Then build the engine.</h2><div class="sub">Six days a week, under 35 minutes, same wake-up every day. Lifts Mon/Wed/Fri, bike intervals Tue/Thu, Saturday outdoors, Sunday off. Reps and rounds climb with the weeks, and shift up or down from how you rate each session.</div></div>';
   h+='<div class="std">'+PHASES.map(function(p,i){ return '<div class="phase-card'+(i+1===ph?" now":"")+'"><div class="row"><b>'+esc(p.n)+'</b><span class="eyebrow">'+esc(p.w)+(i+1===ph?" · now":"")+'</span></div><span>'+esc(p.d)+'</span></div>'; }).join("")+'</div>';
   h+='<div class="card stack"><div class="eyebrow">How adaptive works</div><div class="sub">After a lift or bike session you rate it. Two <b>Easy</b> in a row and that session type steps up a notch (more reps, more rounds, longer carries). <b>Too hard</b> drops it a notch. A sim with every station under standard by 10% steps the whole program up. Range is −2 to +3 on top of the phase.</div></div>';
@@ -703,10 +789,14 @@ function renderProgram(){
 // ---------- MORE ----------
 function renderMore(){
   var h='<div class="card stack"><div class="eyebrow">Settings</div><div class="grid2"><div class="field"><label for="m-start">Week 1 started (Mon)</label><input type="date" id="m-start" value="'+esc(S.start)+'"></div><div class="field"><label for="m-test">Test date</label><input type="date" id="m-test" value="'+esc(S.testDate)+'"></div><div class="field"><label for="m-bed">Lights out</label><input type="time" id="m-bed" value="'+esc(S.bedtime)+'"></div></div><label class="row" style="justify-content:flex-start"><input type="checkbox" id="m-sound" '+(S.sound?"checked":"")+' style="width:20px;height:20px;accent-color:var(--accent)"> Beeps during workouts</label><div class="row"><div class="sub">Adaptive offsets: lifts '+S.adj.lift+', bike '+S.adj.bike+'</div><button class="btn quiet" id="m-adj0" style="padding:6px 10px;font-size:.85rem">Reset to 0</button></div></div>';
+  h+='<div class="card stack"><div class="eyebrow">My program</div><div class="sub">'+esc(S.program?({force:"FORCE Prep",base:"Base",custom:"Custom"}[S.program.template]||S.program.template):"Not set")+' · '+(S.program?Object.keys(S.program.days).filter(function(d){return S.program.days[d]!=="rest";}).length:0)+' days a week · wake '+esc(S.program?S.program.wake:"")+'</div><button class="btn quiet" id="m-prog">Change program, days, routine</button></div>';
+  h+='<div class="card stack"><div class="eyebrow">Account</div><div id="m-acct">'+(CU?'<div class="sub">Signed in as <b>'+esc(CU.email)+'</b>'+(cloudState.last?' · synced '+esc(cloudState.last):'')+'</div><button class="btn quiet" id="m-signout">Sign out</button>':'<div class="sub">Not signed in. Sign in on the Crew tab to sync across phones and join a crew.</div>')+'</div></div>';
   h+='<div class="card stack"><div class="eyebrow">Backup</div><div class="sub">Everything lives on this phone. Copy a backup now and then, or to move to a new phone.</div><div class="row"><button class="btn quiet" id="m-copy" style="flex:1">Copy backup</button><button class="btn quiet" id="m-paste" style="flex:1">Restore</button></div><textarea id="m-box" placeholder="Paste a backup here, then tap Restore" style="font-size:.8rem;min-height:60px"></textarea></div>';
   h+='<div class="card stack"><div class="eyebrow">Danger</div><button class="btn danger" id="m-reset">Wipe all data</button></div>';
   h+='<div class="sub" style="text-align:center">Evolution v5</div>';
   var el=document.getElementById("v-more"); el.innerHTML=h;
+  el.querySelector("#m-prog").addEventListener("click",function(){ show("setup"); });
+  var so=el.querySelector("#m-signout"); if(so) so.addEventListener("click",function(){ SB.auth.signOut().then(function(){ CU=null; toast("Signed out"); renderMore(); }); });
   el.querySelector("#m-start").addEventListener("change",function(e){ if(e.target.value){ S.start=e.target.value; save(); renderHeader(); toast("Start date updated"); } });
   el.querySelector("#m-test").addEventListener("change",function(e){ if(e.target.value){ S.testDate=e.target.value; save(); renderHeader(); toast(daysOut()+" days out"); } });
   el.querySelector("#m-bed").addEventListener("change",function(e){ if(e.target.value){ S.bedtime=e.target.value; save(); toast("Lights out "+S.bedtime); } });
@@ -717,6 +807,127 @@ function renderMore(){
   el.querySelector("#m-reset").addEventListener("click",function(){ var b=this; if(!b.dataset.ok){ b.dataset.ok="1"; b.textContent="Tap again to wipe everything"; return; } try{ localStorage.removeItem(KEY); localStorage.removeItem("force-sims"); }catch(e){} S=load(); S.done={}; S.sims=[]; save(); toast("Wiped"); renderHeader(); renderMore(); });
 }
 
+
+
+// ---------- SETUP (program + customization) ----------
+var SETUP=null;
+function renderSetup(fromProgram){
+  if(!SETUP){ SETUP=S.program?JSON.parse(JSON.stringify(S.program)):defaultProgram("base"); SETUP.name=SETUP.name||""; SETUP.routineText=(S.routineItems||ROUTINE_DEF.map(function(r){return r[0];})).join("\n"); SETUP.eveningText=(S.eveningItems||EVENING_DEF.map(function(r){return r[0];})).join("\n"); SETUP.bedtime=S.bedtime; SETUP.testDate=S.testDate; }
+  var P=SETUP; var first=!S.program;
+  var h='<div class="card hi stack"><div><div class="eyebrow">'+(first?"Set up":"Your program")+'</div><h2>'+(first?"What are you training for?":"Change anything")+'</h2></div>';
+  h+='<div class="field"><label>Program</label><div class="chips">'+[["force","FORCE Prep","CAF entry test. Sandbag work, test sims."],["base","Base","Get fit. Strength, intervals, outdoors. No special kit."],["custom","Custom","Pick your own days and types."]].map(function(x){return '<button class="chip '+(P.template===x[0]?"on":"")+'" data-tpl="'+x[0]+'">'+x[1]+'</button>';}).join("")+'</div><div class="sub" id="tpl-desc">'+esc({force:"CAF entry test. Sandbag work, test sims, test-day countdown.",base:"Get fit, no special kit. Strength, intervals, Saturday outdoors.",custom:"Pick which days are strength, cardio, outdoors, or off."}[P.template])+'</div></div>';
+  h+='<div class="field"><label>Training days · tap to change</label><div class="dayrow">'+[1,2,3,4,5,6,0].map(function(d){ var t=P.days[d]||"rest"; return '<button class="'+t+'" data-day="'+d+'"><b>'+DSHORT[d]+'</b><span>'+({lift:"Lift",cardio:"Cardio",outdoor:"Out",rest:"Off"}[t])+'</span></button>'; }).join("")+'</div></div>';
+  h+='<div class="field"><label>Cardio days are</label><div class="chips">'+[["bike","Bike"],["run","Run"],["walk","Walk"]].map(function(x){return '<button class="chip '+(P.cardio===x[0]?"on":"")+'" data-cardio="'+x[0]+'">'+x[1]+'</button>';}).join("")+'</div></div>';
+  h+='<div class="field"><label>Kit</label><div class="chips"><button class="chip '+(P.equip.dumbbells?"on":"")+'" data-eq="dumbbells">Dumbbells</button><button class="chip '+(P.equip.sandbag?"on":"")+'" data-eq="sandbag">Sandbag</button></div></div>';
+  h+='<div class="grid2"><div class="field"><label for="su-wake">Wake time</label><input type="time" id="su-wake" value="'+esc(P.wake)+'"></div><div class="field"><label for="su-bed">Lights out</label><input type="time" id="su-bed" value="'+esc(P.bedtime)+'"></div>'+(P.template==="force"?'<div class="field"><label for="su-test">Test date</label><input type="date" id="su-test" value="'+esc(P.testDate)+'"></div>':'')+'</div>';
+  h+='<div class="field"><label for="su-rt">Morning routine · one per line · {wake} = your wake time</label><textarea id="su-rt">'+esc(P.routineText)+'</textarea></div>';
+  h+='<div class="field"><label for="su-ev">Night-before checklist · one per line</label><textarea id="su-ev">'+esc(P.eveningText)+'</textarea></div>';
+  h+='<button class="btn big" id="su-save">'+(first?"Start":"Save")+'</button>'+(first?'':'<button class="btn quiet" id="su-cancel">Cancel</button>')+'</div>';
+  var el=document.getElementById("v-setup"); el.innerHTML=h;
+  el.querySelectorAll("[data-tpl]").forEach(function(b){ b.addEventListener("click",function(){ var t=b.dataset.tpl; var keep=P; P=SETUP=Object.assign(defaultProgram(t),{name:keep.name,wake:keep.wake,routineText:keep.routineText,eveningText:keep.eveningText,bedtime:keep.bedtime,testDate:keep.testDate,cardio:keep.cardio}); if(t==="force") P.equip.sandbag=true; renderSetup(); }); });
+  el.querySelectorAll("[data-day]").forEach(function(b){ b.addEventListener("click",function(){ var d=b.dataset.day; var order=["lift","cardio","outdoor","rest"]; P.days[d]=order[(order.indexOf(P.days[d]||"rest")+1)%4]; if(P.template!=="custom") P.template="custom"; renderSetup(); }); });
+  el.querySelectorAll("[data-cardio]").forEach(function(b){ b.addEventListener("click",function(){ P.cardio=b.dataset.cardio; renderSetup(); }); });
+  el.querySelectorAll("[data-eq]").forEach(function(b){ b.addEventListener("click",function(){ P.equip[b.dataset.eq]=!P.equip[b.dataset.eq]; renderSetup(); }); });
+  var c=el.querySelector("#su-cancel"); if(c) c.addEventListener("click",function(){ SETUP=null; show("today"); });
+  el.querySelector("#su-save").addEventListener("click",function(){
+    P.wake=el.querySelector("#su-wake").value||"05:10"; S.bedtime=el.querySelector("#su-bed").value||S.bedtime; var td=el.querySelector("#su-test"); if(td&&td.value) S.testDate=td.value;
+    var rt=el.querySelector("#su-rt").value.split("\n").map(function(x){return x.trim();}).filter(Boolean); var ev=el.querySelector("#su-ev").value.split("\n").map(function(x){return x.trim();}).filter(Boolean);
+    S.routineItems= rt.join("\n")===ROUTINE_DEF.map(function(r){return r[0];}).join("\n")?null:rt; S.eveningItems= ev.join("\n")===EVENING_DEF.map(function(r){return r[0];}).join("\n")?null:ev;
+    delete P.routineText; delete P.eveningText; delete P.bedtime; delete P.testDate;
+    if(!S.program) S.start=iso(mondayOf(today()));
+    S.program=P; SETUP=null; save(); buildLists(); renderHeader(); toast("Program set"); show("today");
+  });
+}
+function mondayOf(t){ var m=new Date(t); m.setDate(t.getDate()-((t.getDay()+6)%7)); return m; }
+
+// ---------- cloud (Supabase) ----------
+var SB_URL="https://pymszovaxpvzsprmcbjf.supabase.co", SB_KEY="sb_publishable_N5m6Y2HIYu9GhRpHVujyuA_waLa_bhM";
+var SB=null, CU=null, cloudState={timer:null,last:null,busy:false};
+try{ if(window.supabase) SB=window.supabase.createClient(SB_URL,SB_KEY); }catch(e){ SB=null; }
+function cloudQueue(){ if(!SB||!CU) return; if(cloudState.timer) clearTimeout(cloudState.timer); cloudState.timer=setTimeout(cloudPush,1500); }
+function statsSummary(){
+  var dd=[], rd=[]; var st=fromIso(S.start); var t=today(); var from=new Date(t); from.setDate(t.getDate()-180); if(st>from) from=st;
+  for(var d=new Date(from); d<=t; d.setDate(d.getDate()+1)){ if(planFor(d).kind!=="rest"&&dayComplete(d)) dd.push(iso(d)); if(routineComplete(d)) rd.push(iso(d)); }
+  var pu=(S.pr.pushups||[]); var puBest=pu.length?Math.max.apply(null,pu.map(function(x){return x.n;})):null;
+  var simBest=null; S.sims.forEach(function(s){ var a=secs(s.rush),b=secs(s.lift),c=secs(s.shut); if(a!==null&&b!==null&&c!==null&&s.drag){ var tot=a+b+c; if(simBest===null||tot<simBest) simBest=tot; } });
+  return {train_streak:trainStreak(),routine_streak:routineStreak(),done_dates:dd,routine_dates:rd,pushup_best:puBest,sim_best:simBest,program:tpl(),last_done:dd.length?dd[dd.length-1]:null,today:iso(t),today_done:dayComplete(t)&&planFor(t).kind!=="rest",name:(S.program&&S.program.name)||""};
+}
+function cloudPush(){ if(!SB||!CU) return; cloudState.busy=true;
+  var p1=SB.from("user_state").upsert({user_id:CU.id,state:S,updated_at:new Date(S.updatedAt||Date.now()).toISOString()});
+  var p2=SB.from("profiles").upsert({user_id:CU.id,name:(S.program&&S.program.name)||CU.email.split("@")[0],stats:statsSummary(),updated_at:new Date().toISOString()});
+  Promise.all([p1,p2]).then(function(r){ cloudState.busy=false; if(r[0].error||r[1].error){ console.warn(r[0].error||r[1].error); } else { cloudState.last=hhmm(); } }).catch(function(){ cloudState.busy=false; });
+}
+function cloudPull(){ if(!SB||!CU) return Promise.resolve(false);
+  return SB.from("user_state").select("state,updated_at").eq("user_id",CU.id).maybeSingle().then(function(r){
+    if(r.error||!r.data) return false; var remote=r.data.state; var rt=new Date(r.data.updated_at).getTime();
+    if(remote && rt>(S.updatedAt||0)+2000){ try{ localStorage.setItem(KEY,JSON.stringify(remote)); }catch(e){} S=load(); buildLists(); renderHeader(); return true; }
+    return false; });
+}
+function cloudInit(){ if(!SB) return;
+  SB.auth.getSession().then(function(r){ CU=r.data&&r.data.session?r.data.session.user:null; if(CU){ cloudPull().then(function(changed){ if(changed&&cur!=="setup") render(cur); cloudPush(); }); } });
+  SB.auth.onAuthStateChange(function(ev,sess){ var u=sess?sess.user:null; if(u&&(!CU||CU.id!==u.id)){ CU=u; cloudPull().then(function(changed){ cloudPush(); if(cur==="crew"||changed) render(cur); }); } else if(!u){ CU=null; } });
+}
+function genCode(){ var a="ABCDEFGHJKLMNPQRSTUVWXYZ23456789", c=""; for(var i=0;i<6;i++) c+=a[Math.floor(Math.random()*a.length)]; return c; }
+
+// ---------- CREW ----------
+var CREW={list:null,open:null,members:null,challenges:null,profiles:null,err:null};
+function renderCrew(){
+  var el=document.getElementById("v-crew"); var h='';
+  if(!SB){ el.innerHTML='<div class="card"><div class="sub">Crew features need a connection. Reload when you\'re online.</div></div>'; return; }
+  if(!CU){
+    h+='<div class="card hi stack"><div><div class="eyebrow">Crew</div><h2>Sign in</h2></div><div class="sub">Syncs your streak across phones and lets you join a crew. Email and a password; no confirmation email.</div><div class="field"><label for="a-email">Email</label><input type="text" id="a-email" inputmode="email" autocomplete="email"></div><div class="field"><label for="a-pass">Password</label><input type="password" id="a-pass" autocomplete="current-password" style="padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--raise);color:var(--fg);width:100%"></div><div class="field" id="a-namewrap" hidden><label for="a-name">Your name (shown to your crew)</label><input type="text" id="a-name"></div><div class="row"><button class="btn" id="a-in" style="flex:1">Sign in</button><button class="btn quiet" id="a-up" style="flex:1">Create account</button></div><div class="sub" id="a-msg"></div></div>';
+    el.innerHTML=h;
+    var msg=el.querySelector("#a-msg");
+    el.querySelector("#a-in").addEventListener("click",function(){ var e=el.querySelector("#a-email").value.trim(), p=el.querySelector("#a-pass").value; if(!e||!p){ msg.textContent="Email and password."; return; } msg.textContent="Signing in…"; SB.auth.signInWithPassword({email:e,password:p}).then(function(r){ if(r.error){ msg.textContent=r.error.message; } else { CU=r.data.user; cloudPull().then(function(){ cloudPush(); renderCrew(); }); } }); });
+    el.querySelector("#a-up").addEventListener("click",function(){ var nw=el.querySelector("#a-namewrap"); if(nw.hidden){ nw.hidden=false; el.querySelector("#a-name").focus(); msg.textContent="Add your name, then tap Create account again."; return; } var e=el.querySelector("#a-email").value.trim(), p=el.querySelector("#a-pass").value, n=el.querySelector("#a-name").value.trim(); if(!e||p.length<6||!n){ msg.textContent="Email, a name, and a password of 6+ characters."; return; } msg.textContent="Creating…"; SB.auth.signUp({email:e,password:p}).then(function(r){ if(r.error){ msg.textContent=r.error.message; return; } if(!r.data.session){ msg.textContent="Account created. If sign-in doesn't work, email confirmation is still on in Supabase."; return; } CU=r.data.user; S.program=S.program||null; if(S.program) S.program.name=n; else { SETUP=null; } S.pendingName=n; save(); cloudPush(); renderCrew(); }); });
+    return;
+  }
+  if(S.pendingName&&S.program&&!S.program.name){ S.program.name=S.pendingName; delete S.pendingName; save(); }
+  if(!CREW.list){ h+='<div class="card"><div class="sub">Loading crews…</div></div>'; el.innerHTML=h; loadCrews(); return; }
+  if(CREW.open){ el.innerHTML=renderCrewDetail(); bindCrewDetail(el); return; }
+  h+='<div class="card stack"><div class="row"><div><div class="eyebrow">Signed in</div><h2 style="font-size:1.2rem">'+esc((S.program&&S.program.name)||CU.email)+'</h2></div><span class="pill">'+trainStreak()+' day streak</span></div></div>';
+  if(CREW.list.length){ h+='<div class="stack"><div class="eyebrow">Your crews</div>'+CREW.list.map(function(c){ return '<button class="card" data-open="'+c.id+'" style="text-align:left;cursor:pointer;width:100%"><div class="row"><b style="font-size:1.15rem">'+esc(c.name)+'</b><span class="code" style="font-size:1rem">'+esc(c.code)+'</span></div></button>'; }).join("")+'</div>'; }
+  else h+='<div class="card"><div class="sub">No crew yet. Start one and send the code to your wife, or join hers.</div></div>';
+  h+='<div class="card stack"><div class="eyebrow">Start a crew</div><div class="row"><input type="text" id="c-name" placeholder="Crew name" style="flex:1"><button class="btn" id="c-create">Create</button></div></div>';
+  h+='<div class="card stack"><div class="eyebrow">Join a crew</div><div class="row"><input type="text" id="c-code" placeholder="6-letter code" maxlength="6" style="flex:1;text-transform:uppercase;font-family:var(--mono);letter-spacing:.15em"><button class="btn" id="c-join">Join</button></div><div class="sub" id="c-msg">'+esc(CREW.err||"")+'</div></div>';
+  el.innerHTML=h;
+  el.querySelectorAll("[data-open]").forEach(function(b){ b.addEventListener("click",function(){ CREW.open=CREW.list.filter(function(c){return c.id===b.dataset.open;})[0]; CREW.members=null; CREW.challenges=null; renderCrew(); loadCrewDetail(); }); });
+  el.querySelector("#c-create").addEventListener("click",function(){ var n=el.querySelector("#c-name").value.trim(); if(!n) return; var code=genCode(); SB.from("crews").insert({name:n,code:code,owner:CU.id}).select().single().then(function(r){ if(r.error){ el.querySelector("#c-msg").textContent=r.error.message; return; } return SB.from("crew_members").insert({crew_id:r.data.id,user_id:CU.id}).then(function(){ CREW.list=null; toast("Crew created · "+code); renderCrew(); }); }); });
+  el.querySelector("#c-join").addEventListener("click",function(){ var code=el.querySelector("#c-code").value.trim().toUpperCase(); if(code.length!==6) return; SB.from("crews").select("*").eq("code",code).maybeSingle().then(function(r){ if(r.error||!r.data){ el.querySelector("#c-msg").textContent="No crew with that code."; return; } return SB.from("crew_members").upsert({crew_id:r.data.id,user_id:CU.id}).then(function(r2){ if(r2.error){ el.querySelector("#c-msg").textContent=r2.error.message; return; } CREW.list=null; toast("Joined "+r.data.name); renderCrew(); }); }); });
+}
+function loadCrews(){ SB.from("crew_members").select("crew_id, crews(id,name,code,owner)").eq("user_id",CU.id).then(function(r){ if(r.error){ CREW.list=[]; CREW.err=r.error.message; } else { CREW.list=r.data.map(function(x){return x.crews;}).filter(Boolean); CREW.err=null; } if(cur==="crew") renderCrew(); }); }
+function loadCrewDetail(){ var c=CREW.open; if(!c) return;
+  SB.from("crew_members").select("user_id, profiles(user_id,name,stats,updated_at)").eq("crew_id",c.id).then(function(r){ CREW.members= r.error?[]:r.data.map(function(x){return x.profiles||{user_id:x.user_id,name:"(no profile yet)",stats:{}};}); if(cur==="crew") renderCrew(); });
+  SB.from("challenges").select("*").eq("crew_id",c.id).order("start_date",{ascending:false}).then(function(r){ CREW.challenges= r.error?[]:r.data; if(cur==="crew") renderCrew(); });
+}
+var METRICS={sessions:{n:"Most evolutions",f:function(st,ch){ return (st.done_dates||[]).filter(function(d){return d>=ch.start_date&&d<=ch.end_date;}).length; },u:""},
+  routine:{n:"Most routine days",f:function(st,ch){ return (st.routine_dates||[]).filter(function(d){return d>=ch.start_date&&d<=ch.end_date;}).length; },u:""},
+  streak:{n:"Longest current streak",f:function(st){ return st.train_streak||0; },u:" d"},
+  pushups:{n:"Push-up max",f:function(st){ return st.pushup_best||0; },u:""},
+  sim:{n:"Best FORCE sim (total time)",f:function(st){ return st.sim_best||null; },u:"",lower:true}};
+function renderCrewDetail(){ var c=CREW.open; var tk=iso(today());
+  var h='<div class="card hi stack"><div class="row"><button class="btn quiet" id="cd-back" style="padding:6px 10px">‹ Crews</button><span class="code">'+esc(c.code)+'</span></div><h2>'+esc(c.name)+'</h2><div class="sub">Share the code. Anyone with it can join.</div></div>';
+  h+='<div class="card"><div class="eyebrow" style="margin-bottom:6px">Who\'s in</div>';
+  if(!CREW.members) h+='<div class="sub">Loading…</div>';
+  else { var ms=CREW.members.slice().sort(function(a,b){ return ((b.stats||{}).train_streak||0)-((a.stats||{}).train_streak||0); });
+    h+=ms.map(function(m){ var st=m.stats||{}; var td= st.today===tk&&st.today_done; var wk=(st.done_dates||[]).filter(function(d){ return d>=iso(mondayOf(today())); }).length; return '<div class="member"><div><div class="nm">'+esc(m.name||"?")+(m.user_id===CU.id?' <span class="sub">(you)</span>':'')+'</div><div class="sub">'+wk+' this week · routine '+(st.routine_streak||0)+'</div></div><div class="st">'+(st.train_streak||0)+'<span style="font-size:.75rem;color:var(--muted)"> d</span></div><div class="tod '+(td?"y":"")+'" title="Today">'+(td?"✓":"")+'</div></div>'; }).join(""); }
+  h+='</div>';
+  h+='<div class="stack"><div class="eyebrow">Challenges</div>';
+  if(!CREW.challenges) h+='<div class="card"><div class="sub">Loading…</div></div>';
+  else if(!CREW.challenges.length) h+='<div class="card"><div class="sub">None yet. Start one below.</div></div>';
+  else CREW.challenges.forEach(function(ch){ var M=METRICS[ch.metric]||METRICS.sessions; var live= tk>=ch.start_date&&tk<=ch.end_date; var over= tk>ch.end_date;
+    var rows=(CREW.members||[]).map(function(m){ return {name:m.name||"?",me:m.user_id===CU.id,v:M.f(m.stats||{},ch)}; }).filter(function(r){ return r.v!==null; }).sort(function(a,b){ return M.lower?(a.v-b.v):(b.v-a.v); });
+    h+='<div class="card stack"><div class="row"><div><b style="font-size:1.15rem">'+esc(ch.title)+'</b><div class="sub">'+esc(M.n)+' · '+esc(ch.start_date.slice(5))+' → '+esc(ch.end_date.slice(5))+(over?' · <b>finished</b>':live?' · live':' · upcoming')+'</div></div></div><div class="board">'+(rows.length?rows.map(function(r,i){ return '<div class="rowb '+(r.me?"me":"")+'"><span class="rk">'+(i+1)+'</span><span class="nm">'+esc(r.name)+(i===0&&over?' 🏆':'')+'</span><span class="sc">'+(ch.metric==="sim"?mmss(r.v):r.v+M.u)+'</span></div>'; }).join(""):'<div class="sub">No scores yet.</div>')+'</div></div>'; });
+  var d1=iso(today()); var d2=new Date(today()); d2.setDate(d2.getDate()+30);
+  h+='<div class="card stack"><div class="eyebrow">New challenge</div><input type="text" id="ch-title" placeholder="Title, e.g. November evolution"><div class="field"><label for="ch-metric">Scored on</label><select id="ch-metric">'+Object.keys(METRICS).map(function(k){return '<option value="'+k+'">'+esc(METRICS[k].n)+'</option>';}).join("")+'</select></div><div class="grid2"><div class="field"><label for="ch-start">Start</label><input type="date" id="ch-start" value="'+d1+'"></div><div class="field"><label for="ch-end">End</label><input type="date" id="ch-end" value="'+iso(d2)+'"></div></div><button class="btn" id="ch-create">Start challenge</button><div class="sub" id="ch-msg"></div></div></div>';
+  h+='<div class="card"><button class="btn danger" id="cd-leave">Leave crew</button></div>';
+  return h;
+}
+function bindCrewDetail(el){
+  el.querySelector("#cd-back").addEventListener("click",function(){ CREW.open=null; renderCrew(); });
+  el.querySelector("#ch-create").addEventListener("click",function(){ var t=el.querySelector("#ch-title").value.trim(); var m=el.querySelector("#ch-metric").value; var a=el.querySelector("#ch-start").value, b=el.querySelector("#ch-end").value; if(!t||!a||!b||b<a){ el.querySelector("#ch-msg").textContent="Title and a sensible date range."; return; } SB.from("challenges").insert({crew_id:CREW.open.id,title:t,metric:m,start_date:a,end_date:b,created_by:CU.id}).then(function(r){ if(r.error){ el.querySelector("#ch-msg").textContent=r.error.message; return; } CREW.challenges=null; toast("Challenge on"); renderCrew(); loadCrewDetail(); }); });
+  el.querySelector("#cd-leave").addEventListener("click",function(){ var b=this; if(!b.dataset.ok){ b.dataset.ok="1"; b.textContent="Tap again to leave"; return; } SB.from("crew_members").delete().eq("crew_id",CREW.open.id).eq("user_id",CU.id).then(function(){ CREW.open=null; CREW.list=null; renderCrew(); }); });
+}
 
 // ---------- quick timer ----------
 var Q=null;
@@ -740,8 +951,9 @@ function qtRender(){ var el=document.getElementById("qt"); var running=Q.mode===
 
 // ---------- boot ----------
 renderHeader();
-var hv=(location.hash||"").replace("#",""); show(["today","progress","test","program","more"].indexOf(hv)>=0?hv:"today");
-document.addEventListener("visibilitychange",function(){ if(!document.hidden){ renderHeader(); if(!W&&!T) render(cur); } });
+cloudInit();
+var hv=(location.hash||"").replace("#",""); show(["today","progress","test","program","more","crew"].indexOf(hv)>=0?hv:"today");
+document.addEventListener("visibilitychange",function(){ if(!document.hidden){ renderHeader(); if(CU) cloudPull().then(function(ch){ if(ch&&!W&&!T) render(cur); }); if(!W&&!T&&cur!=="setup") render(cur); } });
 if("serviceWorker" in navigator){ navigator.serviceWorker.register("sw.js",{updateViaCache:"none"}).then(function(r){ try{ r.update(); }catch(e){} }).catch(function(){}); }
 })();
 </script>
