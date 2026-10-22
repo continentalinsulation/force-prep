@@ -219,6 +219,19 @@ cheststretch:{n:"Chest stretch",cat:"cool",eq:[],t:"dur",sets:2,sec:30,rest:0,c:
 pigeon:{n:"Pigeon stretch",cat:"cool",eq:[],t:"dur",sets:2,sec:30,rest:0,c:["Front shin across, back leg long","Fold forward, breathe","Each side"],m:"",q:"pigeon stretch"},
 childpose:{n:"Child's pose",cat:"cool",eq:[],t:"dur",sec:45,c:["Knees wide, arms long","Breathe into the back"],m:"",q:"childs pose"},
 quadstretch:{n:"Quad stretch",cat:"cool",eq:[],t:"dur",sets:2,sec:30,rest:0,c:["Heel to the glute, knees together","Squeeze the glute","Each side"],m:"",q:"standing quad stretch"},
-calfstretch:{n:"Calf stretch",cat:"cool",eq:[],t:"dur",sets:2,sec:30,rest:0,c:["Hands on the wall, back leg straight","Heel down","Each side"],m:"",q:"calf stretch wall"}
+calfstretch:{n:"Calf stretch",cat:"cool",eq:[],t:"dur",sets:2,sec:30,rest:0,c:["Hands on the wall, back leg straight","Heel down","Each side"],m:"",q:"calf stretch wall"},
+runwalk:{n:"Run / walk intervals",cat:"cond",eq:[],t:"int",rounds:8,work:60,rest:90,c:["Run slow enough that you could talk","Walk briskly, don't stop","Finish the last rep"],m:"Running the run bits too fast.",q:"couch to 5k run walk intervals"},
+easyrun:{n:"Easy run",cat:"cond",eq:[],t:"dur",sec:1800,c:["Conversation pace the whole way","If you can't talk, slow down","Walk breaks are allowed"],m:"Easy days too hard, so hard days go soft.",q:"easy run pace zone 2"},
+hills:{n:"Hill repeats",cat:"cond",eq:[],t:"int",rounds:6,work:60,rest:120,c:["Hard uphill, drive the arms","Walk or jog back down","Same effort every rep"],m:"Sprinting the first two and dying.",q:"hill repeats running"},
+strides:{n:"Strides",cat:"cond",eq:[],t:"int",rounds:4,work:20,rest:60,c:["Build to fast-but-relaxed over 20 s","Tall, quick feet","Walk back"],m:"Straining. These are smooth, not all-out.",q:"running strides how to"},
+mprun:{n:"Race-pace run",cat:"cond",eq:[],t:"dur",sec:1500,c:["Settle into goal race pace","Relaxed shoulders, even breathing","Practise drinking on the move"],m:"Faster than race pace. It isn't a time trial.",q:"marathon pace run training"},
+racerun:{n:"Race day",cat:"cond",eq:[],t:"dur",sec:3600,c:["Start slower than feels right","Fuel early, drink little and often","Finish strong, then walk it off"],m:"Going out too fast. Everyone does.",q:"race day pacing tips"},
+swim:{n:"Swim",cat:"cond",eq:[],t:"dur",sec:1800,c:["Continuous swimming, any stroke","Breathe every stroke if you must","Tread water 5 min at the end"],m:"",q:"swim training for military selection"},
+ruckrun:{n:"Ruck run",cat:"carry",eq:["vest","sandbag"],t:"dur",sec:1500,c:["Light load, 10–12 kg","Shuffle, don't bound","Flat ground"],m:"Heavy pack running. That's how shins break.",q:"ruck run training"},
+pullladder:{n:"Pull-up ladder",cat:"pull",eq:["pullup"],t:"set",sets:5,reps:"1-2-3-4-5",rest:60,c:["1 rep, rest, 2 reps, rest… up to the top","Full hang at the bottom","Chin over, every rep"],m:"Kipping.",q:"pull up ladder workout"},
+pushladder:{n:"Push-up ladder",cat:"push",eq:[],t:"set",sets:5,reps:"5-10-15-10-5",rest:45,c:["Chest to the floor","Lock out at the top","Straight line nose to heels"],m:"Hips sagging on the 15s.",q:"push up ladder workout"},
+hangmax:{n:"Max dead hang",cat:"pull",eq:["pullup"],t:"dur",sets:3,sec:40,rest:90,c:["Full grip, relaxed shoulders down","Breathe","Stop 5 s before failure"],m:"",q:"dead hang grip training"},
+dropcrawl:{n:"Drop and crawl",cat:"cond",eq:[],t:"set",sets:5,reps:"10 m",rest:60,c:["Drop to prone, crawl 10 m, up and sprint back","Elbows and knees","Fast up off the ground"],m:"",q:"leopard crawl military fitness"},
+sbcircuit:{n:"Sandbag circuit",cat:"cond",eq:["sandbag"],t:"int",rounds:4,work:180,rest:90,c:["Lift to shoulder × 5, squat × 10, carry 30 m, repeat","Bag never touches down","Hard but tidy"],m:"",q:"sandbag circuit workout"}
 };
 window.EVO_CATS=[["warm","Warm-up"],["squat","Squat"],["hinge","Hinge"],["push","Push"],["pull","Pull"],["carry","Carry"],["core","Core"],["power","Power"],["cond","Conditioning"],["mob","Mobility"],["cool","Cool-down"]];
