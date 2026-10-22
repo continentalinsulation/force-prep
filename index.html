@@ -187,6 +187,27 @@ nav.tabs button.on svg{filter:drop-shadow(0 0 6px rgba(196,164,112,.5))}
 .rchip{flex:0 0 auto;display:flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:8px 12px 8px 8px;font-weight:600;font-size:.9rem;color:var(--fg);cursor:pointer;scroll-snap-align:start;white-space:nowrap}
 .rchip .ck{width:20px;height:20px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;font-size:.75rem;background:var(--raise)}
 .rchip.on{border-color:var(--accent);background:var(--accent-soft)} .rchip.on .ck{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+
+/* ---- v13 calm pass ---- */
+.view{gap:22px}
+.card{border-radius:14px;border-color:#262522;box-shadow:none;background:#141413}
+.card.hi{box-shadow:none;border-color:#3a3328}
+.strip{border-top:0;padding-top:6px}
+.strip .num{font-size:5.6rem}
+.dots{display:flex;gap:6px;margin-top:10px} .dots i{width:10px;height:10px;border-radius:50%;background:var(--raise);border:1px solid var(--line);display:block} .dots i.y{background:var(--accent);border-color:var(--accent)} .dots i.miss{border-color:var(--bad)} .dots i.off{opacity:.35} .dots i.t{border-color:var(--fg)}
+.mission{border-radius:16px;box-shadow:0 14px 40px rgba(0,0,0,.5)}
+.routine .rchips{gap:8px} .rchip{background:#141413;border-color:#262522}
+.crewblock{display:grid;gap:10px;padding-top:4px;border-top:1px solid var(--line)}
+.chlist .chrow{border-top:0;border-bottom:1px solid var(--line)}
+.feed .fitem{font-size:.93rem}
+.fold{border-color:#262522}
+ul.ex li{background:#141413;border-color:#262522;border-radius:12px}
+ul.ex .play{background:transparent}
+nav.tabs button{letter-spacing:.06em;font-size:.62rem}
+.hero.slim .mark{margin-right:2px}
+.strip.two{grid-template-columns:1fr 1fr 1fr}
+.prc{background:#141413;border-color:#262522}
+.daycard{box-shadow:none;background:#141413;border-color:#262522}
 @media (prefers-reduced-motion: no-preference){ ul.ex li,#wo .prog i{transition:all .2s} }
 </style>
 </head>
@@ -219,7 +240,7 @@ nav.tabs button.on svg{filter:drop-shadow(0 0 6px rgba(196,164,112,.5))}
 <div id="wo" hidden></div>
 <script>window.addEventListener("error",function(e){ try{ var d=document.createElement("pre"); d.style.cssText="position:fixed;left:8px;right:8px;bottom:8px;z-index:99;background:#3a1c17;color:#fff;padding:10px;border-radius:8px;font-size:12px;white-space:pre-wrap;word-break:break-word"; d.textContent="App error: "+(e.message||e)+(e.filename?"\n"+e.filename.split("/").pop()+":"+e.lineno:""); document.body.appendChild(d);}catch(x){} });</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
-<script src="exercises.js?v=13"></script>
-<script src="app.js?v=13"></script>
+<script src="exercises.js?v=14"></script>
+<script src="app.js?v=14"></script>
 </body>
 </html>

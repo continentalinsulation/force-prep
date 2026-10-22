@@ -4,10 +4,28 @@
   "webDir": "www",
   "bundledWebRuntime": false,
   "backgroundColor": "#0c0c0b",
-  "ios": { "contentInset": "never", "backgroundColor": "#0c0c0b", "scheme": "Evolution" },
-  "android": { "backgroundColor": "#0c0c0b", "allowMixedContent": false },
+  "ios": {
+    "contentInset": "never",
+    "backgroundColor": "#0c0c0b",
+    "scheme": "Evolution"
+  },
+  "android": {
+    "backgroundColor": "#0c0c0b",
+    "allowMixedContent": false
+  },
   "plugins": {
-    "SplashScreen": { "launchShowDuration": 600, "backgroundColor": "#0c0c0b", "showSpinner": false },
-    "StatusBar": { "style": "DARK", "backgroundColor": "#0c0c0b" }
+    "SplashScreen": {
+      "launchShowDuration": 600,
+      "backgroundColor": "#0c0c0b",
+      "showSpinner": false
+    },
+    "StatusBar": {
+      "style": "DARK",
+      "backgroundColor": "#0c0c0b"
+    }
+  },
+  "server": {
+    "url": "https://continentalinsulation.github.io/force-prep/",
+    "cleartext": false
   }
 }
