@@ -24,6 +24,10 @@ workflows:
         script: cd ios/App && pod install
       - name: Signing
         script: xcode-project use-profiles
+      - name: Build number
+        script: |
+          cd ios/App
+          agvtool new-version -all $(( ${BUILD_NUMBER:-1} + 1 ))
       - name: Build
         script: xcode-project build-ipa --workspace ios/App/App.xcworkspace --scheme App
     artifacts:
