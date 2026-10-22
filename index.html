@@ -208,6 +208,23 @@ nav.tabs button{letter-spacing:.06em;font-size:.62rem}
 .strip.two{grid-template-columns:1fr 1fr 1fr}
 .prc{background:#141413;border-color:#262522}
 .daycard{box-shadow:none;background:#141413;border-color:#262522}
+
+/* ---- onboarding ---- */
+.ob{display:grid;gap:16px;min-height:calc(100vh - 140px);align-content:start;padding-top:6px}
+.obbar{height:3px;background:var(--raise);border-radius:2px;overflow:hidden} .obbar i{display:block;height:100%;background:var(--accent);transition:width .35s}
+.obhead{display:flex;align-items:center;gap:12px;min-height:40px} .obback{padding:6px 12px;font-size:1.1rem}
+.obtitle{font-size:2.2rem;line-height:1} .obsub{margin:0;color:var(--muted);max-width:40ch}
+.obinput{font-size:1.6rem;padding:14px;font-family:var(--body);font-weight:600}
+.obcards{display:grid;gap:10px}
+.obcard{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start;text-align:left;background:#141413;border:1px solid #262522;border-radius:14px;padding:14px 16px;color:var(--fg);cursor:pointer;transition:transform .08s,border-color .15s}
+.obcard .ico{width:28px;height:28px;color:var(--accent);margin-top:2px} .obcard b{display:block;font-family:var(--display);font-size:1.25rem;text-transform:uppercase;letter-spacing:.03em}
+.obcard .tag{display:block;font-family:var(--mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin:2px 0 4px} .obcard .d{display:block;color:var(--muted);font-size:.92rem}
+.obcard.on{border-color:var(--accent);background:var(--accent-soft)} .obcard:active{transform:scale(.985)}
+.obgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px} .obgrid.three{grid-template-columns:repeat(3,1fr)}
+.obopt{background:#141413;border:1px solid #262522;border-radius:14px;padding:18px 6px;display:grid;justify-items:center;gap:2px;color:var(--fg);cursor:pointer} .obopt b{font-family:var(--mono);font-size:2rem;line-height:1} .obopt span{font-family:var(--mono);font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+.obopt.on{border-color:var(--accent);background:var(--accent-soft)} .obopt.on b{color:var(--accent)}
+.obweek{display:grid;grid-template-columns:repeat(7,1fr);gap:6px} .obday{background:#141413;border:1px solid #262522;border-radius:10px;padding:8px 2px;display:grid;justify-items:center;gap:4px;text-align:center} .obday b{font-family:var(--mono);font-size:.72rem;color:var(--muted)} .obday .ico{width:18px;height:18px;color:var(--accent)} .obday span{font-size:.62rem;color:var(--muted);line-height:1.1} .obday.off{opacity:.45}
+.obfoot{position:sticky;bottom:calc(16px + env(safe-area-inset-bottom,0px));padding-top:8px;background:linear-gradient(180deg,transparent,var(--bg) 40%)}
 @media (prefers-reduced-motion: no-preference){ ul.ex li,#wo .prog i{transition:all .2s} }
 </style>
 </head>
@@ -240,7 +257,7 @@ nav.tabs button{letter-spacing:.06em;font-size:.62rem}
 <div id="wo" hidden></div>
 <script>window.addEventListener("error",function(e){ try{ var d=document.createElement("pre"); d.style.cssText="position:fixed;left:8px;right:8px;bottom:8px;z-index:99;background:#3a1c17;color:#fff;padding:10px;border-radius:8px;font-size:12px;white-space:pre-wrap;word-break:break-word"; d.textContent="App error: "+(e.message||e)+(e.filename?"\n"+e.filename.split("/").pop()+":"+e.lineno:""); document.body.appendChild(d);}catch(x){} });</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
-<script src="exercises.js?v=14"></script>
-<script src="app.js?v=14"></script>
+<script src="exercises.js?v=15"></script>
+<script src="app.js?v=15"></script>
 </body>
 </html>

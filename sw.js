@@ -1,5 +1,5 @@
-const CACHE = "evolution-v17";
-const FILES = ["./", "./index.html", "./app.js?v=14", "./exercises.js?v=14", "./manifest.json", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png"];
+const CACHE = "evolution-v18";
+const FILES = ["./", "./index.html", "./app.js?v=15", "./exercises.js?v=15", "./manifest.json", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)).catch(() => {})); self.skipWaiting(); });
 self.addEventListener("activate", e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener("fetch", e => {

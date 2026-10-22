@@ -199,6 +199,19 @@ anklemob:{n:"Ankle mobility",cat:"mob",eq:[],t:"set",sets:2,reps:"10 / side",res
 foamquads:{n:"Foam roll",cat:"mob",eq:["foamroller"],t:"dur",sec:300,c:["Quads, calves, upper back, glutes","Slow, breathe on the tender spots"],m:"",q:"foam rolling routine"},
 deepsquat:{n:"Deep squat hold",cat:"mob",eq:[],t:"dur",sets:2,sec:45,rest:0,c:["Sit at the bottom, heels down","Elbows push the knees out"],m:"",q:"deep squat hold"},
 figfour:{n:"Figure-four stretch",cat:"mob",eq:[],t:"dur",sets:2,sec:30,rest:0,c:["On the back, ankle on the opposite knee","Pull the leg in","Each side"],m:"",q:"figure four stretch"},
+
+// ---- postpartum / rebuild ----
+breath360:{n:"360° breathing",cat:"core",eq:[],t:"dur",sec:120,c:["Hands on the lower ribs","Breathe into the ribs and back, not the belly only","Exhale slowly, feel the deep core and pelvic floor lift"],m:"Holding the breath. The exhale is the exercise.",q:"360 breathing postpartum"},
+pelvictilt:{n:"Pelvic tilts",cat:"core",eq:[],t:"set",sets:2,reps:"10",rest:30,c:["On the back, knees bent","Exhale, flatten the low back to the floor","Inhale, release"],m:"",q:"pelvic tilt exercise postpartum"},
+heelslide:{n:"Heel slides",cat:"core",eq:[],t:"set",sets:2,reps:"8 / side",rest:30,c:["On the back, knees bent","Exhale and slide one heel away, low back stays down","Inhale back"],m:"Belly doming. Shorter range.",q:"heel slides core exercise"},
+clamshell:{n:"Clamshells",cat:"hinge",eq:["bands"],t:"set",sets:2,reps:"12 / side",rest:30,c:["Side-lying, knees bent, feet together","Open the top knee, hips stay stacked"],m:"Rolling back. Keep the hips stacked.",q:"clamshell exercise"},
+sideleg:{n:"Side-lying leg raises",cat:"hinge",eq:[],t:"set",sets:2,reps:"12 / side",rest:30,c:["Top leg straight, toes forward","Lift to hip height, lower slow"],m:"",q:"side lying leg raise"},
+wallpush:{n:"Wall push-ups",cat:"push",eq:[],t:"set",sets:2,reps:"12",rest:45,c:["Hands on the wall at shoulder height","Body straight, exhale as you press"],m:"",q:"wall push up"},
+inclinepush:{n:"Incline push-ups",cat:"push",eq:["bench","box"],t:"set",sets:3,reps:"10",rest:60,c:["Hands on a bench or counter","Straight line, exhale on the press"],m:"",q:"incline push up"},
+chairsquat:{n:"Sit-to-stand squats",cat:"squat",eq:[],t:"set",sets:2,reps:"10",rest:45,c:["Stand up from a chair without using the hands","Exhale as you stand","Lower slow"],m:"",q:"sit to stand squat"},
+walkeasy:{n:"Walk",cat:"cond",eq:[],t:"dur",sec:1200,c:["Easy pace, tall posture","Stroller counts"],m:"",q:"postpartum walking"},
+bandwalk:{n:"Banded side steps",cat:"hinge",eq:["bands"],t:"set",sets:2,reps:"10 / side",rest:30,c:["Band above the knees, slight squat","Step sideways, keep tension"],m:"",q:"banded lateral walk"},
+kneeplank:{n:"Knee plank",cat:"core",eq:[],t:"dur",sets:2,sec:20,rest:30,c:["Forearms and knees","Exhale, draw the belly in gently","Stop if the belly domes"],m:"",q:"knee plank"},
 // ---- cool-down ----
 hamstretch:{n:"Hamstring stretch",cat:"cool",eq:[],t:"dur",sets:2,sec:30,rest:0,c:["Heel on a step, leg straight","Hinge forward until you feel it","Each side"],m:"Rounding the back. Hips fold.",q:"standing hamstring stretch"},
 hipflex:{n:"Hip flexor stretch",cat:"cool",eq:[],t:"dur",sets:2,sec:30,rest:0,c:["Half-kneel, squeeze the back glute","Push the hips forward, stay tall","Each side"],m:"Arching. Tuck the pelvis.",q:"half kneeling hip flexor stretch"},
