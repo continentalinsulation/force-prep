@@ -211,7 +211,7 @@ nav.tabs button{letter-spacing:.06em;font-size:.62rem}
 .prc{background:#141413;border-color:#262522}
 .daycard{box-shadow:none;background:#141413;border-color:#262522}
 
-#ptr{position:fixed;top:env(safe-area-inset-top,0px);left:50%;z-index:15;width:36px;height:36px;border-radius:50%;background:var(--surface);border:1px solid var(--line);color:var(--muted);display:grid;place-items:center;transform:translate(-50%,-56px);transition:transform .18s,color .15s;box-shadow:0 4px 14px rgba(0,0,0,.4);pointer-events:none} #ptr svg{width:18px;height:18px} #ptr.ready{color:var(--accent);border-color:var(--accent)} #ptr.spin svg{animation:ptrspin .8s linear infinite} @keyframes ptrspin{to{transform:rotate(360deg)}}
+#ptr{position:fixed;top:env(safe-area-inset-top,0px);left:50%;z-index:15;width:40px;height:40px;border-radius:50%;background:#0c0c0b;border:1px solid #262522;display:grid;place-items:center;transform:translate(-50%,-56px) rotate(180deg);transition:transform .18s;box-shadow:0 4px 14px rgba(0,0,0,.4);pointer-events:none} #ptr svg{width:26px;height:26px} #ptr path{fill:#6b6b66;transition:fill .15s} #ptr.ready .c1{fill:#c4a470} #ptr.ready .c2{fill:#f3f1ec} #ptr.ready .c3{fill:#6b6b66} #ptr.spin .c1,#ptr.spin .c2,#ptr.spin .c3{animation:ptrpulse 1s ease-in-out infinite} #ptr.spin .c2{animation-delay:.18s} #ptr.spin .c3{animation-delay:.36s} @keyframes ptrpulse{0%,100%{fill:#3a3934}40%{fill:#c4a470}}
 /* ---- onboarding ---- */
 .ob{display:grid;gap:16px;min-height:calc(100vh - 140px);align-content:start;padding-top:6px}
 .obbar{height:3px;background:var(--raise);border-radius:2px;overflow:hidden} .obbar i{display:block;height:100%;background:var(--accent);transition:width .35s}
@@ -260,7 +260,7 @@ nav.tabs button{letter-spacing:.06em;font-size:.62rem}
 <div id="wo" hidden></div>
 <script>window.addEventListener("error",function(e){ try{ var d=document.createElement("pre"); d.style.cssText="position:fixed;left:8px;right:8px;bottom:8px;z-index:99;background:#3a1c17;color:#fff;padding:10px;border-radius:8px;font-size:12px;white-space:pre-wrap;word-break:break-word"; d.textContent="App error: "+(e.message||e)+(e.filename?"\n"+e.filename.split("/").pop()+":"+e.lineno:""); document.body.appendChild(d);}catch(x){} });</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
-<script src="exercises.js?v=21"></script>
-<script src="app.js?v=21"></script>
+<script src="exercises.js?v=22"></script>
+<script src="app.js?v=22"></script>
 </body>
 </html>
