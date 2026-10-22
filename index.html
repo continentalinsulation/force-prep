@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>Evolution</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -25,6 +25,7 @@
 :root[data-theme="light"]{ --bg:#f5f3ee; --bg2:#ecebe4; --surface:#ffffff; --raise:#f1efe8; --fg:#121211; --muted:#6a675f; --line:#d9d6cd; --accent:#8c6e3f; --accent-fg:#ffffff; --accent-soft:#eadfc8; --bad:#b33f2e; --bad-soft:#f3d6d0; color-scheme:light }
 *{box-sizing:border-box}
 html,body{margin:0;height:100%}
+html{touch-action:manipulation;-webkit-text-size-adjust:100%} body{touch-action:manipulation} input,select,textarea{font-size:16px}
 body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.4;-webkit-text-size-adjust:100%;overscroll-behavior-y:none}
 button,input,select,textarea{font:inherit;color:inherit}
 [hidden]{display:none!important}
@@ -258,7 +259,7 @@ nav.tabs button{letter-spacing:.06em;font-size:.62rem}
 <div id="wo" hidden></div>
 <script>window.addEventListener("error",function(e){ try{ var d=document.createElement("pre"); d.style.cssText="position:fixed;left:8px;right:8px;bottom:8px;z-index:99;background:#3a1c17;color:#fff;padding:10px;border-radius:8px;font-size:12px;white-space:pre-wrap;word-break:break-word"; d.textContent="App error: "+(e.message||e)+(e.filename?"\n"+e.filename.split("/").pop()+":"+e.lineno:""); document.body.appendChild(d);}catch(x){} });</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
-<script src="exercises.js?v=16"></script>
-<script src="app.js?v=16"></script>
+<script src="exercises.js?v=17"></script>
+<script src="app.js?v=17"></script>
 </body>
 </html>
