@@ -129,7 +129,7 @@ svg.chart{width:100%;height:auto;display:block}
 ul.ex .acts2{display:flex;gap:6px;align-items:center;align-self:center}
 .qbtn.vid{display:inline-grid;place-items:center;color:var(--accent);border-color:var(--accent-soft);text-decoration:none} .qbtn.vid svg{width:14px;height:14px;fill:currentColor} .acts2{display:flex;gap:6px;align-items:center}
 .qbtn{width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--muted);font-family:var(--mono);cursor:pointer;padding:0}
-ul.ex .how ul{margin:0;padding-left:18px;display:grid;gap:2px}
+ul.ex .how ul{margin:0;padding-left:18px;display:grid;gap:4px} ul.ex .how li{display:list-item;grid-template-columns:none;padding:0;border:0;background:none;border-radius:0;line-height:1.4}
 details.fold{background:transparent;border:1px dashed var(--line)} details.fold summary{font-family:var(--mono);text-transform:uppercase;letter-spacing:.1em;font-size:.74rem;color:var(--muted);font-weight:400;display:flex;justify-content:space-between} details.fold .body{border-top:0;padding-top:4px}
 .wk{display:grid;grid-template-columns:repeat(7,1fr);gap:6px} .wd{border:1px solid var(--line);border-radius:8px;padding:8px 2px;display:grid;justify-items:center;gap:2px;background:var(--raise)} .wd b{font-family:var(--mono);font-size:.78rem;color:var(--muted)} .wd span{font-family:var(--mono);font-size:1rem;min-height:1.2em} .wd.y{border-color:var(--accent);background:var(--accent-soft)} .wd.y span{color:var(--accent)} .wd.miss span{color:var(--bad)} .wd.off{opacity:.5} .wd.t{outline:2px solid var(--fg);outline-offset:-2px}
 .avatar{width:48px;height:48px;border-radius:50%;background:var(--accent);color:var(--accent-fg);display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:1.5rem;flex:none}
@@ -260,7 +260,7 @@ nav.tabs button{letter-spacing:.06em;font-size:.62rem}
 <div id="wo" hidden></div>
 <script>window.addEventListener("error",function(e){ try{ var d=document.createElement("pre"); d.style.cssText="position:fixed;left:8px;right:8px;bottom:8px;z-index:99;background:#3a1c17;color:#fff;padding:10px;border-radius:8px;font-size:12px;white-space:pre-wrap;word-break:break-word"; d.textContent="App error: "+(e.message||e)+(e.filename?"\n"+e.filename.split("/").pop()+":"+e.lineno:""); document.body.appendChild(d);}catch(x){} });</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
-<script src="exercises.js?v=18"></script>
-<script src="app.js?v=18"></script>
+<script src="exercises.js?v=19"></script>
+<script src="app.js?v=19"></script>
 </body>
 </html>
