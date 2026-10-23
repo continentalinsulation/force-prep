@@ -257,6 +257,10 @@ ul.ex .how ul{margin:0;padding-left:18px;display:grid;gap:4px} ul.ex .how li{dis
 .trmap{height:220px;border-radius:14px;overflow:hidden;background:var(--surface);border:1px solid var(--line)} .leaflet-container{background:#111}
 .coachrow{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;cursor:pointer;color:var(--fg)} .coachrow .ico{color:var(--accent);width:26px;height:26px} .coachrow b{font-weight:600} .coachrow .chev{color:var(--muted);font-size:1.3rem}
 .fact{display:flex;gap:10px;margin-top:4px} .fbtn{background:none;border:0;padding:2px 0;color:var(--muted);font-size:.82rem;font-weight:600;cursor:pointer} .fbtn.like.on{color:var(--accent)} .cmts{display:grid;gap:4px;margin-top:4px} .cmt{font-size:.9rem;color:var(--muted);padding-left:10px;border-left:2px solid var(--line)} .cmt b{color:var(--fg)}
+.exr.wod{border-color:var(--accent-deep)} .wmode{font-family:var(--mono);font-size:.72rem;color:var(--accent);border:1px solid var(--accent-deep);border-radius:6px;padding:1px 6px;margin-left:6px}
+.wlist{list-style:none;margin:0;padding:0 12px 10px;display:grid;gap:4px} .wlist li{font-size:1rem} .wlist li b{font-family:var(--mono);color:var(--accent);font-weight:400;margin-right:4px} .wlist .wr{color:var(--muted);font-size:.85rem} .wlist .wv{color:var(--muted);font-size:.78rem;margin-left:8px;text-decoration:underline}
+.wlog{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:0 12px 12px} .wlog .sub{width:100%}
+.wres{padding:0 12px 12px;font-family:var(--mono)} .wres b{font-family:var(--body);color:var(--muted);font-weight:600}
 /* overlays */
 .fab{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(var(--tab) + 14px + env(safe-area-inset-bottom,0px));z-index:7;width:54px;height:54px;border-radius:50%;border:1px solid var(--line2);background:var(--surface);color:var(--fg);display:grid;place-items:center;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.4);padding:0}
 .fab svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round}
@@ -313,7 +317,7 @@ ul.ex .how ul{margin:0;padding-left:18px;display:grid;gap:4px} ul.ex .how li{dis
 <div id="wo" hidden></div>
 <script>window.addEventListener("error",function(e){ try{ var d=document.createElement("pre"); d.style.cssText="position:fixed;left:8px;right:8px;bottom:8px;z-index:99;background:#3a1c17;color:#fff;padding:10px;border-radius:8px;font-size:12px;white-space:pre-wrap;word-break:break-word"; d.textContent="App error: "+(e.message||e)+(e.filename?"\n"+e.filename.split("/").pop()+":"+e.lineno:""); document.body.appendChild(d);}catch(x){} });</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
-<script src="exercises.js?v=30"></script>
-<script src="app.js?v=30"></script>
+<script src="exercises.js?v=31"></script>
+<script src="app.js?v=31"></script>
 </body>
 </html>
