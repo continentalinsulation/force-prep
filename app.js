@@ -118,13 +118,16 @@ var ICO={
  cool:'<path d="M12 3v18M5 7l7 5 7-5M5 17l7-5 7 5"/>',
  rest:'<path d="M4 18h16M6 18v-6h12v6M8 12V9h8v3M12 4v2"/>',
  lift:'<path d="M3 10h2v4H3zM19 10h2v4h-2zM5 12h14M7 8v8M17 8v8"/>',
+ run:'<circle cx="14" cy="4" r="1.8"/><path d="M9 21l3-6 3 2 2 4M7 13l3-3 4 1 3 3 3-1M10 10l-1 5-4 2"/>',
+ ruck:'<path d="M9 7V5a3 3 0 0 1 6 0v2M7 7h10l1.5 13h-13zM9 11h6M12 11v9"/>',
+ row:'<path d="M3 17h18M6 17l2-6h8l2 6M12 11V6M9 6h6M4 20h16"/>',
  bike:'<circle cx="6" cy="16" r="3"/><circle cx="18" cy="16" r="3"/><path d="M6 16l4-7h5l3 7M10 9l5 7M13 5h3"/>',
  circuit:'<path d="M4 20l4-8 4 5 3-9 5 12M3 20h18"/>',
  sim:'<circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6"/>',
  custom:'<path d="M4 6h16M4 12h10M4 18h7M17 15l3 3-3 3"/>'
 };
 function ico(k,cls){ return '<svg class="ico '+(cls||"")+'" viewBox="0 0 24 24" aria-hidden="true">'+(ICO[k]||ICO.custom)+'</svg>'; }
-function kindIco(p){ if(/^Rebuild/.test(p.title)) return "mob"; if(/^Walk/.test(p.title)) return "cond"; return p.kind==="lift"?"lift":p.kind==="bike"?"bike":p.kind==="circuit"?"circuit":p.kind==="sim"?"sim":p.kind==="rest"?"rest":"custom"; }
+function kindIco(p){ if(/^Rebuild/.test(p.title)) return "mob"; if(/^Walk/.test(p.title)) return "cond"; if(/ruck/i.test(p.title)) return "ruck"; if(/^(Run|Easy run|Long run|Tempo|Race|Hill|Interval|Endurance run)/i.test(p.title)) return "run"; if(/^(Row)/i.test(p.title)) return "row"; if(/^(Bike|Endurance ride|Long ride|Sweet spot|Sprints|Test ride)/i.test(p.title)) return "bike"; if(p.kind==="bike"){ var ex=(p.blocks||[]).map(function(b){return b.ex;}); if(ex.some(function(e){return /^(easyrun|longrun|tempo|mprun|racerun|runint|hills|runwalk|strides|treadint)$/.test(e);})) return "run"; if(ex.some(function(e){return /^(rowint|rowsprint|rowwarm)$/.test(e);})) return "row"; } return p.kind==="lift"?"lift":p.kind==="bike"?"bike":p.kind==="circuit"?"circuit":p.kind==="sim"?"sim":p.kind==="rest"?"rest":"custom"; }
 
 // ================= PLAN → SESSION =================
 function B(id,o){ var e=EX[id]; var b={ex:id,k:e.t,name:e.n,det:(o&&o.det)||"",sets:e.sets,reps:e.reps,rest:e.rest,sec:e.sec,rounds:e.rounds,work:e.work,ss:(o&&o.ss)||undefined}; if(o) Object.keys(o).forEach(function(k){ if(o[k]!==undefined) b[k]=o[k]; }); if(b.k==="int"){ b.det=b.rounds+" rounds · "+b.work+" s hard / "+b.rest+" s easy"; } return b; }
@@ -718,7 +721,7 @@ function renderMe(){ var el=$("v-me"); var t=today(); var w=weekOf(t); var P=S.p
   var hist0=Object.keys(S.workouts).sort().reverse().slice(0,10); h+='<div class="eyebrow" style="margin-top:6px">History</div>'+(hist0.length?'<div class="hist">'+hist0.map(function(k){ var wk=S.workouts[k]; var d=fromIso(k); return '<div class="hrow"><span class="mono">'+DSHORT[d.getDay()]+' '+d.getDate()+'</span><span>'+esc(planFor(d).title)+'</span><span class="mono">'+(wk.vol?Math.round(wk.vol/100)/10+'t · ':'')+(wk.sec?mmss(wk.sec):"✓")+'</span></div>'; }).join("")+'</div>':'<div class="sub">Nothing yet. Today\'s evolution is waiting on the Today tab.</div>')+'</div></details>';
   var bw=S.bw.slice(-30); var bwLast=bw.length?bw[bw.length-1]:null; var spark=''; if(bw.length>1){ var vals=bw.map(function(x){return x.kg;}); var mn=Math.min.apply(null,vals), mx=Math.max.apply(null,vals); var rng=(mx-mn)||1; var pts=vals.map(function(v,i){ return (i/(vals.length-1)*300).toFixed(1)+","+(44-(v-mn)/rng*36+4).toFixed(1); }).join(" "); spark='<svg class="spark" viewBox="0 0 300 52" preserveAspectRatio="none"><polyline points="'+pts+'" fill="none" stroke="#c4a470" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/></svg>'; }
   h+='<section class="card stack"><div class="row" style="flex-wrap:nowrap"><div><div class="eyebrow">Bodyweight</div><div class="bwv">'+(bwLast?bwLast.kg+'<small> kg · '+esc(bwLast.date.slice(5))+(bw.length>1?' · '+(bwLast.kg-bw[0].kg>0?"+":"")+(bwLast.kg-bw[0].kg).toFixed(1)+' over '+bw.length+' logs':'')+'</small>':'<small>Not logged yet</small>')+'</div></div><div class="row" style="flex-wrap:nowrap;gap:6px"><input type="number" id="bw-in" inputmode="decimal" step="0.1" placeholder="kg" style="width:84px"><button class="mini" id="bw-save">Log</button></div></div>'+spark+'</section>';
-  h+='<div class="sub" style="text-align:center">Evolution v25 · adaptive lifts '+(S.adj.lift>=0?"+":"")+S.adj.lift+', cardio '+(S.adj.bike>=0?"+":"")+S.adj.bike+'</div>';
+  h+='<div class="sub" style="text-align:center">Evolution v26 · adaptive lifts '+(S.adj.lift>=0?"+":"")+S.adj.lift+', cardio '+(S.adj.bike>=0?"+":"")+S.adj.bike+'</div>';
   el.innerHTML=h;
   el.querySelector("#me-setup").addEventListener("click",function(){ SETUP=null; show("setup"); });
   el.querySelector("#bw-save").addEventListener("click",function(){ var v=parseFloat(el.querySelector("#bw-in").value); if(!v) return; var k=iso(today()); S.bw=S.bw.filter(function(x){return x.date!==k;}); S.bw.push({date:k,kg:v}); S.bw.sort(function(a,b){return a.date<b.date?-1:1;}); save(); toast("Logged "+v+" kg"); renderMe(); });
