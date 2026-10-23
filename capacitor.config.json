@@ -22,6 +22,9 @@
     "StatusBar": {
       "style": "DARK",
       "backgroundColor": "#0c0c0b"
+    },
+    "LocalNotifications": {
+      "iconColor": "#c4a470"
     }
   },
   "server": {
