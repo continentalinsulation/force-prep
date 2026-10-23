@@ -241,6 +241,8 @@ ul.ex .how ul{margin:0;padding-left:18px;display:grid;gap:4px} ul.ex .how li{dis
 .cp{flex:0 0 auto;display:grid;justify-items:center;gap:3px;width:58px;text-align:center} .cp .av{position:relative;width:46px;height:46px;border-radius:50%;background:var(--surface);border:2px solid var(--line2);display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:1.3rem;color:var(--muted)}
 .cp.y .av{border-color:var(--accent);color:var(--fg)} .cp .av i{position:absolute;right:-4px;bottom:-4px;width:18px;height:18px;border-radius:50%;background:var(--accent);color:var(--accent-fg);font-size:.7rem;font-style:normal;display:grid;place-items:center;border:2px solid var(--bg)}
 .cp span{font-size:.78rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:58px} .cp small{font-family:var(--mono);font-size:.7rem;color:var(--muted)} .cp.me span{color:var(--accent)}
+.hint{background:var(--fg);color:var(--bg);border-radius:12px;padding:10px 14px;font-size:.95rem;position:relative;margin-bottom:2px} .hint::after{content:"";position:absolute;left:28px;bottom:-7px;width:14px;height:14px;background:var(--fg);transform:rotate(45deg)}
+.logfold summary{display:flex;justify-content:space-between}
 /* overlays */
 .fab{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(var(--tab) + 14px + env(safe-area-inset-bottom,0px));z-index:7;width:54px;height:54px;border-radius:50%;border:1px solid var(--line2);background:var(--surface);color:var(--fg);display:grid;place-items:center;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.4);padding:0}
 .fab svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round}
@@ -295,7 +297,7 @@ ul.ex .how ul{margin:0;padding-left:18px;display:grid;gap:4px} ul.ex .how li{dis
 <div id="wo" hidden></div>
 <script>window.addEventListener("error",function(e){ try{ var d=document.createElement("pre"); d.style.cssText="position:fixed;left:8px;right:8px;bottom:8px;z-index:99;background:#3a1c17;color:#fff;padding:10px;border-radius:8px;font-size:12px;white-space:pre-wrap;word-break:break-word"; d.textContent="App error: "+(e.message||e)+(e.filename?"\n"+e.filename.split("/").pop()+":"+e.lineno:""); document.body.appendChild(d);}catch(x){} });</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
-<script src="exercises.js?v=27"></script>
-<script src="app.js?v=27"></script>
+<script src="exercises.js?v=28"></script>
+<script src="app.js?v=28"></script>
 </body>
 </html>
