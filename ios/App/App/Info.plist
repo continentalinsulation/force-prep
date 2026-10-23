@@ -2,6 +2,14 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Evolution tracks your route, distance and pace during runs and rucks.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Evolution keeps tracking your run or ruck when the screen is off.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>location</string>
+	</array>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>CFBundleDevelopmentRegion</key>
