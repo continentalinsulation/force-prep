@@ -261,6 +261,13 @@ ul.ex .how ul{margin:0;padding-left:18px;display:grid;gap:4px} ul.ex .how li{dis
 .wlist{list-style:none;margin:0;padding:0 12px 10px;display:grid;gap:4px} .wlist li{font-size:1rem} .wlist li b{font-family:var(--mono);color:var(--accent);font-weight:400;margin-right:4px} .wlist .wr{color:var(--muted);font-size:.85rem} .wlist .wv{color:var(--muted);font-size:.78rem;margin-left:8px;text-decoration:underline}
 .wlog{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:0 12px 12px} .wlog .sub{width:100%}
 .wres{padding:0 12px 12px;font-family:var(--mono)} .wres b{font-family:var(--body);color:var(--muted);font-weight:600}
+/* v29 */
+.oauth{display:grid;gap:8px;margin-top:4px}
+.ready .rgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px} .ready .chips{flex-wrap:nowrap} .ready .chip{padding:7px 10px;font-size:.85rem}
+.badges{display:grid;grid-template-columns:repeat(3,1fr);gap:8px} .badge{display:grid;justify-items:center;gap:3px;text-align:center;padding:10px 4px;border:1px solid var(--line);border-radius:12px;background:var(--raise);opacity:.45} .badge.on{opacity:1;border-color:var(--accent-deep)} .badge .bi{width:40px;height:40px} .badge .bi svg{width:100%;height:100%} .badge b{font-size:.82rem;font-weight:600;line-height:1.1} .badge span{font-size:.68rem;color:var(--muted);line-height:1.15}
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.phrow{display:flex;gap:8px;overflow-x:auto;padding:4px 0;scrollbar-width:none} .phrow figure{margin:0;flex:0 0 auto;width:110px} .phrow img{width:110px;height:146px;object-fit:cover;border-radius:10px;border:1px solid var(--line);display:block} .phrow figcaption{font-family:var(--mono);font-size:.7rem;color:var(--muted);display:flex;justify-content:space-between;padding-top:3px} .phdel{background:none;border:0;color:var(--muted);cursor:pointer;font-size:1rem;padding:0 4px}
+.chips .chip.on[data-ag]{background:var(--accent)}
 /* overlays */
 .fab{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(var(--tab) + 14px + env(safe-area-inset-bottom,0px));z-index:7;width:54px;height:54px;border-radius:50%;border:1px solid var(--line2);background:var(--surface);color:var(--fg);display:grid;place-items:center;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.4);padding:0}
 .fab svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round}
@@ -317,7 +324,7 @@ ul.ex .how ul{margin:0;padding-left:18px;display:grid;gap:4px} ul.ex .how li{dis
 <div id="wo" hidden></div>
 <script>window.addEventListener("error",function(e){ try{ var d=document.createElement("pre"); d.style.cssText="position:fixed;left:8px;right:8px;bottom:8px;z-index:99;background:#3a1c17;color:#fff;padding:10px;border-radius:8px;font-size:12px;white-space:pre-wrap;word-break:break-word"; d.textContent="App error: "+(e.message||e)+(e.filename?"\n"+e.filename.split("/").pop()+":"+e.lineno:""); document.body.appendChild(d);}catch(x){} });</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
-<script src="exercises.js?v=31"></script>
-<script src="app.js?v=31"></script>
+<script src="exercises.js?v=32"></script>
+<script src="app.js?v=32"></script>
 </body>
 </html>
